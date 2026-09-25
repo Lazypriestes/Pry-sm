@@ -36,6 +36,7 @@ const PRIME_SWITCHES = 3;          // number of prime flashes before the item se
 const GLANCE_MS = 1000;            // decisions faster than this count as "glance"
 const LINGER_MS = 3000;            // decisions slower than this count as "lingered"
 const SHOW_TIMER = true;           // elapsed-time clock in the top-right corner
+const DEBUG = true;                // "skip phase" button in the bottom-left corner. Set false before running participants.
 </script>
 <style>
   :root {
@@ -110,10 +111,14 @@ const SHOW_TIMER = true;           // elapsed-time clock in the top-right corner
 
   #timer { position: fixed; top: 12px; right: 16px; font-size: 13px;
            font-variant-numeric: tabular-nums; opacity: .55; display: none; }
+  #debug-skip { position: fixed; bottom: 12px; left: 16px; width: auto; padding: 6px 12px;
+                font-size: 13px; background: #fbe36b; display: none; z-index: 10; }
+  #debug-skip:hover, #debug-skip:active, #debug-skip:focus { background: #fbe36b; }
 </style>
 </head>
 <body>
 <div id="timer">0:00</div>
+<button id="debug-skip">DEBUG: skip phase ⏭</button>
 
 <!-- 1. START -->
 <section id="start" class="screen active">
@@ -740,6 +745,32 @@ function finish() {
   $("thanks").textContent = THANKS;
   show("end");
 }
+
+/* ============================================================
+   DEBUG: jump to the next phase. Logged in data.debug_skips so
+   debug sessions are easy to spot and exclude.
+   ============================================================ */
+if (DEBUG) $("debug-skip").style.display = "block";
+$("debug-skip").addEventListener("click", e => {
+  e.currentTarget.blur();
+  const screen = document.querySelector(".screen.active").id;
+  (data.debug_skips = data.debug_skips || []).push({ phase, screen, timestamp: nowISO() });
+  acceptingInput = false;
+  if (phase === "browse") {
+    data.browse_finished_at = nowISO();
+    data.total_browse_ms = Math.round(performance.now() - browseStartPerf);
+    perf.browse = [browseStartPerf, performance.now()];
+    startReplayIntro();
+  } else if (phase === "replay") {
+    clearTimeout(revealTimer);
+    if (perf.replay[0]) perf.replay[1] = performance.now();
+    startRebrowseIntro();
+  } else if (phase === "rebrowse") {
+    data.rebrowse_finished_at = nowISO();
+    if (perf.rebrowse[0]) perf.rebrowse[1] = performance.now();
+    finish();
+  }
+});
 
 $("download-btn").addEventListener("click", () => {
   const blob = new Blob([exportJSON], { type: "application/json" });
