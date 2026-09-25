@@ -555,8 +555,10 @@ $("replay-next").addEventListener("click", () => {
     replay_dwell_ms: Math.round(performance.now() - replayT0),
     replay_position: replayIndex,
     timestamp: nowISO(),
-    tags: tagsOf(entry.id)
+    tags: tagsOf(entry.id),
+    ...(debugReplayNext ? { debug: true } : {})
   });
+  debugReplayNext = false;
   backup("skipstudy_inprogress");
   if (replayIndex + 1 < replayList.length) showReplayItem(replayIndex + 1);
   else { perf.replay[1] = performance.now(); startRebrowseIntro(); }
@@ -747,30 +749,28 @@ function finish() {
 }
 
 /* ============================================================
-   DEBUG: jump to the next phase. Logged in data.debug_skips so
-   debug sessions are easy to spot and exclude.
+   DEBUG: advance one page (one screen or one item). Browse and re-browse
+   items are logged with action "debug"; replay items with debug: true.
+   Every click is also listed in data.debug_skips.
    ============================================================ */
 if (DEBUG) $("debug-skip").style.display = "block";
 $("debug-skip").addEventListener("click", e => {
   e.currentTarget.blur();
   const screen = document.querySelector(".screen.active").id;
+  if (screen === "end") return;
   (data.debug_skips = data.debug_skips || []).push({ phase, screen, timestamp: nowISO() });
-  acceptingInput = false;
-  if (phase === "browse") {
-    data.browse_finished_at = nowISO();
-    data.total_browse_ms = Math.round(performance.now() - browseStartPerf);
-    perf.browse = [browseStartPerf, performance.now()];
-    startReplayIntro();
-  } else if (phase === "replay") {
+  if (screen === "start") $("start-btn").click();
+  else if (screen === "replay-intro") $("replay-go").click();
+  else if (screen === "rebrowse-intro") $("rebrowse-go").click();
+  else if (screen === "browse") act("debug");
+  else if (screen === "replay") {
     clearTimeout(revealTimer);
-    if (perf.replay[0]) perf.replay[1] = performance.now();
-    startRebrowseIntro();
-  } else if (phase === "rebrowse") {
-    data.rebrowse_finished_at = nowISO();
-    if (perf.rebrowse[0]) perf.rebrowse[1] = performance.now();
-    finish();
+    $("replay-controls").classList.add("shown", "visible");
+    debugReplayNext = true;
+    $("replay-next").click();
   }
 });
+let debugReplayNext = false;
 
 $("download-btn").addEventListener("click", () => {
   const blob = new Blob([exportJSON], { type: "application/json" });
