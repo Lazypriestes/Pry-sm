@@ -26,11 +26,11 @@ const SCALE_LOW = "not at all";
 const SCALE_HIGH = "very much";
 const REVERSE_LABEL = "Looking at it now, I'd have kept this.";
 
-// Phase 3: re-browse with flickered primes. Each item's "prime" image (catalogue.json)
-// alternates with the item for a few frames, then the item stays and the participant decides again.
+// Phase 3: re-browse with flicker. Each item and its "prime" image (catalogue.json)
+// alternate continuously until the participant chooses keep or skip.
 const REBROWSE_INTRO = "One more round. Keep or skip, same as before.";
-const PRIME_FRAMES = 2;            // screen frames per flash (2 frames ≈ 33 ms at 60 Hz)
-const PRIME_SWITCHES = 3;          // number of prime flashes before the item settles
+const FLICKER_MS = 400;            // time each image stays up before switching.
+                                   // Keep >= 170 ms: faster than ~3 flashes/s risks photosensitive seizures.
 
 // Timing summary + on-screen timer
 const GLANCE_MS = 1000;            // decisions faster than this count as "glance"
@@ -84,7 +84,7 @@ const DEBUG = true;                // "skip phase" button in the bottom-left cor
     position: relative; overflow: hidden;
   }
   .stage img { position: absolute; inset: 0; width: 100%; height: 100%;
-               object-fit: contain; display: block; }
+               object-fit: contain; display: block; background: var(--box); }
 
   .actions { display: flex; gap: 24px; margin-top: 24px; }
 
@@ -215,7 +215,7 @@ const data = {
   replay: [],
   rebrowse_started_at: null,
   rebrowse_finished_at: null,
-  prime_settings: { frames_per_flash: PRIME_FRAMES, flashes: PRIME_SWITCHES },
+  prime_settings: { flicker_ms: FLICKER_MS, starts_with: "item" },
   rebrowse: [],
   focus_events: [],
   environment: {}
@@ -566,14 +566,14 @@ $("replay-next").addEventListener("click", () => {
 
 /* ============================================================
    3c. RE-BROWSE WITH FLICKERED PRIMES
-   Same items as browse, new random order. Before each item, its prime
-   (same-numbered bridge) and the item alternate for PRIME_FRAMES frames each,
-   PRIME_SWITCHES times; then the item stays and keep/skip is asked again.
+   Same items as browse, new random order. Each item and its prime
+   (same-numbered bridge) alternate every FLICKER_MS, starting with the item,
+   until the participant chooses keep or skip.
    ============================================================ */
 let rebrowseOrder = [];
 let rebrowseIndex = -1;
 let rebrowseT0 = 0;
-let rebrowseFlashMs = [];
+let flicker = null;            // { token, itemMs, primeMs, switches, showing }
 
 $("rebrowse-intro-text").textContent = REBROWSE_INTRO;
 
@@ -599,10 +599,30 @@ $("rebrowse-go").addEventListener("click", e => {
   showRebrowseItem(0);
 });
 
-async function waitFrames(n) {
-  let t;
-  for (let k = 0; k < n; k++) t = await nextPaint();
-  return t;
+// Alternates item and prime on animation frames until stopFlicker() is called.
+function startFlicker(itemImg, primeImg, t0) {
+  const f = { itemMs: 0, primeMs: 0, switches: 0, showing: "item", since: t0, stopped: false };
+  const tick = now => {
+    if (f.stopped) return;
+    if (now - f.since >= FLICKER_MS) {
+      f[f.showing + "Ms"] += now - f.since;
+      f.showing = f.showing === "item" ? "prime" : "item";
+      itemImg.style.visibility = f.showing === "item" ? "visible" : "hidden";
+      f.switches++;
+      f.since = now;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  return f;
+}
+function stopFlicker(t) {
+  if (!flicker) return null;
+  const f = flicker;
+  f.stopped = true;
+  f[f.showing + "Ms"] += t - f.since;
+  flicker = null;
+  return f;
 }
 
 async function showRebrowseItem(i) {
@@ -626,20 +646,8 @@ async function showRebrowseItem(i) {
   // Item sits on top of the prime; hiding the item reveals the prime.
   itemImg.style.visibility = "visible";
   stage.replaceChildren(...(primeImg ? [primeImg, itemImg] : [itemImg]));
-  rebrowseFlashMs = [];
-  if (primeImg) {
-    for (let s = 0; s < PRIME_SWITCHES; s++) {
-      itemImg.style.visibility = "hidden";               // prime on screen from next paint
-      const on = await nextPaint();
-      const off = await waitFrames(PRIME_FRAMES);
-      itemImg.style.visibility = "visible";              // item back in this frame
-      rebrowseFlashMs.push(Math.round(off - on));
-      if (s < PRIME_SWITCHES - 1) await waitFrames(PRIME_FRAMES);
-    }
-    rebrowseT0 = performance.now();                      // item has settled
-  } else {
-    rebrowseT0 = await nextPaint();
-  }
+  rebrowseT0 = await nextPaint();                        // item on screen; clock and flicker start
+  if (primeImg) flicker = startFlicker(itemImg, primeImg, rebrowseT0);
   resetHover();
   acceptingInput = true;
 }
@@ -648,6 +656,7 @@ function actRebrowse(action) {
   if (!acceptingInput) return;
   acceptingInput = false;
   const t = performance.now();
+  const f = stopFlicker(t);
   const item = rebrowseOrder[rebrowseIndex];
   const first = data.browse.find(b => b.item_id === item.id);
   const dwell = Math.round(t - rebrowseT0);
@@ -657,10 +666,13 @@ function actRebrowse(action) {
     action,
     first_action: first ? first.action : null,
     changed: first ? first.action !== action : null,
-    dwell_ms: dwell,                                     // from the item settling, after the flicker
+    dwell_ms: dwell,                                     // from first appearance, flicker included
     speed: speedOf(dwell),
     ...hoverResult(),
-    prime_flash_ms: rebrowseFlashMs,                     // measured on-screen time of each prime flash
+    on_screen_at_choice: f ? f.showing : "item",         // which image was up when they chose
+    item_visible_ms: f ? Math.round(f.itemMs) : dwell,
+    prime_visible_ms: f ? Math.round(f.primeMs) : 0,
+    switches: f ? f.switches : 0,
     position: rebrowseIndex,
     timestamp: nowISO(),
     tags: tagsOf(item.id),
