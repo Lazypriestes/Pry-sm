@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object Viewer</title>
+<script>
+/* ============================================================
+   EDITABLE TEXT & SETTINGS
+   ============================================================ */
+const INSTRUCTIONS =
+  "You'll see a series of objects. Keep the ones you'd want to look at more. " +
+  "Skip the rest. There's no right answer and you don't need to explain anything. " +
+  "Go at whatever pace feels natural.";
+const KEY_HINT = "Use the buttons, or the arrow keys: ← skip, → keep.";
+const REPLAY_INTRO = "Now I'd like to go back over some of those with you.";
+const THANKS = "Thank you — that's everything.";
+
+const CATALOGUE_URL = "catalogue.json";
+const REPLAY_MIN_VIEW_MS = 8000;   // forced-engagement time before controls appear
+const REPLAY_KEPT_COUNT = 3;       // kept items mixed into replay as comparison
+const REASON_PROMPT = "What went through your mind when you saw this?";
+const PLEASURE_LABEL = "How much do you like it?";
+const INTEREST_LABEL = "How much does it make you want to keep looking?";
+const SCALE_LOW = "not at all";
+const SCALE_HIGH = "very much";
+const REVERSE_LABEL = "Looking at it now, I'd have kept this.";
+
+// Phase 3: re-browse with flickered primes. Each item's "prime" image (catalogue.json)
+// alternates with the item for a few frames, then the item stays and the participant decides again.
+const REBROWSE_INTRO = "One more round. Keep or skip, same as before.";
+const PRIME_FRAMES = 2;            // screen frames per flash (2 frames ≈ 33 ms at 60 Hz)
+const PRIME_SWITCHES = 3;          // number of prime flashes before the item settles
+
+// Timing summary + on-screen timer
+const GLANCE_MS = 1000;            // decisions faster than this count as "glance"
+const LINGER_MS = 3000;            // decisions slower than this count as "lingered"
+const SHOW_TIMER = true;           // elapsed-time clock in the top-right corner
+</script>
+<style>
+  :root {
+    --bg: #8a8a8a;         /* neutral mid-grey: no colour cast on the objects */
+    --box: #ececec;        /* letterbox fill: light, to sit close to the museum-photo backgrounds */
+    --ink: #111;
+    --btn: #d6d6d6;
+    --btn-ink: #111;
+    --box-w: min(88vw, 68vh, 900px);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .screen { display: none; width: 100%; min-height: 100%; padding: 24px 16px;
+            flex-direction: column; align-items: center; justify-content: center; }
+  .screen.active { display: flex; }
+
+  .panel { max-width: 560px; width: 100%; }
+  .panel p { margin: 0 0 1em; }
+  .hint { opacity: .75; font-size: 15px; }
+  label.field { display: block; margin: 1.2em 0 .3em; font-size: 15px; }
+  input[type=text] { font: inherit; padding: 8px 10px; width: 100%; border: 1px solid #555;
+                     border-radius: 4px; background: #eee; }
+
+  /* Identical, flat buttons. No hover/active styling that could favour one action. */
+  button {
+    font: inherit; font-size: 17px; width: 140px; padding: 12px 0;
+    background: var(--btn); color: var(--btn-ink);
+    border: 1px solid #555; border-radius: 4px; cursor: pointer;
+    transition: none;
+  }
+  button:hover, button:active, button:focus { background: var(--btn); color: var(--btn-ink); }
+  button:focus { outline: none; }
+  button:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
+
+  /* Normalised display box, identical in browse and replay. */
+  .stage {
+    width: var(--box-w); aspect-ratio: 1 / 1;
+    background: var(--box);
+    position: relative; overflow: hidden;
+  }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%;
+               object-fit: contain; display: block; }
+
+  .actions { display: flex; gap: 24px; margin-top: 24px; }
+
+  /* Replay */
+  #replay-wait { margin-top: 20px; width: 10px; height: 10px; border-radius: 50%;
+                 background: #555; animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { opacity: .15; } 50% { opacity: .6; } }
+  #replay-controls { width: var(--box-w); margin-top: 16px; display: none;
+                     opacity: 0; transition: opacity 150ms linear; }
+  #replay-controls.shown { display: block; }
+  #replay-controls.visible { opacity: 1; }
+  #replay-controls textarea { font: inherit; width: 100%; height: 70px; padding: 8px 10px;
+                              border: 1px solid #555; border-radius: 4px; background: #eee; resize: vertical; }
+  .scale { margin-top: 12px; }
+  .scale .q { font-size: 15px; margin-bottom: 2px; }
+  .scale .row { display: flex; align-items: center; gap: 10px; font-size: 13px; opacity: .9; }
+  .scale input[type=range] { flex: 1; }
+  .rev { margin-top: 12px; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+  .next-row { display: flex; justify-content: flex-end; margin-top: 12px; }
+  #replay .stage { width: min(var(--box-w), 46vh); }
+  #replay-controls { width: min(var(--box-w), 720px); }
+
+  #load-error { display: none; margin-top: 1em; font-size: 15px; }
+
+  #timer { position: fixed; top: 12px; right: 16px; font-size: 13px;
+           font-variant-numeric: tabular-nums; opacity: .55; display: none; }
+</style>
+</head>
+<body>
+<div id="timer">0:00</div>
+
+<!-- 1. START -->
+<section id="start" class="screen active">
+  <div class="panel">
+    <p id="instructions"></p>
+    <p class="hint" id="key-hint"></p>
+    <label class="field" for="pid">Participant ID (leave blank to auto-generate)</label>
+    <input type="text" id="pid" autocomplete="off" spellcheck="false">
+    <div id="load-error">
+      <p>Couldn't load <code>catalogue.json</code> automatically (browsers block this when opening
+      the file directly). Select it here:</p>
+      <input type="file" id="cat-file" accept=".json,application/json">
+    </div>
+    <div class="actions"><button id="start-btn" disabled>Loading…</button></div>
+  </div>
+</section>
+
+<!-- 2. BROWSE -->
+<section id="browse" class="screen">
+  <div class="stage" id="browse-stage"></div>
+  <div class="actions">
+    <button id="skip-btn">Skip</button>
+    <button id="keep-btn">Keep</button>
+  </div>
+</section>
+
+<!-- 3a. REPLAY INTRO -->
+<section id="replay-intro" class="screen">
+  <div class="panel">
+    <p id="replay-intro-text"></p>
+    <div class="actions"><button id="replay-go">Continue</button></div>
+  </div>
+</section>
+
+<!-- 3b. REPLAY -->
+<section id="replay" class="screen">
+  <div class="stage" id="replay-stage"></div>
+  <div id="replay-wait"></div>
+  <div id="replay-controls">
+    <label class="field" for="reason" id="reason-label" style="margin-top:0"></label>
+    <textarea id="reason"></textarea>
+    <div class="scale">
+      <div class="q" id="pleasure-label"></div>
+      <div class="row"><span class="lo"></span><input type="range" id="pleasure" min="0" max="100" step="1"><span class="hi"></span></div>
+    </div>
+    <div class="scale">
+      <div class="q" id="interest-label"></div>
+      <div class="row"><span class="lo"></span><input type="range" id="interest" min="0" max="100" step="1"><span class="hi"></span></div>
+    </div>
+    <label class="rev"><input type="checkbox" id="reversed"><span id="reverse-label"></span></label>
+    <div class="next-row"><button id="replay-next">Next</button></div>
+  </div>
+</section>
+
+<!-- 3c. RE-BROWSE INTRO (re-browse itself reuses the browse screen) -->
+<section id="rebrowse-intro" class="screen">
+  <div class="panel">
+    <p id="rebrowse-intro-text"></p>
+    <div class="actions"><button id="rebrowse-go">Continue</button></div>
+  </div>
+</section>
+
+<!-- 4. END -->
+<section id="end" class="screen">
+  <div class="panel">
+    <p id="thanks"></p>
+    <div class="actions"><button id="download-btn" style="width:auto;padding:12px 20px">Download data</button></div>
+    <p class="hint" id="saved-note" style="margin-top:1em"></p>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const nowISO = () => new Date().toISOString();
+
+let catalogue = null;        // { version?, items: [...] }
+let catalogueVersion = "";
+let itemsById = {};
+let participantId = "";
+let phase = "start";         // start | browse | replay | rebrowse | end
+
+const data = {
+  participant_id: "",
+  started_at: null,
+  finished_at: null,
+  catalogue_version: "",
+  browse_started_at: null,
+  browse_finished_at: null,
+  total_browse_ms: null,
+  browse: [],
+  replay: [],
+  rebrowse_started_at: null,
+  rebrowse_finished_at: null,
+  prime_settings: { frames_per_flash: PRIME_FRAMES, flashes: PRIME_SWITCHES },
+  rebrowse: [],
+  focus_events: [],
+  environment: {}
+};
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function hashString(s) {               // short stable hash, used if catalogue has no "version"
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return "hash-" + h.toString(16);
+}
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+function tagsOf(id) {                  // deep copy so the export is self-contained
+  return JSON.parse(JSON.stringify((itemsById[id] && itemsById[id].tags) || {}));
+}
+// Resolves on the first animation frame after the DOM change, i.e. when the image is being painted.
+function nextPaint() {
+  return new Promise(res => requestAnimationFrame(() => res(performance.now())));
+}
+
+/* Image preloading: each item gets one Image element, loaded and decoded before display. */
+const imgCache = {};
+function preload(item) {
+  if (!imgCache[item.id]) {
+    const img = new Image();
+    img.alt = "";
+    img.draggable = false;
+    const p = new Promise((resolve, reject) => {
+      img.onload = () => {
+        const loadedAt = performance.now();
+        (img.decode ? img.decode().catch(() => {}) : Promise.resolve())
+          .then(() => resolve({ img, loadedAt }));
+      };
+      img.onerror = () => reject(new Error("Image failed to load: " + item.image));
+    });
+    img.src = item.image;
+    imgCache[item.id] = p;
+  }
+  return imgCache[item.id];
+}
+
+/* ============================================================
+   FOCUS / VISIBILITY LOGGING (whole session)
+   ============================================================ */
+function logFocus(type) {
+  if (phase === "start" || phase === "end") return;
+  data.focus_events.push({
+    type,
+    timestamp: nowISO(),
+    phase,
+    position: phase === "browse" ? browseIndex : phase === "replay" ? replayIndex : rebrowseIndex
+  });
+}
+window.addEventListener("blur", () => logFocus("blur"));
+window.addEventListener("focus", () => logFocus("focus"));
+document.addEventListener("visibilitychange", () =>
+  logFocus(document.hidden ? "hidden" : "visible"));
+
+/* ============================================================
+   1. START
+   ============================================================ */
+$("instructions").textContent = INSTRUCTIONS;
+$("key-hint").textContent = KEY_HINT;
+
+function acceptCatalogue(text) {
+  const parsed = JSON.parse(text);
+  if (!parsed || !Array.isArray(parsed.items) || !parsed.items.length)
+    throw new Error("catalogue.json has no items");
+  catalogue = parsed;
+  catalogueVersion = parsed.version ? String(parsed.version) : hashString(text);
+  itemsById = {};
+  parsed.items.forEach(it => { itemsById[it.id] = it; });
+  $("load-error").style.display = "none";
+  $("start-btn").disabled = false;
+  $("start-btn").textContent = "Start";
+}
+
+fetch(CATALOGUE_URL, { cache: "no-store" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(acceptCatalogue)
+  .catch(() => {
+    $("load-error").style.display = "block";
+    $("start-btn").textContent = "Start";
+  });
+
+$("cat-file").addEventListener("change", e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  f.text().then(acceptCatalogue).catch(err => alert("Couldn't read catalogue: " + err.message));
+});
+
+function makeId() {
+  return "P" + Math.random().toString(36).slice(2, 7).toUpperCase();
+}
+
+/* ============================================================
+   TIMING: phase durations, on-screen timer, button hover ("lingering")
+   ============================================================ */
+const perf = { session: 0, browse: [0, 0], replay: [0, 0], rebrowse: [0, 0] };
+let timerInterval = null;
+
+function startTimer() {
+  if (!SHOW_TIMER) return;
+  $("timer").style.display = "block";
+  const tick = () => {
+    const s = Math.floor((performance.now() - perf.session) / 1000);
+    $("timer").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  };
+  tick();
+  timerInterval = setInterval(tick, 250);
+}
+
+function speedOf(ms) {
+  return ms < GLANCE_MS ? "glance" : ms >= LINGER_MS ? "lingered" : "normal";
+}
+
+// Pointer time over each button while an item is up: hesitation between Skip and Keep.
+let hover = null;
+function resetHover() {
+  hover = { skip: 0, keep: 0, switches: 0, first: null, last: null, over: null, since: 0 };
+  // Pointer may already rest on a button when the item appears (pointerenter won't refire).
+  ["skip", "keep"].forEach(w => { if ($(w + "-btn").matches(":hover")) hoverEnter(w); });
+}
+function hoverEnter(which) {
+  if (!hover) return;
+  if (hover.first === null) hover.first = which;
+  else if (hover.last && hover.last !== which) hover.switches++;
+  hover.over = which; hover.last = which; hover.since = performance.now();
+}
+function hoverLeave() {
+  if (!hover || !hover.over) return;
+  hover[hover.over] += performance.now() - hover.since;
+  hover.over = null;
+}
+function hoverResult() {
+  hoverLeave();
+  const r = { hover_skip_ms: Math.round(hover.skip), hover_keep_ms: Math.round(hover.keep),
+              hover_switches: hover.switches, first_hover: hover.first };
+  resetHover();
+  return r;
+}
+["skip", "keep"].forEach(w => {
+  $(w + "-btn").addEventListener("pointerenter", () => hoverEnter(w));
+  $(w + "-btn").addEventListener("pointerleave", hoverLeave);
+});
+
+$("start-btn").addEventListener("click", () => {
+  if (!catalogue) return;
+  perf.session = performance.now();
+  startTimer();
+  participantId = ($("pid").value.trim() || makeId()).replace(/[^\w.-]+/g, "_");
+  data.participant_id = participantId;
+  data.catalogue_version = catalogueVersion;
+  data.started_at = nowISO();
+  data.environment = {
+    user_agent: navigator.userAgent,
+    viewport: { w: window.innerWidth, h: window.innerHeight },
+    device_pixel_ratio: window.devicePixelRatio
+  };
+  startBrowse();
+});
+
+/* ============================================================
+   2. BROWSE
+   ============================================================ */
+let order = [];
+let browseIndex = -1;
+let browseT0 = null;           // performance.now() when current image first painted
+let acceptingInput = false;
+let browseStartPerf = 0;
+
+async function startBrowse() {
+  order = shuffle(catalogue.items);
+  phase = "browse";
+  // Kick off loading of the first two images before the screen appears.
+  preload(order[0]);
+  if (order[1]) preload(order[1]);
+  show("browse");
+  $("skip-btn").blur(); $("keep-btn").blur();
+  data.browse_started_at = nowISO();
+  browseStartPerf = performance.now();
+  await showBrowseItem(0);
+}
+
+async function showBrowseItem(i) {
+  browseIndex = i;
+  acceptingInput = false;
+  const stage = $("browse-stage");
+  const item = order[i];
+  let loaded;
+  try {
+    loaded = await preload(item);           // don't advance until the image is loaded + decoded
+  } catch (e) {
+    console.error(e);
+    data.browse.push({ item_id: item.id, action: "error", error: e.message,
+                       position: i, timestamp: nowISO(), tags: tagsOf(item.id) });
+    return advanceBrowse();
+  }
+  stage.replaceChildren(loaded.img);
+  if (order[i + 1]) preload(order[i + 1]);  // load the next one while this is viewed
+  browseT0 = await nextPaint();             // clock starts when the image is on screen
+  resetHover();
+  acceptingInput = true;
+}
+
+function act(action) {
+  if (phase === "rebrowse") return actRebrowse(action);
+  if (phase !== "browse" || !acceptingInput) return;
+  acceptingInput = false;
+  const t = performance.now();
+  const item = order[browseIndex];
+  const dwell = Math.round(t - browseT0);
+  data.browse.push({
+    item_id: item.id,
+    action,
+    dwell_ms: dwell,
+    speed: speedOf(dwell),
+    ...hoverResult(),
+    position: browseIndex,
+    timestamp: nowISO(),
+    tags: tagsOf(item.id)
+  });
+  advanceBrowse();
+}
+
+function advanceBrowse() {
+  if (browseIndex + 1 < order.length) {
+    $("browse-stage").replaceChildren();   // blank box if the next image is somehow not ready
+    showBrowseItem(browseIndex + 1);
+  } else {
+    data.browse_finished_at = nowISO();
+    data.total_browse_ms = Math.round(performance.now() - browseStartPerf);
+    perf.browse = [browseStartPerf, performance.now()];
+    startReplayIntro();
+  }
+}
+
+$("skip-btn").addEventListener("click", e => { e.currentTarget.blur(); act("skip"); });
+$("keep-btn").addEventListener("click", e => { e.currentTarget.blur(); act("keep"); });
+document.addEventListener("keydown", e => {
+  if ((phase !== "browse" && phase !== "rebrowse") || e.repeat) return;
+  if (e.key === "ArrowLeft")  { e.preventDefault(); act("skip"); }
+  if (e.key === "ArrowRight") { e.preventDefault(); act("keep"); }
+});
+
+/* ============================================================
+   3. REPLAY
+   ============================================================ */
+let replayList = [];
+let replayIndex = -1;
+let replayT0 = 0;
+let revealTimer = null;
+let moved = { pleasure: false, interest: false };
+
+$("replay-intro-text").textContent = REPLAY_INTRO;
+$("reason-label").textContent = REASON_PROMPT;
+$("pleasure-label").textContent = PLEASURE_LABEL;
+$("interest-label").textContent = INTEREST_LABEL;
+$("reverse-label").textContent = REVERSE_LABEL;
+document.querySelectorAll(".scale .lo").forEach(el => el.textContent = SCALE_LOW);
+document.querySelectorAll(".scale .hi").forEach(el => el.textContent = SCALE_HIGH);
+
+function startReplayIntro() {
+  phase = "replay";
+  const valid = data.browse.filter(b => b.action === "skip" || b.action === "keep");
+  const skipped = valid.filter(b => b.action === "skip").map(b => ({ id: b.item_id, was_skipped: true }));
+  const kept = shuffle(valid.filter(b => b.action === "keep"))
+    .slice(0, REPLAY_KEPT_COUNT).map(b => ({ id: b.item_id, was_skipped: false }));
+  replayList = shuffle(skipped.concat(kept));
+  data.replay_planned = replayList.map(r => r.id);
+  replayList.forEach(r => preload(itemsById[r.id]));
+  if (!replayList.length) return startRebrowseIntro();
+  show("replay-intro");
+  $("replay-go").focus();
+}
+$("replay-go").addEventListener("click", () => {
+  perf.replay[0] = performance.now();
+  show("replay");
+  showReplayItem(0);
+});
+
+async function showReplayItem(i) {
+  replayIndex = i;
+  const entry = replayList[i];
+  const controls = $("replay-controls");
+  controls.classList.remove("shown", "visible");
+  $("replay-wait").style.display = "block";
+  $("reason").value = "";
+  $("pleasure").value = 50;
+  $("interest").value = 50;
+  $("reversed").checked = false;
+  moved = { pleasure: false, interest: false };
+  window.scrollTo(0, 0);
+
+  const { img } = await preload(itemsById[entry.id]);
+  $("replay-stage").replaceChildren(img);
+  replayT0 = await nextPaint();
+
+  clearTimeout(revealTimer);
+  revealTimer = setTimeout(() => {
+    $("replay-wait").style.display = "none";
+    controls.classList.add("shown");
+    requestAnimationFrame(() => controls.classList.add("visible"));
+  }, REPLAY_MIN_VIEW_MS);
+}
+
+$("pleasure").addEventListener("input", () => { moved.pleasure = true; });
+$("interest").addEventListener("input", () => { moved.interest = true; });
+
+$("replay-next").addEventListener("click", () => {
+  if (!$("replay-controls").classList.contains("visible")) return;
+  const entry = replayList[replayIndex];
+  const text = $("reason").value;
+  data.replay.push({
+    item_id: entry.id,
+    was_skipped: entry.was_skipped,
+    reason_text: text,
+    reason_blank: text.trim() === "",
+    pleasure: Number($("pleasure").value),
+    interest: Number($("interest").value),
+    pleasure_moved: moved.pleasure,     // false = left at the 50 starting point
+    interest_moved: moved.interest,
+    reversed: $("reversed").checked,
+    replay_dwell_ms: Math.round(performance.now() - replayT0),
+    replay_position: replayIndex,
+    timestamp: nowISO(),
+    tags: tagsOf(entry.id)
+  });
+  backup("skipstudy_inprogress");
+  if (replayIndex + 1 < replayList.length) showReplayItem(replayIndex + 1);
+  else { perf.replay[1] = performance.now(); startRebrowseIntro(); }
+});
+
+/* ============================================================
+   3c. RE-BROWSE WITH FLICKERED PRIMES
+   Same items as browse, new random order. Before each item, its prime
+   (same-numbered bridge) and the item alternate for PRIME_FRAMES frames each,
+   PRIME_SWITCHES times; then the item stays and keep/skip is asked again.
+   ============================================================ */
+let rebrowseOrder = [];
+let rebrowseIndex = -1;
+let rebrowseT0 = 0;
+let rebrowseFlashMs = [];
+
+$("rebrowse-intro-text").textContent = REBROWSE_INTRO;
+
+function preloadPair(item) {
+  return Promise.all([preload(item), item.prime ? preload(item.prime) : null]);
+}
+
+function startRebrowseIntro() {
+  phase = "rebrowse";
+  const shown = new Set(data.browse.filter(b => b.action !== "error").map(b => b.item_id));
+  rebrowseOrder = shuffle(catalogue.items.filter(it => shown.has(it.id)));
+  if (!rebrowseOrder.length) return finish();
+  preloadPair(rebrowseOrder[0]);
+  if (rebrowseOrder[1]) preloadPair(rebrowseOrder[1]);
+  show("rebrowse-intro");
+  $("rebrowse-go").focus();
+}
+$("rebrowse-go").addEventListener("click", e => {
+  e.currentTarget.blur();
+  show("browse");
+  data.rebrowse_started_at = nowISO();
+  perf.rebrowse[0] = performance.now();
+  showRebrowseItem(0);
+});
+
+async function waitFrames(n) {
+  let t;
+  for (let k = 0; k < n; k++) t = await nextPaint();
+  return t;
+}
+
+async function showRebrowseItem(i) {
+  rebrowseIndex = i;
+  acceptingInput = false;
+  const item = rebrowseOrder[i];
+  const stage = $("browse-stage");
+  let itemImg, primeImg = null;
+  try {
+    const [a, b] = await preloadPair(item);
+    itemImg = a.img;
+    if (b) primeImg = b.img;
+  } catch (e) {
+    console.error(e);
+    data.rebrowse.push({ item_id: item.id, action: "error", error: e.message,
+                         position: i, timestamp: nowISO(), tags: tagsOf(item.id) });
+    return advanceRebrowse();
+  }
+  if (rebrowseOrder[i + 1]) preloadPair(rebrowseOrder[i + 1]);
+
+  // Item sits on top of the prime; hiding the item reveals the prime.
+  itemImg.style.visibility = "visible";
+  stage.replaceChildren(...(primeImg ? [primeImg, itemImg] : [itemImg]));
+  rebrowseFlashMs = [];
+  if (primeImg) {
+    for (let s = 0; s < PRIME_SWITCHES; s++) {
+      itemImg.style.visibility = "hidden";               // prime on screen from next paint
+      const on = await nextPaint();
+      const off = await waitFrames(PRIME_FRAMES);
+      itemImg.style.visibility = "visible";              // item back in this frame
+      rebrowseFlashMs.push(Math.round(off - on));
+      if (s < PRIME_SWITCHES - 1) await waitFrames(PRIME_FRAMES);
+    }
+    rebrowseT0 = performance.now();                      // item has settled
+  } else {
+    rebrowseT0 = await nextPaint();
+  }
+  resetHover();
+  acceptingInput = true;
+}
+
+function actRebrowse(action) {
+  if (!acceptingInput) return;
+  acceptingInput = false;
+  const t = performance.now();
+  const item = rebrowseOrder[rebrowseIndex];
+  const first = data.browse.find(b => b.item_id === item.id);
+  const dwell = Math.round(t - rebrowseT0);
+  data.rebrowse.push({
+    item_id: item.id,
+    prime_id: item.prime ? item.prime.id : null,
+    action,
+    first_action: first ? first.action : null,
+    changed: first ? first.action !== action : null,
+    dwell_ms: dwell,                                     // from the item settling, after the flicker
+    speed: speedOf(dwell),
+    ...hoverResult(),
+    prime_flash_ms: rebrowseFlashMs,                     // measured on-screen time of each prime flash
+    position: rebrowseIndex,
+    timestamp: nowISO(),
+    tags: tagsOf(item.id),
+    prime_tags: item.prime ? JSON.parse(JSON.stringify(item.prime.tags || {})) : null
+  });
+  backup("skipstudy_inprogress");
+  advanceRebrowse();
+}
+
+function advanceRebrowse() {
+  if (rebrowseIndex + 1 < rebrowseOrder.length) {
+    $("browse-stage").replaceChildren();
+    showRebrowseItem(rebrowseIndex + 1);
+  } else {
+    data.rebrowse_finished_at = nowISO();
+    perf.rebrowse[1] = performance.now();
+    finish();
+  }
+}
+
+/* ============================================================
+   4. END
+   ============================================================ */
+let exportName = "";
+let exportJSON = "";
+
+function backup(key) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) { console.warn(e); }
+}
+
+function dwellStats(entries) {
+  const ms = entries.map(e => e.dwell_ms).sort((a, b) => a - b);
+  if (!ms.length) return { n: 0 };
+  const mid = Math.floor(ms.length / 2);
+  return {
+    n: ms.length,
+    mean_ms: Math.round(ms.reduce((a, b) => a + b, 0) / ms.length),
+    median_ms: ms.length % 2 ? ms[mid] : Math.round((ms[mid - 1] + ms[mid]) / 2),
+    min_ms: ms[0],
+    max_ms: ms[ms.length - 1],
+    total_ms: ms.reduce((a, b) => a + b, 0)
+  };
+}
+function roundSummary(entries) {
+  const ok = entries.filter(e => e.action === "keep" || e.action === "skip");
+  const s = {
+    keep: dwellStats(ok.filter(e => e.action === "keep")),
+    skip: dwellStats(ok.filter(e => e.action === "skip")),
+    glance_count: ok.filter(e => e.speed === "glance").length,
+    lingered_count: ok.filter(e => e.speed === "lingered").length,
+    lingered_items: ok.filter(e => e.speed === "lingered").map(e => e.item_id),
+    total_hover_skip_ms: ok.reduce((a, e) => a + (e.hover_skip_ms || 0), 0),
+    total_hover_keep_ms: ok.reduce((a, e) => a + (e.hover_keep_ms || 0), 0),
+    hesitations: ok.filter(e => e.hover_switches > 0).length
+  };
+  if (ok.length && "changed" in ok[0]) s.changed_count = ok.filter(e => e.changed).length;
+  return s;
+}
+const span = ([a, b]) => (a && b ? Math.round(b - a) : null);
+
+function finish() {
+  phase = "end";
+  data.finished_at = nowISO();
+  clearInterval(timerInterval);
+  data.timings = {
+    session_ms: Math.round(performance.now() - perf.session),
+    browse_ms: span(perf.browse),
+    replay_ms: span(perf.replay),
+    rebrowse_ms: span(perf.rebrowse),
+    glance_threshold_ms: GLANCE_MS,
+    linger_threshold_ms: LINGER_MS
+  };
+  data.summary = { browse: roundSummary(data.browse), rebrowse: roundSummary(data.rebrowse) };
+  const stamp = data.finished_at.replace(/[:.]/g, "-");
+  exportName = `${participantId}_${stamp}.json`;
+  exportJSON = JSON.stringify(data, null, 2);
+  try {
+    localStorage.setItem("skipstudy_" + exportName, exportJSON);
+    localStorage.removeItem("skipstudy_inprogress");
+    $("saved-note").textContent = "A backup copy has also been saved in this browser.";
+  } catch (e) {
+    $("saved-note").textContent = "Note: browser backup failed — please download the file.";
+  }
+  $("thanks").textContent = THANKS;
+  show("end");
+}
+
+$("download-btn").addEventListener("click", () => {
+  const blob = new Blob([exportJSON], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = exportName;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+</script>
+</body>
+</html>

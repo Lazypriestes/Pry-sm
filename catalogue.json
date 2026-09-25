@@ -1,0 +1,328 @@
+{
+  "version": "vases-with-bridge-primes-v1",
+  "items": [
+    {
+      "id": "vase_01",
+      "image": "images/vase_01.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_01",
+        "image": "images/bridge_01.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_02",
+      "image": "images/vase_02.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_02",
+        "image": "images/bridge_02.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_03",
+      "image": "images/vase_03.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_03",
+        "image": "images/bridge_03.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_04",
+      "image": "images/vase_04.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_04",
+        "image": "images/bridge_04.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_05",
+      "image": "images/vase_05.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_05",
+        "image": "images/bridge_05.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_06",
+      "image": "images/vase_06.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_06",
+        "image": "images/bridge_06.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_07",
+      "image": "images/vase_07.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_07",
+        "image": "images/bridge_07.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_08",
+      "image": "images/vase_08.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_08",
+        "image": "images/bridge_08.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_09",
+      "image": "images/vase_09.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_09",
+        "image": "images/bridge_09.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_10",
+      "image": "images/vase_10.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_10",
+        "image": "images/bridge_10.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_11",
+      "image": "images/vase_11.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_11",
+        "image": "images/bridge_11.gif",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_12",
+      "image": "images/vase_12.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_12",
+        "image": "images/bridge_12.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_13",
+      "image": "images/vase_13.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_13",
+        "image": "images/bridge_13.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_14",
+      "image": "images/vase_14.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_14",
+        "image": "images/bridge_14.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_15",
+      "image": "images/vase_15.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_15",
+        "image": "images/bridge_15.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_16",
+      "image": "images/vase_16.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_16",
+        "image": "images/bridge_16.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_17",
+      "image": "images/vase_17.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_17",
+        "image": "images/bridge_17.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    }
+  ]
+}
