@@ -35,8 +35,14 @@ const FLICKER_MS = 400;            // time each image stays up before switching.
 // Timing summary + on-screen timer
 const GLANCE_MS = 1000;            // decisions faster than this count as "glance"
 const LINGER_MS = 3000;            // decisions slower than this count as "lingered"
-const SHOW_TIMER = true;           // elapsed-time clock in the top-right corner
-const DEBUG = true;                // "skip phase" button in the bottom-left corner. Set false before running participants.
+// Defaults for the Settings panel (gear, top-left of the start screen).
+// Changes made in the panel are remembered in this browser.
+const DEFAULT_SETTINGS = {
+  endPart: "off",                  // key into END_PARTS (defined further down)
+  itemCount: 0,                    // items per session, drawn at random; 0 = all
+  showTimer: true,                 // elapsed-time clock in the top-right corner
+  debug: true                      // "next page" button bottom-left. Turn off for real participants.
+};
 </script>
 <style>
   :root {
@@ -114,11 +120,36 @@ const DEBUG = true;                // "skip phase" button in the bottom-left cor
   #debug-skip { position: fixed; bottom: 12px; left: 16px; width: auto; padding: 6px 12px;
                 font-size: 13px; background: #fbe36b; display: none; z-index: 10; }
   #debug-skip:hover, #debug-skip:active, #debug-skip:focus { background: #fbe36b; }
+  #settings-btn { position: fixed; top: 12px; left: 16px; width: auto; padding: 6px 12px;
+                  font-size: 13px; z-index: 10; }
+  #settings-panel { position: fixed; top: 48px; left: 16px; z-index: 10; width: 320px;
+                    background: #e6e6e6; border: 1px solid #555; border-radius: 4px;
+                    padding: 12px 14px; font-size: 14px; }
+  #settings-panel[hidden] { display: none; }
+  .set-row { display: grid; grid-template-columns: 110px 1fr; gap: 4px 8px;
+             align-items: center; margin-bottom: 10px; }
+  .set-row select, .set-row input { font: inherit; padding: 3px 4px; width: 100%; }
+  .set-note { grid-column: 1 / -1; font-size: 12px; opacity: .7; }
+  .set-check { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
 </style>
 </head>
 <body>
 <div id="timer">0:00</div>
-<button id="debug-skip">DEBUG: skip phase ⏭</button>
+<button id="debug-skip">DEBUG: next page ⏭</button>
+<button id="settings-btn" aria-label="Settings">⚙ Settings</button>
+<div id="settings-panel" hidden>
+  <div class="set-row">
+    <label for="set-end">End part</label>
+    <select id="set-end"></select>
+  </div>
+  <div class="set-row">
+    <label for="set-count">Items per session</label>
+    <input type="number" id="set-count" min="0" step="1">
+    <span class="set-note" id="set-count-note"></span>
+  </div>
+  <label class="set-check"><input type="checkbox" id="set-timer"> Show timer</label>
+  <label class="set-check"><input type="checkbox" id="set-debug"> Debug "next page" button</label>
+</div>
 
 <!-- 1. START -->
 <section id="start" class="screen active">
@@ -331,7 +362,7 @@ const perf = { session: 0, browse: [0, 0], replay: [0, 0], rebrowse: [0, 0] };
 let timerInterval = null;
 
 function startTimer() {
-  if (!SHOW_TIMER) return;
+  if (!settings.showTimer) return;
   $("timer").style.display = "block";
   const tick = () => {
     const s = Math.floor((performance.now() - perf.session) / 1000);
@@ -383,6 +414,9 @@ $("start-btn").addEventListener("click", () => {
   data.participant_id = participantId;
   data.catalogue_version = catalogueVersion;
   data.started_at = nowISO();
+  data.settings = { ...settings };
+  $("settings-btn").style.display = "none";
+  $("settings-panel").hidden = true;
   data.environment = {
     user_agent: navigator.userAgent,
     viewport: { w: window.innerWidth, h: window.innerHeight },
@@ -402,6 +436,7 @@ let browseStartPerf = 0;
 
 async function startBrowse() {
   order = shuffle(catalogue.items);
+  if (settings.itemCount > 0) order = order.slice(0, settings.itemCount);
   phase = "browse";
   // Kick off loading of the first two images before the screen appears.
   preload(order[0]);
@@ -500,7 +535,7 @@ function startReplayIntro() {
   replayList = shuffle(skipped.concat(kept));
   data.replay_planned = replayList.map(r => r.id);
   replayList.forEach(r => preload(itemsById[r.id]));
-  if (!replayList.length) return startRebrowseIntro();
+  if (!replayList.length) return startEndPart();
   show("replay-intro");
   $("replay-go").focus();
 }
@@ -561,7 +596,7 @@ $("replay-next").addEventListener("click", () => {
   debugReplayNext = false;
   backup("skipstudy_inprogress");
   if (replayIndex + 1 < replayList.length) showReplayItem(replayIndex + 1);
-  else { perf.replay[1] = performance.now(); startRebrowseIntro(); }
+  else { perf.replay[1] = performance.now(); startEndPart(); }
 });
 
 /* ============================================================
@@ -761,11 +796,63 @@ function finish() {
 }
 
 /* ============================================================
+   END PARTS: what runs after replay. Chosen in Settings.
+   To add a version: write a start function that calls finish() when done,
+   then add it here.
+   ============================================================ */
+const END_PARTS = {
+  off:     { label: "Off", start: () => finish() },
+  flicker: { label: "Flicker with references", start: () => startRebrowseIntro() }
+  // v2:   { label: "Version 2", start: () => startVersion2() },
+  // v3:   { label: "Version 3", start: () => startVersion3() },
+};
+function startEndPart() {
+  (END_PARTS[settings.endPart] || END_PARTS.off).start();
+}
+
+/* ============================================================
+   SETTINGS PANEL
+   ============================================================ */
+const SETTINGS_KEY = "skipstudy_settings";
+let settings = { ...DEFAULT_SETTINGS };
+try { Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}")); } catch (e) {}
+if (!END_PARTS[settings.endPart]) settings.endPart = "off";
+
+function applySettings() {
+  $("debug-skip").style.display = settings.debug ? "block" : "none";
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+Object.entries(END_PARTS).forEach(([key, part]) => $("set-end").add(new Option(part.label, key)));
+$("set-end").value = settings.endPart;
+$("set-count").value = settings.itemCount || "";
+$("set-count").placeholder = "all";
+$("set-timer").checked = settings.showTimer;
+$("set-debug").checked = settings.debug;
+function countNote() {
+  const total = catalogue ? catalogue.items.length : "?";
+  $("set-count-note").textContent = `Blank = all ${total} items. Otherwise a random subset.`;
+}
+countNote();
+
+$("settings-btn").addEventListener("click", e => {
+  e.currentTarget.blur();
+  countNote();
+  $("settings-panel").hidden = !$("settings-panel").hidden;
+});
+$("set-end").addEventListener("change", e => { settings.endPart = e.target.value; applySettings(); });
+$("set-count").addEventListener("input", e => {
+  settings.itemCount = Math.max(0, parseInt(e.target.value, 10) || 0); applySettings();
+});
+$("set-timer").addEventListener("change", e => { settings.showTimer = e.target.checked; applySettings(); });
+$("set-debug").addEventListener("change", e => { settings.debug = e.target.checked; applySettings(); });
+applySettings();
+
+/* ============================================================
    DEBUG: advance one page (one screen or one item). Browse and re-browse
    items are logged with action "debug"; replay items with debug: true.
    Every click is also listed in data.debug_skips.
    ============================================================ */
-if (DEBUG) $("debug-skip").style.display = "block";
+
 $("debug-skip").addEventListener("click", e => {
   e.currentTarget.blur();
   const screen = document.querySelector(".screen.active").id;

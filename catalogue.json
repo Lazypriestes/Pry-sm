@@ -1,5 +1,5 @@
 {
-  "version": "vases-with-bridge-primes-v1",
+  "version": "vases-57-v1",
   "items": [
     {
       "id": "vase_01",
@@ -322,6 +322,493 @@
         "tags": {
           "category": "bridge"
         }
+      }
+    },
+    {
+      "id": "vase_18",
+      "image": "images/vase_18.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_18",
+        "image": "images/bridge_18.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      }
+    },
+    {
+      "id": "vase_19",
+      "image": "images/vase_19.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_20",
+      "image": "images/vase_20.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_21",
+      "image": "images/vase_21.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_22",
+      "image": "images/vase_22.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_23",
+      "image": "images/vase_23.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_24",
+      "image": "images/vase_24.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_25",
+      "image": "images/vase_25.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_26",
+      "image": "images/vase_26.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_27",
+      "image": "images/vase_27.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_28",
+      "image": "images/vase_28.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_29",
+      "image": "images/vase_29.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_30",
+      "image": "images/vase_30.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_31",
+      "image": "images/vase_31.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_32",
+      "image": "images/vase_32.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_33",
+      "image": "images/vase_33.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_34",
+      "image": "images/vase_34.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_35",
+      "image": "images/vase_35.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_36",
+      "image": "images/vase_36.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_37",
+      "image": "images/vase_37.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_38",
+      "image": "images/vase_38.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_39",
+      "image": "images/vase_39.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_40",
+      "image": "images/vase_40.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_41",
+      "image": "images/vase_41.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_42",
+      "image": "images/vase_42.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_43",
+      "image": "images/vase_43.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_44",
+      "image": "images/vase_44.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_45",
+      "image": "images/vase_45.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_46",
+      "image": "images/vase_46.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_47",
+      "image": "images/vase_47.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_48",
+      "image": "images/vase_48.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_49",
+      "image": "images/vase_49.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_50",
+      "image": "images/vase_50.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_51",
+      "image": "images/vase_51.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_52",
+      "image": "images/vase_52.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_53",
+      "image": "images/vase_53.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_54",
+      "image": "images/vase_54.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_55",
+      "image": "images/vase_55.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_56",
+      "image": "images/vase_56.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      }
+    },
+    {
+      "id": "vase_57",
+      "image": "images/vase_57.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
       }
     }
   ]
