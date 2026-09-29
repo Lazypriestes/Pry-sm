@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dissection Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- Documentation page: runs the same analysis the "Dissection – shown" end part uses
+     (vision.js) over every vase in catalogue.json and draws what the machine sees. -->
+<style>
+  :root {
+    --bg: #0e0e0f; --panel: #17171a; --line: #2a2a2f; --ink: #e8e6e1; --dim: #8a877f;
+    --outline: #f2d24b; --pat: #4fd1c5; --det: #ff5c8a; --mark: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 12px/1.5 "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  header { padding: 32px 32px 20px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: .04em; }
+  .sub { color: var(--dim); max-width: 900px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 18px; }
+  .stat b { display: block; font-size: 22px; font-weight: 600; }
+  .stat span { color: var(--dim); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; color: var(--dim); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px;
+              vertical-align: -1px; border: 2px solid; }
+  .controls { margin-top: 16px; display: flex; gap: 8px; align-items: center; color: var(--dim); }
+  .controls button { font: inherit; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
+                     padding: 4px 10px; cursor: pointer; }
+  .controls button.on { border-color: var(--outline); color: var(--outline); }
+  #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 16px; padding: 24px 32px 48px; }
+  .card { background: var(--panel); border: 1px solid var(--line); padding: 12px; }
+  .card .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .card .id { font-weight: 600; letter-spacing: .06em; }
+  .tag { color: var(--dim); margin-left: 8px; }
+  .tag.y { color: var(--outline); } .tag.p { color: var(--pat); }
+  canvas { display: block; width: 100%; background: #000; }
+  .main { aspect-ratio: 1; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
+  .row canvas { aspect-ratio: 1; }
+  .row .lab { color: var(--dim); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+  .metrics { margin-top: 8px; color: var(--dim); display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  .metrics b { color: var(--ink); font-weight: 400; }
+  #progress { color: var(--outline); margin-left: 12px; }
+  @media (max-width: 500px) { header, #grid { padding-left: 16px; padding-right: 16px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>OBJECT DISSECTION / MACHINE READING</h1>
+  <div class="sub">Each vase is read from pixels alone: the background is modelled from the photo's edges and flood-filled
+    away to leave a silhouette; surface texture is measured with an edge filter; five dominant colours are found by
+    k-means clustering; the densest-texture patch becomes the <em>pattern</em> and the patch most unlike the rest of the
+    object becomes the <em>interesting element</em>.</div>
+  <div class="stats" id="stats"></div>
+  <div class="legend">
+    <span><i style="border-color:var(--outline)"></i>detected outline</span>
+    <span><i style="border-color:var(--pat)"></i>pattern patch</span>
+    <span><i style="border-color:var(--det)"></i>interesting element</span>
+    <span><i style="border-color:var(--mark);background:var(--mark)"></i>dominant-colour centre</span>
+  </div>
+  <div class="controls">sort
+    <button data-sort="id" class="on">id</button>
+    <button data-sort="texture">texture</button>
+    <button data-sort="lightness">lightness</button>
+    <button data-sort="area">size in frame</button>
+    <span id="progress"></span>
+  </div>
+</header>
+<div id="grid"></div>
+
+<script src="vision.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const results = [];
+
+function load(src) {
+  return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+}
+function lum(h) { const n = parseInt(h.slice(1), 16); return 0.3 * (n >> 16) + 0.59 * ((n >> 8) & 255) + 0.11 * (n & 255); }
+
+// Inferno-like ramp for the texture map.
+const RAMP = [[0, 0, 4], [66, 10, 104], [147, 38, 103], [221, 81, 58], [252, 165, 10], [252, 255, 164]];
+function ramp(t) {
+  t = Math.max(0, Math.min(1, t)) * (RAMP.length - 1);
+  const i = Math.floor(t), f = t - i, a = RAMP[i], b = RAMP[Math.min(i + 1, RAMP.length - 1)];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+}
+
+function sized(cv, px) { const d = window.devicePixelRatio || 1; cv.width = cv.height = Math.round(px * d); return cv.getContext("2d"); }
+// Fit an image of aspect w:h into a square of side S: returns the placed rect.
+function fit(w, h, S) { const k = Math.min(S / w, S / h); return { x: (S - w * k) / 2, y: (S - h * k) / 2, w: w * k, h: h * k }; }
+
+function drawMain(cv, img, a) {
+  const ctx = sized(cv, 300), S = cv.width, r = fit(img.naturalWidth, img.naturalHeight, S);
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, S, S);
+  ctx.globalAlpha = 0.55; ctx.drawImage(img, r.x, r.y, r.w, r.h); ctx.globalAlpha = 1;
+  const { w, h, mask } = a.raw;
+
+  // Outline: mask pixels with a background neighbour.
+  const edge = document.createElement("canvas"); edge.width = w; edge.height = h;
+  const ed = edge.getContext("2d").createImageData(w, h);
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+    const i = y * w + x;
+    if (mask[i] && (!mask[i - 1] || !mask[i + 1] || !mask[i - w] || !mask[i + w])) {
+      ed.data[i * 4] = 242; ed.data[i * 4 + 1] = 210; ed.data[i * 4 + 2] = 75; ed.data[i * 4 + 3] = 255;
+    }
+  }
+  edge.getContext("2d").putImageData(ed, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(edge, r.x, r.y, r.w, r.h);
+  ctx.imageSmoothingEnabled = true;
+
+  const P = p => [r.x + p.x * r.w, r.y + p.y * r.h];
+  const L = Math.max(r.w, r.h), d = window.devicePixelRatio || 1;
+  // Bounding box
+  ctx.setLineDash([4 * d, 4 * d]); ctx.strokeStyle = "rgba(242,210,75,.5)"; ctx.lineWidth = d;
+  ctx.strokeRect(r.x + a.bbox.x * r.w, r.y + a.bbox.y * r.h, a.bbox.w * r.w, a.bbox.h * r.h);
+  ctx.setLineDash([]);
+  // Pattern and detail circles with labels
+  [["PAT", a.pattern, "#4fd1c5"], ["DET", a.detail, "#ff5c8a"]].forEach(([t, p, c]) => {
+    const [x, y] = P(p), rad = p.size * L / 2;
+    ctx.strokeStyle = c; ctx.lineWidth = 2 * d;
+    ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x + rad * 0.7, y - rad * 0.7); ctx.lineTo(x + rad + 14 * d, y - rad - 10 * d); ctx.stroke();
+    ctx.fillStyle = c; ctx.font = `600 ${10 * d}px JetBrains Mono, monospace`;
+    ctx.fillText(t, x + rad + 16 * d, y - rad - 12 * d);
+  });
+  // Dominant-colour centre: crosshair
+  const [cx, cy] = P(a.anchors.colour);
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5 * d;
+  ctx.beginPath(); ctx.moveTo(cx - 8 * d, cy); ctx.lineTo(cx + 8 * d, cy); ctx.moveTo(cx, cy - 8 * d); ctx.lineTo(cx, cy + 8 * d); ctx.stroke();
+}
+
+function drawSilhouette(cv, a) {
+  const ctx = sized(cv, 100), S = cv.width, r = fit(a.raw.w, a.raw.h, S);
+  ctx.fillStyle = "#e8e6e1"; ctx.fillRect(0, 0, S, S);
+  ctx.drawImage(a.shapeCv, r.x, r.y, r.w, r.h);
+}
+
+function drawTexture(cv, a) {
+  const { w, h, grad, interior, mask } = a.raw;
+  const vals = [];
+  for (let i = 0; i < grad.length; i += 7) if (interior[i]) vals.push(grad[i]);
+  vals.sort((p, q) => p - q);
+  const top = vals[Math.floor(vals.length * 0.98)] || 1;
+  const t = document.createElement("canvas"); t.width = w; t.height = h;
+  const id = t.getContext("2d").createImageData(w, h);
+  for (let i = 0; i < w * h; i++) {
+    const c = mask[i] ? ramp(Math.sqrt(grad[i] / top)) : [0, 0, 0];
+    id.data[i * 4] = c[0]; id.data[i * 4 + 1] = c[1]; id.data[i * 4 + 2] = c[2]; id.data[i * 4 + 3] = 255;
+  }
+  t.getContext("2d").putImageData(id, 0, 0);
+  const ctx = sized(cv, 100), S = cv.width, r = fit(w, h, S);
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, S, S);
+  ctx.drawImage(t, r.x, r.y, r.w, r.h);
+}
+
+function drawPalette(cv, a) {
+  const ctx = sized(cv, 100), S = cv.width, d = window.devicePixelRatio || 1;
+  let y = 0;
+  a.palette.forEach(p => {
+    const hgt = p.share * S;
+    ctx.fillStyle = p.hex; ctx.fillRect(0, y, S, Math.ceil(hgt));
+    if (hgt > 11 * d) {
+      ctx.fillStyle = lum(p.hex) > 140 ? "#111" : "#eee";
+      ctx.font = `${8 * d}px JetBrains Mono, monospace`;
+      ctx.fillText(`${p.hex} ${Math.round(p.share * 100)}%`, 4 * d, y + hgt / 2 + 3 * d);
+    }
+    y += hgt;
+  });
+}
+
+function card(item, img, a) {
+  const el = document.createElement("div");
+  el.className = "card";
+  const pat = !item.dissect || item.dissect.show_pattern !== false;
+  const area = a.raw.mask.reduce((s, v) => s + v, 0) / a.raw.mask.length;
+  el.innerHTML = `
+    <div class="top"><span class="id">${item.id.toUpperCase()}</span>
+      <span><span class="tag ${a.maskOk ? "y" : ""}">${a.maskOk ? "OUTLINE ✓" : "NO OUTLINE"}</span>
+      ${pat ? '<span class="tag p">PATTERN</span>' : ""}</span></div>
+    <canvas class="main"></canvas>
+    <div class="row">
+      <div><canvas></canvas><div class="lab">silhouette</div></div>
+      <div><canvas></canvas><div class="lab">texture</div></div>
+      <div><canvas></canvas><div class="lab">palette k=5</div></div>
+    </div>
+    <div class="metrics">
+      <span>object area <b>${Math.round(area * 100)}%</b></span>
+      <span>texture <b>${a.pattern.texture}</b> / med <b>${a.pattern.median_texture}</b></span>
+      <span>pattern <b>${a.pattern.x.toFixed(2)}, ${a.pattern.y.toFixed(2)}</b></span>
+      <span>element <b>${a.detail.x.toFixed(2)}, ${a.detail.y.toFixed(2)}</b></span>
+    </div>`;
+  const cvs = el.querySelectorAll("canvas");
+  drawMain(cvs[0], img, a);
+  drawSilhouette(cvs[1], a);
+  drawTexture(cvs[2], a);
+  drawPalette(cvs[3], a);
+  return el;
+}
+
+function render(sortKey) {
+  const key = {
+    id: r => r.item.id,
+    texture: r => -r.a.pattern.median_texture,
+    lightness: r => -lum(r.a.palette[0] ? r.a.palette[0].hex : "#000"),
+    area: r => -r.area
+  }[sortKey];
+  const sorted = results.slice().sort((p, q) => (key(p) < key(q) ? -1 : key(p) > key(q) ? 1 : 0));
+  $("grid").replaceChildren(...sorted.map(r => r.el));
+}
+
+document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x === b));
+  render(b.dataset.sort);
+}));
+
+(async () => {
+  const cat = await (await fetch("catalogue.json", { cache: "no-store" })).json();
+  const items = cat.items;
+  let outlines = 0, patterned = 0, colours = 0;
+  for (let n = 0; n < items.length; n++) {
+    $("progress").textContent = `reading ${n + 1}/${items.length}…`;
+    const item = items[n];
+    const img = await load(item.image);
+    const a = analyzeImage(img);
+    if (!a) { $("progress").textContent = "Open this page through the local server (http://localhost:8000/analysis.html)."; return; }
+    const area = a.raw.mask.reduce((s, v) => s + v, 0) / a.raw.mask.length;
+    const el = card(item, img, a);
+    results.push({ item, a, el, area });
+    $("grid").appendChild(el);
+    outlines += a.maskOk; colours += a.palette.length;
+    if (!item.dissect || item.dissect.show_pattern !== false) patterned++;
+  }
+  $("progress").textContent = "";
+  $("stats").innerHTML = [
+    [items.length, "objects read"],
+    [`${outlines}/${items.length}`, "outlines found"],
+    [patterned, "flagged patterned"],
+    [colours, "colours extracted"],
+    [cat.version || "", "catalogue"]
+  ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+})();
+</script>
+</body>
+</html>
