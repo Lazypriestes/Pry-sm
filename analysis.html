@@ -26,7 +26,7 @@
   .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px;
               vertical-align: -1px; border: 2px solid; }
   .controls { margin-top: 16px; display: flex; gap: 8px; align-items: center; color: var(--dim); }
-  .controls button { font: inherit; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
+  .controls button { white-space: nowrap; font: inherit; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
                      padding: 4px 10px; cursor: pointer; }
   .controls button.on { border-color: var(--outline); color: var(--outline); }
   #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -44,6 +44,13 @@
   .metrics { margin-top: 8px; color: var(--dim); display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
   .metrics b { color: var(--ink); font-weight: 400; }
   #progress { color: var(--outline); margin-left: 12px; }
+  /* Library view: 12 per row, one layer per cell */
+  #grid.library { grid-template-columns: repeat(12, 1fr); gap: 6px; }
+  .cell { position: relative; }
+  .cell canvas { aspect-ratio: 1; }
+  .cell span { position: absolute; left: 4px; top: 3px; font-size: 9px; letter-spacing: .06em;
+               color: var(--ink); text-shadow: 0 0 3px #000; }
+  .controls + .controls { margin-top: 8px; }
   @media (max-width: 500px) { header, #grid { padding-left: 16px; padding-right: 16px; } }
 </style>
 </head>
@@ -67,6 +74,14 @@
     <button data-sort="lightness">lightness</button>
     <button data-sort="area">size in frame</button>
     <span id="progress"></span>
+  </div>
+  <div class="controls">library
+    <button data-view="overlay" class="on">analysis</button>
+    <button data-view="photo">photos</button>
+    <button data-view="silhouette">silhouettes</button>
+    <button data-view="texture">texture</button>
+    <button data-view="palette">palettes</button>
+    <button data-view="cards">detailed cards</button>
   </div>
 </header>
 <div id="grid"></div>
@@ -93,8 +108,9 @@ function sized(cv, px) { const d = window.devicePixelRatio || 1; cv.width = cv.h
 // Fit an image of aspect w:h into a square of side S: returns the placed rect.
 function fit(w, h, S) { const k = Math.min(S / w, S / h); return { x: (S - w * k) / 2, y: (S - h * k) / 2, w: w * k, h: h * k }; }
 
-function drawMain(cv, img, a) {
-  const ctx = sized(cv, 300), S = cv.width, r = fit(img.naturalWidth, img.naturalHeight, S);
+function drawMain(cv, img, a, px = 300) {
+  const small = px < 200;
+  const ctx = sized(cv, px), S = cv.width, r = fit(img.naturalWidth, img.naturalHeight, S);
   ctx.fillStyle = "#000"; ctx.fillRect(0, 0, S, S);
   ctx.globalAlpha = 0.55; ctx.drawImage(img, r.x, r.y, r.w, r.h); ctx.globalAlpha = 1;
   const { w, h, mask } = a.raw;
@@ -122,25 +138,28 @@ function drawMain(cv, img, a) {
   // Pattern and detail circles with labels
   [["PAT", a.pattern, "#4fd1c5"], ["DET", a.detail, "#ff5c8a"]].forEach(([t, p, c]) => {
     const [x, y] = P(p), rad = p.size * L / 2;
-    ctx.strokeStyle = c; ctx.lineWidth = 2 * d;
+    ctx.strokeStyle = c; ctx.lineWidth = (small ? 1.5 : 2) * d;
     ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x + rad * 0.7, y - rad * 0.7); ctx.lineTo(x + rad + 14 * d, y - rad - 10 * d); ctx.stroke();
-    ctx.fillStyle = c; ctx.font = `600 ${10 * d}px JetBrains Mono, monospace`;
-    ctx.fillText(t, x + rad + 16 * d, y - rad - 12 * d);
+    if (!small) { ctx.beginPath(); ctx.moveTo(x + rad * 0.7, y - rad * 0.7); ctx.lineTo(x + rad + 14 * d, y - rad - 10 * d); ctx.stroke(); }
+    if (!small) {
+      ctx.fillStyle = c; ctx.font = `600 ${10 * d}px JetBrains Mono, monospace`;
+      ctx.fillText(t, x + rad + 16 * d, y - rad - 12 * d);
+    }
   });
   // Dominant-colour centre: crosshair
   const [cx, cy] = P(a.anchors.colour);
   ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5 * d;
-  ctx.beginPath(); ctx.moveTo(cx - 8 * d, cy); ctx.lineTo(cx + 8 * d, cy); ctx.moveTo(cx, cy - 8 * d); ctx.lineTo(cx, cy + 8 * d); ctx.stroke();
+  const ch = (small ? 5 : 8) * d;
+  ctx.beginPath(); ctx.moveTo(cx - ch, cy); ctx.lineTo(cx + ch, cy); ctx.moveTo(cx, cy - ch); ctx.lineTo(cx, cy + ch); ctx.stroke();
 }
 
-function drawSilhouette(cv, a) {
-  const ctx = sized(cv, 100), S = cv.width, r = fit(a.raw.w, a.raw.h, S);
+function drawSilhouette(cv, a, px = 100) {
+  const ctx = sized(cv, px), S = cv.width, r = fit(a.raw.w, a.raw.h, S);
   ctx.fillStyle = "#e8e6e1"; ctx.fillRect(0, 0, S, S);
   ctx.drawImage(a.shapeCv, r.x, r.y, r.w, r.h);
 }
 
-function drawTexture(cv, a) {
+function drawTexture(cv, a, px = 100) {
   const { w, h, grad, interior, mask } = a.raw;
   const vals = [];
   for (let i = 0; i < grad.length; i += 7) if (interior[i]) vals.push(grad[i]);
@@ -153,18 +172,18 @@ function drawTexture(cv, a) {
     id.data[i * 4] = c[0]; id.data[i * 4 + 1] = c[1]; id.data[i * 4 + 2] = c[2]; id.data[i * 4 + 3] = 255;
   }
   t.getContext("2d").putImageData(id, 0, 0);
-  const ctx = sized(cv, 100), S = cv.width, r = fit(w, h, S);
+  const ctx = sized(cv, px), S = cv.width, r = fit(w, h, S);
   ctx.fillStyle = "#000"; ctx.fillRect(0, 0, S, S);
   ctx.drawImage(t, r.x, r.y, r.w, r.h);
 }
 
-function drawPalette(cv, a) {
-  const ctx = sized(cv, 100), S = cv.width, d = window.devicePixelRatio || 1;
+function drawPalette(cv, a, px = 100, labels = true) {
+  const ctx = sized(cv, px), S = cv.width, d = window.devicePixelRatio || 1;
   let y = 0;
   a.palette.forEach(p => {
     const hgt = p.share * S;
     ctx.fillStyle = p.hex; ctx.fillRect(0, y, S, Math.ceil(hgt));
-    if (hgt > 11 * d) {
+    if (labels && hgt > 11 * d) {
       ctx.fillStyle = lum(p.hex) > 140 ? "#111" : "#eee";
       ctx.font = `${8 * d}px JetBrains Mono, monospace`;
       ctx.fillText(`${p.hex} ${Math.round(p.share * 100)}%`, 4 * d, y + hgt / 2 + 3 * d);
@@ -202,7 +221,26 @@ function card(item, img, a) {
   return el;
 }
 
-function render(sortKey) {
+let view = "overlay", sortKey = "id";
+
+// One library cell: a single layer of one vase, drawn at cell size.
+function cell(r) {
+  const el = document.createElement("div");
+  el.className = "cell";
+  const cv = document.createElement("canvas");
+  el.append(cv);
+  const lab = document.createElement("span"); lab.textContent = r.item.id.slice(5); el.append(lab);
+  if (view === "overlay") drawMain(cv, r.img, r.a, 160);
+  else if (view === "photo") { const ctx = sized(cv, 160), S = cv.width, f = fit(r.img.naturalWidth, r.img.naturalHeight, S);
+    ctx.fillStyle = "#e8e6e1"; ctx.fillRect(0, 0, S, S); ctx.drawImage(r.img, f.x, f.y, f.w, f.h); }
+  else if (view === "silhouette") drawSilhouette(cv, r.a, 160);
+  else if (view === "texture") drawTexture(cv, r.a, 160);
+  else if (view === "palette") drawPalette(cv, r.a, 160, false);
+  return el;
+}
+
+function render(sk) {
+  if (sk) sortKey = sk;
   const key = {
     id: r => r.item.id,
     texture: r => -r.a.pattern.median_texture,
@@ -210,8 +248,14 @@ function render(sortKey) {
     area: r => -r.area
   }[sortKey];
   const sorted = results.slice().sort((p, q) => (key(p) < key(q) ? -1 : key(p) > key(q) ? 1 : 0));
-  $("grid").replaceChildren(...sorted.map(r => r.el));
+  $("grid").classList.toggle("library", view !== "cards");
+  $("grid").replaceChildren(...sorted.map(r => (view === "cards" ? r.el : cell(r))));
 }
+document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-view]").forEach(x => x.classList.toggle("on", x === b));
+  view = b.dataset.view;
+  render();
+}));
 
 document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x === b));
@@ -230,8 +274,10 @@ document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click"
     if (!a) { $("progress").textContent = "Open this page through the local server (http://localhost:8000/analysis.html)."; return; }
     const area = a.raw.mask.reduce((s, v) => s + v, 0) / a.raw.mask.length;
     const el = card(item, img, a);
-    results.push({ item, a, el, area });
-    $("grid").appendChild(el);
+    const r = { item, img, a, el, area };
+    results.push(r);
+    $("grid").classList.add("library");
+    $("grid").appendChild(cell(r));
     outlines += a.maskOk; colours += a.palette.length;
     if (!item.dissect || item.dissect.show_pattern !== false) patterned++;
   }
