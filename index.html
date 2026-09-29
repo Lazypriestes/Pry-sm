@@ -41,18 +41,18 @@ const DISSECT_INTRO = {
 };
 const DISSECT_PROMPT = {
   shown:  "",
-  guided: "Circle it on the object with your mouse. Adding words is optional, and you can skip any question.",
+  guided: "Draw around it with your mouse. Adding words is optional, and you can skip any question.",
   free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is."
 };
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
 // "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
 const GUIDED_QUESTIONS = [
   { key: "unnoticed",  label: "Didn't notice",    side: "left",
-    question: "Something you didn't notice the first time" },
+    question: "Circle something you didn't notice the first time" },
   { key: "put_off",    label: "Put me off",       side: "right",
-    question: "The part that put you off" },
+    question: "Circle the part that put you off" },
   { key: "admirers",   label: "Others would love", side: "right",
-    question: "The part people who like it would appreciate most" }
+    question: "Circle the part people who like it would appreciate most" }
 ];
 const DISSECT_MIN_VIEW_MS = 3000;  // "shown": time before Done appears
 const LENS_ZOOM = 2.5;             // magnification inside the spheres
