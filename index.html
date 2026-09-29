@@ -162,7 +162,11 @@ const DEFAULT_SETTINGS = {
             background: radial-gradient(circle at 35% 30%, #fff, #c4c4c4 58%, #8f8f8f);
             box-shadow: 0 3px 8px rgba(0,0,0,.35), inset 0 0 0 2px rgba(255,255,255,.85); }
   .sphere.dragging { cursor: grabbing; }
-  .sphere.placed { box-shadow: 0 3px 10px rgba(0,0,0,.45), inset 0 0 0 3px #fff; }
+  /* Once dropped on the object a sphere contracts to a small marker; the detail shows in its tile. */
+  .sphere.placed:not(.dragging) { width: 24px; height: 24px; margin: -12px 0 0 -12px;
+                                  background: #fbe36b; border: 2px solid #1a1a1a;
+                                  box-shadow: 0 1px 4px rgba(0,0,0,.5); }
+  .sphere.placed:not(.dragging) .lbl { display: none; }
   .sphere.sel { outline: 3px solid #fbe36b; outline-offset: 2px; }
   .sphere .lbl { position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
                  margin-top: 5px; font-size: 12px; white-space: nowrap; background: #eee;
@@ -1205,7 +1209,7 @@ function setupShown(item, img) {
 
 function setupSpheres(item, img) {
   const defs = dx.mode === "guided"
-    ? elementsFor(item).map(e => ({ label: e.label, side: e.side }))
+    ? elementsFor(item).filter(e => e.key !== "shape").map(e => ({ label: e.label, side: e.side }))
     : Array.from({ length: FREE_SPHERES }, (_, n) => ({ label: String(n + 1), side: n % 2 ? "right" : "left" }));
   const collage = $("collage");
   const spheres = defs.map(d => {
@@ -1234,8 +1238,9 @@ function setupSpheres(item, img) {
 
   function renderSphere(sp, cx, cy, ir) {
     sp.el.style.left = cx + "px"; sp.el.style.top = cy + "px";
+    sp.el.classList.toggle("placed", sp.placed);
     const over = cx >= ir.left && cx <= ir.left + ir.width && cy >= ir.top && cy <= ir.top + ir.height;
-    if (over) {
+    if (over && sp.drag) {                               // magnifier while aiming
       const Z = LENS_ZOOM, d = D();
       const bx = (cx - ir.left) * Z - d / 2, by = (cy - ir.top) * Z - d / 2;
       sp.el.style.background = `url("${item.image}") ${-bx}px ${-by}px / ${ir.width * Z}px ${ir.height * Z}px no-repeat, #ececec`;
@@ -1264,7 +1269,7 @@ function setupSpheres(item, img) {
     const pop = $("sphere-pop"), sp = dx.selected;
     if (!sp || !sp.placed || dx.deciding) { pop.hidden = true; return; }
     pop.hidden = false;
-    const c = relRect(collage, collage), x = parseFloat(sp.el.style.left), y = parseFloat(sp.el.style.top), d = D();
+    const c = relRect(collage, collage), x = parseFloat(sp.el.style.left), y = parseFloat(sp.el.style.top), d = sp.el.offsetWidth;
     const right = x + d / 2 + 12 + 230 < c.width;
     pop.style.left = (right ? x + d / 2 + 12 : x - d / 2 - 12 - 230) + "px";
     pop.style.top = (y - 18) + "px";
@@ -1289,7 +1294,7 @@ function setupSpheres(item, img) {
       const p = sp.placed ? { x: ir.left + sp.x * ir.width, y: ir.top + sp.y * ir.height } : trayPos(n);
       renderSphere(sp, p.x, p.y, ir);
       drawTile(sp, ir);
-      if (sp.placed) links.push({ tile: sp.tile, x: p.x, y: p.y, r: D() / 2 + 2, on: true });
+      if (sp.placed) links.push({ tile: sp.tile, x: p.x, y: p.y, r: 14, on: true });
     });
     drawLinks(links);
     placePop();
