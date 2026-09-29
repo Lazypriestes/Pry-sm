@@ -150,8 +150,7 @@ const DEFAULT_SETTINGS = {
   .tile canvas { width: var(--tile); height: var(--tile); display: block;
                  background: #f4f4f4; border: 1px solid #555; }
   .tile.empty canvas { background: transparent; border-style: dashed; }
-  .tile .cap { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; }
-  .tile .txt { font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+  .tile .txt { font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; margin-top: 3px; }
   #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
            overflow: visible; z-index: 4; }
   #links line, #links circle { stroke: #1a1a1a; stroke-width: 1.2; fill: none;
@@ -1073,8 +1072,7 @@ function fallbackAnalysis() {
 function makeTile(side, caption) {
   const el = document.createElement("div");
   el.className = "tile";
-  el.innerHTML = '<canvas></canvas><div class="cap"></div><div class="txt"></div>';
-  el.querySelector(".cap").textContent = caption;
+  el.innerHTML = '<canvas></canvas><div class="txt"></div>';   // pictures only, no element names
   $(side === "left" ? "col-left" : "col-right").appendChild(el);
   return { el, canvas: el.querySelector("canvas"), txt: el.querySelector(".txt"), side };
 }
