@@ -41,12 +41,12 @@ const DISSECT_INTRO = {
 };
 const DISSECT_PROMPT = {
   shown:  "",
-  guided: "Drag each circle onto the part it asks about, and write a few words if you like. Any circle can be left unused or removed.",
+  guided: "Circle it on the object with your mouse. Adding words is optional, and you can skip any question.",
   free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is."
 };
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
-// "Dissection – you label it": one sphere per question. label = on the sphere, question = in its text box.
-const GUIDED_SPHERES = [
+// "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
+const GUIDED_QUESTIONS = [
   { key: "unnoticed",  label: "Didn't notice",    side: "left",
     question: "Something you didn't notice the first time" },
   { key: "put_off",    label: "Put me off",       side: "right",
@@ -152,6 +152,16 @@ const DEFAULT_SETTINGS = {
   #collage .center { display: flex; flex-direction: column; align-items: center; }
   #dissect-stage { width: min(56vh, 40vw); }
   #collage.shown #dissect-stage { width: min(64vh, 44vw); }
+  #collage.guided #dissect-stage { width: min(60vh, 44vw); cursor: crosshair; touch-action: none; }
+  #collage.guided #tray { display: none; }
+  #lasso-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+  #lasso-controls { display: none; gap: 10px; align-items: center; margin-top: 14px;
+                    width: min(92vw, 620px); }
+  #lasso-controls.on { display: flex; }
+  #lasso-controls input { flex: 1; font-size: 15px; }
+  #lasso-controls button { width: auto; padding: 10px 18px; }
+  .q-step { display: block; font-size: 13px; opacity: .7; letter-spacing: .06em; }
+  .q-text { display: block; font-size: 20px; margin-top: 2px; }
   #tray { width: 100%; height: 118px; }
   #collage.shown #tray { display: none; }
   .tile { width: var(--tile); opacity: 0; transition: opacity 300ms linear; }
@@ -308,6 +318,11 @@ const DEFAULT_SETTINGS = {
       <input type="text" id="sphere-text" autocomplete="off">
       <button id="sphere-remove" type="button">Remove</button>
     </div>
+  </div>
+  <div id="lasso-controls">
+    <input type="text" id="lasso-text" autocomplete="off" placeholder="A few words (optional)">
+    <button id="lasso-clear" type="button">Clear</button>
+    <button id="lasso-next" type="button">Next</button>
   </div>
   <div class="actions">
     <button id="dissect-done">Done</button>
@@ -845,8 +860,9 @@ function advanceRebrowse() {
    shown:  the object is taken apart automatically into shape, colour,
            pattern (if it has one) and an interesting element, laid out as a
            collage with lines back to where each element comes from.
-   guided: the participant drags one sphere per question (GUIDED_SPHERES)
-           onto the object and may write a few words; any can stay unused.
+   guided: the questions in GUIDED_QUESTIONS are asked one at a time; the
+           participant circles the part with the mouse (any can be skipped)
+           and may add a few words.
    free:   "find one detail you didn't notice": a few unnamed spheres.
    Afterwards the participant chooses keep or skip again.
    ============================================================ */
@@ -984,7 +1000,8 @@ async function showDissectItem(i) {
   dx.index = i; dx.deciding = false; dx.busy = true; dx.debug = false; dx.layout = null;
   const item = dx.items[i];
   const collage = $("collage");
-  collage.className = dx.mode === "shown" ? "shown" : "";
+  collage.className = dx.mode;
+  $("lasso-controls").classList.remove("on");
   $("col-left").replaceChildren(); $("col-right").replaceChildren(); $("links").replaceChildren();
   collage.querySelectorAll(".sphere").forEach(s => s.remove());
   $("sphere-pop").hidden = true;
@@ -998,7 +1015,9 @@ async function showDissectItem(i) {
   $("dissect-stage").replaceChildren(img);
   dx.item = item; dx.img = img;
 
+  dx.spheres = null;
   if (dx.mode === "shown") setupShown(item, img);
+  else if (dx.mode === "guided") setupLasso(item, img);
   else setupSpheres(item, img);
   dx.layout();
   dx.t0 = await nextPaint();
@@ -1052,10 +1071,8 @@ function setupShown(item, img) {
 }
 
 function setupSpheres(item, img) {
-  const defs = dx.mode === "guided"
-    ? GUIDED_SPHERES
-    : Array.from({ length: FREE_SPHERES }, (_, n) => ({ key: "detail_" + (n + 1), label: String(n + 1),
-        question: "What is this detail?", side: n % 2 ? "right" : "left" }));
+  const defs = Array.from({ length: FREE_SPHERES }, (_, n) => ({ key: "detail_" + (n + 1), label: String(n + 1),
+    question: "What is this detail?", side: n % 2 ? "right" : "left" }));
   const collage = $("collage");
   const spheres = defs.map(d => {
     const el = document.createElement("div");
@@ -1195,6 +1212,160 @@ function setupSpheres(item, img) {
   };
 }
 
+/* ---------- guided: circle each answer with the mouse, one question at a time ---------- */
+
+// Polygon area (shoelace), for points normalised to the image.
+function polyArea(pts) {
+  let a = 0;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) a += (pts[j].x + pts[i].x) * (pts[j].y - pts[i].y);
+  return Math.abs(a / 2);
+}
+// Keep exported paths small: drop points closer than `min` to the previous kept one.
+function thin(pts, min) {
+  const out = [pts[0]];
+  for (const p of pts) { const q = out[out.length - 1]; if (Math.hypot(p.x - q.x, p.y - q.y) >= min) out.push(p); }
+  return out;
+}
+
+function setupLasso(item, img) {
+  const stage = $("dissect-stage"), collage = $("collage");
+  const cv = document.createElement("canvas");
+  cv.id = "lasso-canvas";
+  stage.appendChild(cv);
+  dx.questions = GUIDED_QUESTIONS.map(q => ({
+    ...q, tile: makeTile(q.side, q.label), path: null, bbox: null, area: null,
+    text: "", redraws: 0, first_stroke_ms: null, time_ms: 0
+  }));
+  let qi = 0, qStart = 0, drawing = null;
+  $("dissect-done").hidden = true;
+  $("lasso-controls").classList.add("on");
+
+  const ir = () => imgRect(stage, img, stage);       // image rect inside the stage
+  const toNorm = e => {
+    const s = stage.getBoundingClientRect(), r = ir();
+    return { x: Math.min(1, Math.max(0, (e.clientX - s.left - r.left) / r.width)),
+             y: Math.min(1, Math.max(0, (e.clientY - s.top - r.top) / r.height)) };
+  };
+
+  function tracePath(ctx, pts, r, d) {
+    ctx.beginPath();
+    pts.forEach((p, n) => { const x = (r.left + p.x * r.width) * d, y = (r.top + p.y * r.height) * d; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  }
+
+  function drawOverlay() {
+    const s = stage.getBoundingClientRect(), d = window.devicePixelRatio || 1, r = ir();
+    cv.width = Math.round(s.width * d); cv.height = Math.round(s.height * d);
+    const ctx = cv.getContext("2d");
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    dx.questions.forEach((q, n) => {
+      const pts = n === qi && drawing ? drawing : q.path;
+      if (!pts || pts.length < 2) return;
+      tracePath(ctx, pts, r, d);
+      if (!(n === qi && drawing)) ctx.closePath();
+      const current = n === qi;
+      ctx.lineJoin = "round";
+      ctx.lineWidth = (current ? 3 : 2) * d;
+      ctx.setLineDash(current ? [] : [5 * d, 4 * d]);
+      ctx.strokeStyle = current ? "#fbe36b" : "rgba(255,255,255,.85)";
+      if (!(n === qi && drawing)) { ctx.fillStyle = current ? "rgba(251,227,107,.18)" : "rgba(255,255,255,.08)"; ctx.fill(); }
+      ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 3 * d;
+      ctx.stroke();
+      ctx.shadowBlur = 0; ctx.setLineDash([]);
+    });
+  }
+
+  // Tile: crop around the circled area, with everything outside the circle dimmed.
+  function drawTileFor(q) {
+    if (!q.path) { tileCtx(q.tile); q.tile.el.classList.add("empty"); q.tile.txt.textContent = ""; return; }
+    q.tile.el.classList.remove("empty");
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    const b = q.bbox, side = Math.max(b.w * nw, b.h * nh) * 1.15;
+    const cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+    const { ctx, W } = tileCtx(q.tile);
+    const k = W / side, ox = cx - side / 2, oy = cy - side / 2;
+    ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
+    ctx.beginPath();
+    ctx.rect(0, 0, W, W);
+    q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+    ctx.closePath();
+    ctx.fillStyle = "rgba(20,20,20,.55)";
+    ctx.fill("evenodd");
+    q.tile.txt.textContent = q.text;
+  }
+
+  dx.layout = () => {
+    drawOverlay();
+    const r = imgRect(stage, img, collage), links = [];
+    dx.questions.forEach(q => {
+      drawTileFor(q);
+      q.tile.el.classList.add("on");
+      if (q.path) links.push({ tile: q.tile, x: r.left + (q.bbox.x + q.bbox.w / 2) * r.width,
+                               y: r.top + (q.bbox.y + q.bbox.h / 2) * r.height, on: true });
+    });
+    drawLinks(links);
+  };
+
+  function showQuestion() {
+    const q = dx.questions[qi];
+    $("dissect-prompt").innerHTML = "";
+    const step = document.createElement("span"); step.className = "q-step";
+    step.textContent = `${qi + 1} of ${dx.questions.length}  ·  ${DISSECT_PROMPT.guided}`;
+    const text = document.createElement("span"); text.className = "q-text"; text.textContent = q.question;
+    $("dissect-prompt").append(text, step);
+    $("lasso-text").value = q.text;
+    $("lasso-next").textContent = qi === dx.questions.length - 1 ? "Done" : "Next";
+    qStart = performance.now();
+    dx.layout();
+  }
+
+  stage.onpointerdown = e => {
+    if (dx.deciding || dx.busy) return;
+    e.preventDefault();
+    stage.setPointerCapture(e.pointerId);
+    const q = dx.questions[qi];
+    if (q.first_stroke_ms === null) q.first_stroke_ms = Math.round(performance.now() - qStart);
+    drawing = [toNorm(e)];
+    drawOverlay();
+  };
+  stage.onpointermove = e => {
+    if (!drawing) return;
+    drawing.push(toNorm(e));
+    drawOverlay();
+  };
+  stage.onpointerup = stage.onpointercancel = () => {
+    if (!drawing) return;
+    const pts = thin(drawing, 0.004);
+    drawing = null;
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    const bbox = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+    if (pts.length >= 4 && Math.max(bbox.w, bbox.h) > 0.02) {   // ignore clicks and tiny scribbles
+      const q = dx.questions[qi];
+      if (q.path) q.redraws++;
+      q.path = pts;
+      q.bbox = { x: +bbox.x.toFixed(4), y: +bbox.y.toFixed(4), w: +bbox.w.toFixed(4), h: +bbox.h.toFixed(4) };
+      q.area = +polyArea(pts).toFixed(4);
+    }
+    dx.layout();
+  };
+  $("lasso-text").oninput = e => { const q = dx.questions[qi]; q.text = e.target.value; q.tile.txt.textContent = q.text; };
+  $("lasso-clear").onclick = e => {
+    e.currentTarget.blur();
+    const q = dx.questions[qi];
+    if (q.path) q.redraws++;
+    q.path = q.bbox = q.area = null;
+    dx.layout();
+  };
+  $("lasso-next").onclick = e => {
+    e.currentTarget.blur();
+    const q = dx.questions[qi];
+    q.time_ms += Math.round(performance.now() - qStart);
+    if (qi < dx.questions.length - 1) { qi++; showQuestion(); }
+    else { $("lasso-controls").classList.remove("on"); stage.onpointerdown = null; enterDecision(); }
+  };
+  dx.lassoNext = () => $("lasso-next").click();
+  showQuestion();
+}
+
 async function enterDecision() {
   if (dx.deciding || dx.busy) return;
   dx.activity_ms = Math.round(performance.now() - dx.t0);
@@ -1234,6 +1405,14 @@ function dissectDecide(action) {
       bbox: a.bbox, pattern: hasPattern(item) ? a.pattern : null, detail: a.detail,
       colour_palette: a.palette.map(p => ({ hex: p.hex, share: p.share }))
     };
+  } else if (dx.mode === "guided") {
+    entry.questions = dx.questions.map(q => ({
+      key: q.key, question: q.question, selected: !!q.path,
+      path: q.path ? q.path.map(p => [+p.x.toFixed(4), +p.y.toFixed(4)]) : null,   // normalised to the image
+      bbox: q.bbox, area: q.area, text: q.text, text_blank: q.text.trim() === "",
+      redraws: q.redraws, first_stroke_ms: q.first_stroke_ms, time_ms: q.time_ms
+    }));
+    entry.selected_count = dx.questions.filter(q => q.path).length;
   } else {
     entry.spheres = dx.spheres.map(s => ({
       key: s.key, question: s.question, placed: s.placed, x: s.x, y: s.y,
@@ -1393,7 +1572,11 @@ $("debug-skip").addEventListener("click", e => {
   else if (screen === "dissect-intro") $("dissect-go").click();
   else if (screen === "dissect") {
     if (dx.deciding) dissectDecide("debug");
-    else if (!dx.busy) { dx.debug = true; enterDecision(); }
+    else if (!dx.busy) {
+      dx.debug = true;
+      if (dx.mode === "guided" && $("lasso-controls").classList.contains("on")) dx.lassoNext();  // next question
+      else enterDecision();
+    }
   }
   else if (screen === "browse") act("debug");
   else if (screen === "replay") {
