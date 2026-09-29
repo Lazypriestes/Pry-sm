@@ -1,5 +1,5 @@
 {
-  "version": "vases-57-v1",
+  "version": "vases-57-v2",
   "items": [
     {
       "id": "vase_01",
@@ -18,6 +18,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -37,6 +40,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -56,6 +62,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -75,6 +84,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -94,6 +106,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -113,6 +128,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -132,6 +150,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -151,6 +172,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -170,6 +194,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -189,6 +216,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -208,6 +238,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -227,6 +260,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -246,6 +282,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -265,6 +304,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -284,6 +326,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -303,6 +348,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -322,6 +370,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -341,6 +392,9 @@
         "tags": {
           "category": "bridge"
         }
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -353,6 +407,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -365,6 +422,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -377,6 +437,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -389,6 +452,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -401,6 +467,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -413,6 +482,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -425,6 +497,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -437,6 +512,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -449,6 +527,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -461,6 +542,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -473,6 +557,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -485,6 +572,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -497,6 +587,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -509,6 +602,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -521,6 +617,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -533,6 +632,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -545,6 +647,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -557,6 +662,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -569,6 +677,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -581,6 +692,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -593,6 +707,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -605,6 +722,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -617,6 +737,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -629,6 +752,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -641,6 +767,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -653,6 +782,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -665,6 +797,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -677,6 +812,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -689,6 +827,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -701,6 +842,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -713,6 +857,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -725,6 +872,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -737,6 +887,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -749,6 +902,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -761,6 +917,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -773,6 +932,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -785,6 +947,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     },
     {
@@ -797,6 +962,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
       }
     },
     {
@@ -809,6 +977,9 @@
         "era": null,
         "saturation": null,
         "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
       }
     }
   ]

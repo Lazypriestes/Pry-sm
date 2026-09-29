@@ -137,8 +137,8 @@ const DEFAULT_SETTINGS = {
   .dissect-prompt { margin: 0 0 12px; text-align: center; max-width: 760px; min-height: 1.5em; }
   #collage { position: relative; display: grid; grid-template-columns: 1fr auto 1fr;
              gap: 0 min(4vw, 56px); align-items: center; width: min(96vw, 1200px);
-             --tile: min(15vh, 130px); --sph: 84px; }
-  #collage .col { display: flex; flex-direction: column; gap: 14px; }
+             --tile: min(26vh, 210px); --sph: 84px; }
+  #collage .col { display: flex; flex-direction: column; gap: 22px; }
   #col-left { align-items: flex-end; } #col-right { align-items: flex-start; }
   #collage .center { display: flex; flex-direction: column; align-items: center; }
   #dissect-stage { width: min(56vh, 40vw); }
@@ -175,9 +175,9 @@ const DEFAULT_SETTINGS = {
 
   #timer { position: fixed; top: 12px; right: 16px; font-size: 13px;
            font-variant-numeric: tabular-nums; opacity: .55; display: none; }
-  #debug-skip { position: fixed; bottom: 12px; left: 16px; width: auto; padding: 6px 12px;
-                font-size: 13px; background: #fbe36b; display: none; z-index: 10; }
-  #debug-skip:hover, #debug-skip:active, #debug-skip:focus { background: #fbe36b; }
+  #debug-bar { position: fixed; bottom: 12px; left: 16px; display: none; gap: 8px; z-index: 10; }
+  #debug-bar button { width: auto; padding: 6px 12px; font-size: 13px; background: #fbe36b; }
+  #debug-bar button:hover, #debug-bar button:active, #debug-bar button:focus { background: #fbe36b; }
   #settings-btn { position: fixed; top: 12px; left: 16px; width: auto; padding: 6px 12px;
                   font-size: 13px; z-index: 10; }
   #settings-panel { position: fixed; top: 48px; left: 16px; z-index: 10; width: 320px;
@@ -193,7 +193,10 @@ const DEFAULT_SETTINGS = {
 </head>
 <body>
 <div id="timer">0:00</div>
-<button id="debug-skip">DEBUG: next page ⏭</button>
+<div id="debug-bar">
+  <button id="debug-skip">DEBUG: next page ⏭</button>
+  <button id="debug-stage">DEBUG: skip stage ⏭⏭</button>
+</div>
 <button id="settings-btn" aria-label="Settings">⚙ Settings</button>
 <div id="settings-panel" hidden>
   <div class="set-row">
@@ -821,19 +824,22 @@ function advanceRebrowse() {
 /* ============================================================
    3d. DISSECTION END PARTS
    Runs over the participant's skipped items, in a new random order.
-   shown:  the object is taken apart automatically into shape, form,
-           colour, pattern and an interesting element, laid out as a
+   shown:  the object is taken apart automatically into shape, colour,
+           pattern (if it has one) and an interesting element, laid out as a
            collage with lines back to where each element comes from.
-   guided: same collage, but empty; the participant drags five named
+   guided: same collage, but empty; the participant drags named
            magnifier spheres onto the object and writes what they see.
    free:   "find one detail you didn't notice": a few unnamed spheres.
    Afterwards the participant chooses keep or skip again.
    ============================================================ */
 const dx = { mode: null, items: [], index: -1, cache: {}, deciding: false, busy: false };
 
+// Pattern is only offered for objects that have one: "dissect": { "show_pattern": true } in catalogue.json.
+const hasPattern = item => !item.dissect || item.dissect.show_pattern !== false;
+const elementsFor = item => SHOWN_ELEMENTS.filter(e => e.key !== "pattern" || hasPattern(item));
+
 const SHOWN_ELEMENTS = [
   { key: "shape",   label: "Shape",               side: "left"  },
-  { key: "form",    label: "Form",                side: "left"  },
   { key: "colour",  label: "Colour",              side: "left"  },
   { key: "pattern", label: "Pattern",             side: "right" },
   { key: "detail",  label: "Interesting element", side: "right" }
@@ -1025,18 +1031,15 @@ function analyzeImage(img) {
   const palette = clusters.filter(c => c.n).sort((a, b) => b.n - a.n)
     .map(c => ({ hex: hex(c.rgb), share: +(c.n / samples.length).toFixed(3), x: c.sx / c.n / w, y: c.sy / c.n / h }));
 
-  // Shape (flat silhouette) and form (posterised light and shadow) images.
-  const shapeCv = document.createElement("canvas"), formCv = document.createElement("canvas");
-  shapeCv.width = formCv.width = w; shapeCv.height = formCv.height = h;
-  const sImg = shapeCv.getContext("2d").createImageData(w, h), fImg = formCv.getContext("2d").createImageData(w, h);
-  const tones = [38, 96, 160, 222];
+  // Shape: flat silhouette.
+  const shapeCv = document.createElement("canvas");
+  shapeCv.width = w; shapeCv.height = h;
+  const sImg = shapeCv.getContext("2d").createImageData(w, h);
   for (let i = 0; i < N; i++) {
-    const o = i * 4, t = mask[i] ? tones[Math.min(3, Math.floor(gray[i] / 64))] : 246;
+    const o = i * 4;
     sImg.data[o] = sImg.data[o + 1] = sImg.data[o + 2] = mask[i] ? 30 : 244; sImg.data[o + 3] = 255;
-    fImg.data[o] = fImg.data[o + 1] = fImg.data[o + 2] = t; fImg.data[o + 3] = 255;
   }
   shapeCv.getContext("2d").putImageData(sImg, 0, 0);
-  formCv.getContext("2d").putImageData(fImg, 0, 0);
 
   // Anchor for the shape line: the outline's left edge, 40% of the way down.
   const ry = Math.round(y0 + 0.4 * bh);
@@ -1045,14 +1048,14 @@ function analyzeImage(img) {
 
   const L2 = Math.max(w, h);
   return {
-    maskOk, shapeCv, formCv,
+    maskOk, shapeCv,
     bbox: { x: x0 / w, y: y0 / h, w: bw / w, h: bh / h },
     anchors: {
       shape: { x: rx / w, y: ry / h },
-      form: { x: sx / area / w, y: sy / area / h },
       colour: palette.length ? { x: palette[0].x, y: palette[0].y } : { x: 0.5, y: 0.5 }
     },
-    pattern: { x: pat.x / w, y: pat.y / h, size: s / L2 },
+    pattern: { x: pat.x / w, y: pat.y / h, size: s / L2,
+               texture: +pat.texture.toFixed(1), median_texture: +medTex.toFixed(1) },
     detail: { x: det.x / w, y: det.y / h, size: s / L2 },
     palette
   };
@@ -1061,7 +1064,7 @@ function analyzeImage(img) {
 // Fallback when the canvas can't be read: fixed crops, no silhouette/palette.
 function fallbackAnalysis() {
   return { maskOk: false, unreadable: true, bbox: { x: 0, y: 0, w: 1, h: 1 },
-           anchors: { shape: { x: 0.2, y: 0.4 }, form: { x: 0.5, y: 0.5 }, colour: { x: 0.5, y: 0.6 } },
+           anchors: { shape: { x: 0.2, y: 0.4 }, colour: { x: 0.5, y: 0.6 } },
            pattern: { x: 0.5, y: 0.55, size: 0.22 }, detail: { x: 0.5, y: 0.22, size: 0.22 }, palette: [] };
 }
 
@@ -1166,20 +1169,20 @@ function setupShown(item, img) {
   }
   const a = dx.cache[item.id];
   const tiles = {};
-  SHOWN_ELEMENTS.forEach(e => { tiles[e.key] = makeTile(e.side, e.label); });
+  const els = elementsFor(item);
+  els.forEach(e => { tiles[e.key] = makeTile(e.side, e.label); });
   const on = new Set();
   dx.elements = a;
 
   dx.layout = () => {
     const nw = img.naturalWidth, nh = img.naturalHeight;
-    if (a.unreadable) { drawText(tiles.shape, "needs a server"); drawText(tiles.form, "needs a server"); drawText(tiles.colour, "needs a server"); }
+    if (a.unreadable) { drawText(tiles.shape, "needs a server"); drawText(tiles.colour, "needs a server"); }
     else {
       if (a.maskOk) drawRegion(tiles.shape, a.shapeCv, a.shapeCv.width, a.shapeCv.height, a.bbox);
       else drawText(tiles.shape, "no clear outline");
-      drawRegion(tiles.form, a.formCv, a.formCv.width, a.formCv.height, a.bbox);
       drawPalette(tiles.colour, a.palette);
     }
-    drawCrop(tiles.pattern, img, a.pattern.x, a.pattern.y, a.pattern.size);
+    if (tiles.pattern) drawCrop(tiles.pattern, img, a.pattern.x, a.pattern.y, a.pattern.size);
     drawCrop(tiles.detail, img, a.detail.x, a.detail.y, a.detail.size);
 
     const ir = imgRect($("dissect-stage"), img, $("collage"));
@@ -1187,15 +1190,14 @@ function setupShown(item, img) {
     const R = p => p.size * Math.max(ir.width, ir.height) / 2;
     drawLinks([
       { tile: tiles.shape,   ...P(a.anchors.shape),  on: on.has("shape") },
-      { tile: tiles.form,    ...P(a.anchors.form),   on: on.has("form") },
       { tile: tiles.colour,  ...P(a.anchors.colour), on: on.has("colour") },
-      { tile: tiles.pattern, ...P(a.pattern), r: R(a.pattern), on: on.has("pattern") },
+      tiles.pattern && { tile: tiles.pattern, ...P(a.pattern), r: R(a.pattern), on: on.has("pattern") },
       { tile: tiles.detail,  ...P(a.detail),  r: R(a.detail),  on: on.has("detail") }
-    ]);
+    ].filter(Boolean));
   };
 
   // Take the object apart one element at a time.
-  SHOWN_ELEMENTS.forEach((e, n) => setTimeout(() => {
+  els.forEach((e, n) => setTimeout(() => {
     if (dx.item !== item) return;
     on.add(e.key); tiles[e.key].el.classList.add("on"); dx.layout();
   }, 250 + n * 350));
@@ -1205,7 +1207,7 @@ function setupShown(item, img) {
 
 function setupSpheres(item, img) {
   const defs = dx.mode === "guided"
-    ? SHOWN_ELEMENTS.map(e => ({ label: e.label, side: e.side }))
+    ? elementsFor(item).map(e => ({ label: e.label, side: e.side }))
     : Array.from({ length: FREE_SPHERES }, (_, n) => ({ label: String(n + 1), side: n % 2 ? "right" : "left" }));
   const collage = $("collage");
   const spheres = defs.map(d => {
@@ -1381,7 +1383,7 @@ function dissectDecide(action) {
     const a = dx.cache[item.id];
     entry.elements = {
       outline_found: a.maskOk, canvas_readable: !a.unreadable,
-      bbox: a.bbox, pattern: a.pattern, detail: a.detail,
+      bbox: a.bbox, pattern: hasPattern(item) ? a.pattern : null, detail: a.detail,
       colour_palette: a.palette.map(p => ({ hex: p.hex, share: p.share }))
     };
   } else {
@@ -1498,7 +1500,7 @@ try { Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY) || "
 if (!END_PARTS[settings.endPart]) settings.endPart = "off";
 
 function applySettings() {
-  $("debug-skip").style.display = settings.debug ? "block" : "none";
+  $("debug-bar").style.display = settings.debug ? "flex" : "none";
   try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
 }
 Object.entries(END_PARTS).forEach(([key, part]) => $("set-end").add(new Option(part.label, key)));
@@ -1554,6 +1556,36 @@ $("debug-skip").addEventListener("click", e => {
   }
 });
 let debugReplayNext = false;
+
+// Skip the rest of the current stage: browse → replay → end part → end.
+$("debug-stage").addEventListener("click", e => {
+  e.currentTarget.blur();
+  const screen = document.querySelector(".screen.active").id;
+  if (screen === "end") return;
+  (data.debug_skips = data.debug_skips || []).push({ phase, screen, stage: true, timestamp: nowISO() });
+  acceptingInput = false;
+  if (phase === "start") $("start-btn").click();
+  else if (phase === "browse") {
+    data.browse_finished_at = nowISO();
+    data.total_browse_ms = Math.round(performance.now() - browseStartPerf);
+    perf.browse = [browseStartPerf, performance.now()];
+    startReplayIntro();
+  } else if (phase === "replay") {
+    clearTimeout(revealTimer);
+    if (perf.replay[0]) perf.replay[1] = performance.now();
+    startEndPart();
+  } else if (phase === "rebrowse") {
+    stopFlicker(performance.now());
+    data.rebrowse_finished_at = nowISO();
+    if (perf.rebrowse[0]) perf.rebrowse[1] = performance.now();
+    finish();
+  } else if (phase === "dissect") {
+    dx.deciding = false; dx.item = null;
+    if (perf.dissect[0]) perf.dissect[1] = performance.now();
+    data.dissect_finished_at = nowISO();
+    finish();
+  }
+});
 
 $("download-btn").addEventListener("click", () => {
   const blob = new Blob([exportJSON], { type: "application/json" });
