@@ -32,6 +32,23 @@ const REBROWSE_INTRO = "One more round. Keep or skip, same as before.";
 const FLICKER_MS = 400;            // time each image stays up before switching.
                                    // Keep >= 170 ms: faster than ~3 flashes/s risks photosensitive seizures.
 
+// Dissection end parts (shown / guided / free). Run over the participant's skipped items;
+// after the activity they choose keep or skip again.
+const DISSECT_INTRO = {
+  shown:  "Let's look again at some of the ones you skipped, taken apart into their elements.",
+  guided: "Let's take some of the ones you skipped apart. Drag each circle onto the part of the object it names, and note what you see.",
+  free:   "Let's look again at some of the ones you skipped."
+};
+const DISSECT_PROMPT = {
+  shown:  "",
+  guided: "Drag each circle onto the part it names. Click a circle to write what you see.",
+  free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is."
+};
+const DISSECT_DECIDE_PROMPT = "Keep or skip?";
+const DISSECT_MIN_VIEW_MS = 3000;  // "shown": time before Done appears
+const LENS_ZOOM = 2.5;             // magnification inside the spheres
+const FREE_SPHERES = 3;            // number of spheres in "find a detail"
+
 // Timing summary + on-screen timer
 const GLANCE_MS = 1000;            // decisions faster than this count as "glance"
 const LINGER_MS = 3000;            // decisions slower than this count as "lingered"
@@ -114,6 +131,47 @@ const DEFAULT_SETTINGS = {
   #replay-controls { width: min(var(--box-w), 720px); }
 
   #load-error { display: none; margin-top: 1em; font-size: 15px; }
+
+  /* Dissection */
+  #dissect { justify-content: flex-start; padding-top: 44px; }
+  .dissect-prompt { margin: 0 0 12px; text-align: center; max-width: 760px; min-height: 1.5em; }
+  #collage { position: relative; display: grid; grid-template-columns: 1fr auto 1fr;
+             gap: 0 min(4vw, 56px); align-items: center; width: min(96vw, 1200px);
+             --tile: min(15vh, 130px); --sph: 84px; }
+  #collage .col { display: flex; flex-direction: column; gap: 14px; }
+  #col-left { align-items: flex-end; } #col-right { align-items: flex-start; }
+  #collage .center { display: flex; flex-direction: column; align-items: center; }
+  #dissect-stage { width: min(56vh, 40vw); }
+  #collage.shown #dissect-stage { width: min(64vh, 44vw); }
+  #tray { width: 100%; height: 118px; }
+  #collage.shown #tray { display: none; }
+  .tile { width: var(--tile); opacity: 0; transition: opacity 300ms linear; }
+  .tile.on { opacity: 1; }
+  .tile canvas { width: var(--tile); height: var(--tile); display: block;
+                 background: #f4f4f4; border: 1px solid #555; }
+  .tile.empty canvas { background: transparent; border-style: dashed; }
+  .tile .cap { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; }
+  .tile .txt { font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+  #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+           overflow: visible; z-index: 4; }
+  #links line, #links circle { stroke: #1a1a1a; stroke-width: 1.2; fill: none;
+                               transition: opacity 300ms linear; }
+  #links .dot { fill: #1a1a1a; stroke: none; }
+  .sphere { position: absolute; width: var(--sph); height: var(--sph); border-radius: 50%;
+            margin: calc(var(--sph) / -2) 0 0 calc(var(--sph) / -2); z-index: 5;
+            cursor: grab; touch-action: none; user-select: none;
+            background: radial-gradient(circle at 35% 30%, #fff, #c4c4c4 58%, #8f8f8f);
+            box-shadow: 0 3px 8px rgba(0,0,0,.35), inset 0 0 0 2px rgba(255,255,255,.85); }
+  .sphere.dragging { cursor: grabbing; }
+  .sphere.placed { box-shadow: 0 3px 10px rgba(0,0,0,.45), inset 0 0 0 3px #fff; }
+  .sphere.sel { outline: 3px solid #fbe36b; outline-offset: 2px; }
+  .sphere .lbl { position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+                 margin-top: 5px; font-size: 12px; white-space: nowrap; background: #eee;
+                 padding: 0 6px; border-radius: 3px; pointer-events: none; }
+  #collage.locked .sphere { pointer-events: none; cursor: default; }
+  #sphere-pop { position: absolute; z-index: 6; width: 230px; }
+  #sphere-pop[hidden] { display: none; }
+  #sphere-pop input { font-size: 15px; padding: 6px 8px; }
 
   #timer { position: fixed; top: 12px; right: 16px; font-size: 13px;
            font-variant-numeric: tabular-nums; opacity: .55; display: none; }
@@ -212,6 +270,32 @@ const DEFAULT_SETTINGS = {
   </div>
 </section>
 
+<!-- 3d. DISSECTION (three versions, chosen in Settings) -->
+<section id="dissect-intro" class="screen">
+  <div class="panel">
+    <p id="dissect-intro-text"></p>
+    <div class="actions"><button id="dissect-go">Continue</button></div>
+  </div>
+</section>
+<section id="dissect" class="screen">
+  <p class="dissect-prompt" id="dissect-prompt"></p>
+  <div id="collage">
+    <div class="col" id="col-left"></div>
+    <div class="center">
+      <div class="stage" id="dissect-stage"></div>
+      <div id="tray"></div>
+    </div>
+    <div class="col" id="col-right"></div>
+    <svg id="links"></svg>
+    <div id="sphere-pop" hidden><input type="text" id="sphere-text" autocomplete="off"></div>
+  </div>
+  <div class="actions">
+    <button id="dissect-done">Done</button>
+    <button id="dissect-skip" hidden>Skip</button>
+    <button id="dissect-keep" hidden>Keep</button>
+  </div>
+</section>
+
 <!-- 4. END -->
 <section id="end" class="screen">
   <div class="panel">
@@ -232,7 +316,7 @@ let catalogue = null;        // { version?, items: [...] }
 let catalogueVersion = "";
 let itemsById = {};
 let participantId = "";
-let phase = "start";         // start | browse | replay | rebrowse | end
+let phase = "start";         // start | browse | replay | rebrowse | dissect | end
 
 const data = {
   participant_id: "",
@@ -310,7 +394,8 @@ function logFocus(type) {
     type,
     timestamp: nowISO(),
     phase,
-    position: phase === "browse" ? browseIndex : phase === "replay" ? replayIndex : rebrowseIndex
+    position: phase === "browse" ? browseIndex : phase === "replay" ? replayIndex :
+              phase === "dissect" ? dx.index : rebrowseIndex
   });
 }
 window.addEventListener("blur", () => logFocus("blur"));
@@ -358,7 +443,7 @@ function makeId() {
 /* ============================================================
    TIMING: phase durations, on-screen timer, button hover ("lingering")
    ============================================================ */
-const perf = { session: 0, browse: [0, 0], replay: [0, 0], rebrowse: [0, 0] };
+const perf = { session: 0, browse: [0, 0], replay: [0, 0], rebrowse: [0, 0], dissect: [0, 0] };
 let timerInterval = null;
 
 function startTimer() {
@@ -504,6 +589,11 @@ function advanceBrowse() {
 $("skip-btn").addEventListener("click", e => { e.currentTarget.blur(); act("skip"); });
 $("keep-btn").addEventListener("click", e => { e.currentTarget.blur(); act("keep"); });
 document.addEventListener("keydown", e => {
+  if (phase === "dissect" && dx.deciding && !e.repeat) {
+    if (e.key === "ArrowLeft")  { e.preventDefault(); dissectDecide("skip"); }
+    if (e.key === "ArrowRight") { e.preventDefault(); dissectDecide("keep"); }
+    return;
+  }
   if ((phase !== "browse" && phase !== "rebrowse") || e.repeat) return;
   if (e.key === "ArrowLeft")  { e.preventDefault(); act("skip"); }
   if (e.key === "ArrowRight") { e.preventDefault(); act("keep"); }
@@ -729,6 +819,592 @@ function advanceRebrowse() {
 }
 
 /* ============================================================
+   3d. DISSECTION END PARTS
+   Runs over the participant's skipped items, in a new random order.
+   shown:  the object is taken apart automatically into shape, form,
+           colour, pattern and an interesting element, laid out as a
+           collage with lines back to where each element comes from.
+   guided: same collage, but empty; the participant drags five named
+           magnifier spheres onto the object and writes what they see.
+   free:   "find one detail you didn't notice": a few unnamed spheres.
+   Afterwards the participant chooses keep or skip again.
+   ============================================================ */
+const dx = { mode: null, items: [], index: -1, cache: {}, deciding: false, busy: false };
+
+const SHOWN_ELEMENTS = [
+  { key: "shape",   label: "Shape",               side: "left"  },
+  { key: "form",    label: "Form",                side: "left"  },
+  { key: "colour",  label: "Colour",              side: "left"  },
+  { key: "pattern", label: "Pattern",             side: "right" },
+  { key: "detail",  label: "Interesting element", side: "right" }
+];
+
+$("dissect-go").addEventListener("click", e => {
+  e.currentTarget.blur();
+  perf.dissect[0] = performance.now();
+  data.dissect_started_at = nowISO();
+  show("dissect");
+  showDissectItem(0);
+});
+$("dissect-done").addEventListener("click", e => { e.currentTarget.blur(); enterDecision(); });
+$("dissect-skip").addEventListener("click", e => { e.currentTarget.blur(); dissectDecide("skip"); });
+$("dissect-keep").addEventListener("click", e => { e.currentTarget.blur(); dissectDecide("keep"); });
+window.addEventListener("resize", () => { if (phase === "dissect" && dx.layout) dx.layout(); });
+
+function startDissect(mode) {
+  phase = "dissect";
+  dx.mode = mode;
+  data.dissect_mode = mode;
+  data.dissect = [];
+  const skipped = data.browse.filter(b => b.action === "skip").map(b => itemsById[b.item_id]);
+  dx.items = shuffle(skipped);
+  if (!dx.items.length) return finish();
+  dx.items.forEach(it => preload(it));
+  $("dissect-intro-text").textContent = DISSECT_INTRO[mode];
+  show("dissect-intro");
+  $("dissect-go").focus();
+}
+
+/* ---------- geometry helpers ---------- */
+
+// Where the image actually sits inside its (square, object-fit: contain) stage, relative to `origin`.
+function imgRect(stage, img, origin) {
+  const s = stage.getBoundingClientRect(), o = origin.getBoundingClientRect();
+  const k = Math.min(s.width / img.naturalWidth, s.height / img.naturalHeight);
+  const w = img.naturalWidth * k, h = img.naturalHeight * k;
+  return { left: s.left - o.left + (s.width - w) / 2, top: s.top - o.top + (s.height - h) / 2, width: w, height: h };
+}
+function relRect(el, origin) {
+  const r = el.getBoundingClientRect(), o = origin.getBoundingClientRect();
+  return { left: r.left - o.left, top: r.top - o.top, width: r.width, height: r.height,
+           right: r.right - o.left, bottom: r.bottom - o.top };
+}
+const hex = c => "#" + c.map(v => Math.round(v).toString(16).padStart(2, "0")).join("");
+
+/* ---------- automatic analysis (shown mode) ---------- */
+
+// Returns null if the canvas can't be read (e.g. page opened as a file:// URL).
+function analyzeImage(img) {
+  const L = 360;
+  const k = L / Math.max(img.naturalWidth, img.naturalHeight);
+  const w = Math.max(1, Math.round(img.naturalWidth * k)), h = Math.max(1, Math.round(img.naturalHeight * k));
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const ctx = cv.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, w, h);
+  let px;
+  try { px = ctx.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+  const N = w * h;
+
+  // Background colour: median of the outer ring of pixels.
+  const ring = [[], [], []];
+  for (let x = 0; x < w; x++) for (const y of [0, 1, h - 2, h - 1]) for (let c = 0; c < 3; c++) ring[c].push(px[(y * w + x) * 4 + c]);
+  for (let y = 0; y < h; y++) for (const x of [0, 1, w - 2, w - 1]) for (let c = 0; c < 3; c++) ring[c].push(px[(y * w + x) * 4 + c]);
+  const bg = ring.map(a => a.sort((p, q) => p - q)[a.length >> 1]);
+
+  // Background model that copes with studio gradients: each row's (or column's) own edge colour,
+  // used when both ends of that row/column agree; otherwise the global median.
+  const at = (x, y) => { const o = (y * w + x) * 4; return [px[o], px[o + 1], px[o + 2]]; };
+  const d3 = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const avg = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2];
+  const rowBg = [], colBg = [];
+  for (let y = 0; y < h; y++) { const l = at(0, y), r = at(w - 1, y); rowBg.push(d3(l, r) < 40 ? avg(l, r) : null); }
+  for (let x = 0; x < w; x++) { const t = at(x, 0), b = at(x, h - 1); colBg.push(d3(t, b) < 40 ? avg(t, b) : null); }
+
+  // Flood-fill background from the border; everything not reached is the object (holes filled).
+  const bgLike = new Uint8Array(N);
+  for (let i = 0; i < N; i++) {
+    const x = i % w, y = (i / w) | 0, c = [px[i * 4], px[i * 4 + 1], px[i * 4 + 2]];
+    let d = d3(c, bg);
+    if (rowBg[y]) d = Math.min(d, d3(c, rowBg[y]));
+    if (colBg[x]) d = Math.min(d, d3(c, colBg[x]));
+    bgLike[i] = d < 32 ? 1 : 0;
+  }
+  const outside = new Uint8Array(N), queue = new Int32Array(N);
+  let qh = 0, qt = 0;
+  const push = i => { if (!outside[i] && bgLike[i]) { outside[i] = 1; queue[qt++] = i; } };
+  for (let x = 0; x < w; x++) { push(x); push((h - 1) * w + x); }
+  for (let y = 0; y < h; y++) { push(y * w); push(y * w + w - 1); }
+  while (qh < qt) {
+    const i = queue[qh++], x = i % w, y = (i / w) | 0;
+    if (x > 0) push(i - 1); if (x < w - 1) push(i + 1);
+    if (y > 0) push(i - w); if (y < h - 1) push(i + w);
+  }
+  let mask = new Uint8Array(N), area = 0;
+  for (let i = 0; i < N; i++) if (!outside[i]) { mask[i] = 1; area++; }
+  const maskOk = area > 0.03 * N && area < 0.97 * N;
+  if (!maskOk) { mask.fill(1); area = N; }
+
+  // Bounding box and centroid.
+  let x0 = w, y0 = h, x1 = 0, y1 = 0, sx = 0, sy = 0;
+  for (let i = 0; i < N; i++) if (mask[i]) {
+    const x = i % w, y = (i / w) | 0;
+    if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    sx += x; sy += y;
+  }
+  const bw = x1 - x0 + 1, bh = y1 - y0 + 1;
+
+  // Grey, gradient (Sobel) and eroded interior so the silhouette edge doesn't count as texture.
+  const gray = new Float32Array(N);
+  for (let i = 0; i < N; i++) gray[i] = 0.3 * px[i * 4] + 0.59 * px[i * 4 + 1] + 0.11 * px[i * 4 + 2];
+  const grad = new Float32Array(N);
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+    const i = y * w + x, g = gray;
+    const gx = g[i - w + 1] + 2 * g[i + 1] + g[i + w + 1] - g[i - w - 1] - 2 * g[i - 1] - g[i + w - 1];
+    const gy = g[i + w - 1] + 2 * g[i + w] + g[i + w + 1] - g[i - w - 1] - 2 * g[i - w] - g[i - w + 1];
+    grad[i] = Math.hypot(gx, gy);
+  }
+  let interior = mask.slice();
+  for (let it = 0; it < 4; it++) {
+    const next = new Uint8Array(N);
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+      const i = y * w + x;
+      next[i] = interior[i] && interior[i - 1] && interior[i + 1] && interior[i - w] && interior[i + w] ? 1 : 0;
+    }
+    interior = next;
+  }
+
+  // Integral images for fast window sums.
+  const W = w + 1;
+  const I = () => new Float64Array(W * (h + 1));
+  const iG = I(), iI = I(), iM = I(), iR = I(), iGr = I(), iB = I();
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x, j = (y + 1) * W + x + 1, m = mask[i], n = interior[i];
+    const add = (A, v) => { A[j] = v + A[j - 1] + A[j - W] - A[j - W - 1]; };
+    add(iG, n ? grad[i] : 0); add(iI, n); add(iM, m);
+    add(iR, m ? px[i * 4] : 0); add(iGr, m ? px[i * 4 + 1] : 0); add(iB, m ? px[i * 4 + 2] : 0);
+  }
+  const sum = (A, x, y, s) => A[(y + s) * W + x + s] - A[y * W + x + s] - A[(y + s) * W + x] + A[y * W + x];
+  const tot = (A) => A[h * W + w];
+  const mean = [tot(iR) / area, tot(iGr) / area, tot(iB) / area];
+
+  // Candidate windows inside the object.
+  const s = Math.max(10, Math.min(Math.round(0.22 * Math.max(bw, bh)), bw, bh, w, h));
+  const step = Math.max(2, Math.round(s / 4));
+  const wins = [];
+  for (let y = y0; y + s <= Math.min(h, y0 + bh + 1); y += step)
+    for (let x = x0; x + s <= Math.min(w, x0 + bw + 1); x += step) {
+      const m = sum(iM, x, y, s);
+      if (m < 0.8 * s * s) continue;
+      const n = sum(iI, x, y, s);
+      const texture = n > 0.4 * s * s ? sum(iG, x, y, s) / n : 0;
+      const c = [sum(iR, x, y, s) / m, sum(iGr, x, y, s) / m, sum(iB, x, y, s) / m];
+      const distinct = Math.hypot(c[0] - mean[0], c[1] - mean[1], c[2] - mean[2]);
+      wins.push({ x: x + s / 2, y: y + s / 2, texture, distinct });
+    }
+  if (!wins.length) wins.push({ x: x0 + bw / 2, y: y0 + bh / 2, texture: 0, distinct: 0 });
+  const pat = wins.reduce((a, b) => (b.texture > a.texture ? b : a));
+  // Interesting element: the most visually distinct patch, away from the pattern patch,
+  // among patches with at least median texture (so flat background can't win).
+  const medTex = wins.map(v => v.texture).sort((a, b) => a - b)[wins.length >> 1];
+  const far = wins.filter(v => v.texture >= medTex && Math.hypot(v.x - pat.x, v.y - pat.y) >= 1.2 * s);
+  const det = (far.length ? far : wins).reduce((a, b) =>
+    (b.distinct + 0.25 * b.texture > a.distinct + 0.25 * a.texture ? b : a));
+
+  // Colour palette: k-means on object pixels.
+  const samples = [];
+  const stride = Math.max(1, Math.floor(area / 5000));
+  let seen = 0;
+  for (let i = 0; i < N; i++) if (mask[i] && (seen++ % stride === 0))
+    samples.push([px[i * 4], px[i * 4 + 1], px[i * 4 + 2], i % w, (i / w) | 0]);
+  samples.sort((a, b) => (a[0] + a[1] + a[2]) - (b[0] + b[1] + b[2]));
+  const K = Math.min(5, samples.length);
+  let cents = Array.from({ length: K }, (_, j) => samples[Math.floor((j + 0.5) * samples.length / K)].slice(0, 3));
+  let assign = new Int32Array(samples.length);
+  for (let it = 0; it < 10; it++) {
+    samples.forEach((p, n) => {
+      let best = 0, bd = Infinity;
+      cents.forEach((c, j) => { const d = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2 + (p[2] - c[2]) ** 2; if (d < bd) { bd = d; best = j; } });
+      assign[n] = best;
+    });
+    const acc = cents.map(() => [0, 0, 0, 0]);
+    samples.forEach((p, n) => { const a = acc[assign[n]]; a[0] += p[0]; a[1] += p[1]; a[2] += p[2]; a[3]++; });
+    cents = acc.map((a, j) => (a[3] ? [a[0] / a[3], a[1] / a[3], a[2] / a[3]] : cents[j]));
+  }
+  const clusters = cents.map((c, j) => ({ rgb: c, n: 0, sx: 0, sy: 0 }));
+  samples.forEach((p, n) => { const c = clusters[assign[n]]; c.n++; c.sx += p[3]; c.sy += p[4]; });
+  const palette = clusters.filter(c => c.n).sort((a, b) => b.n - a.n)
+    .map(c => ({ hex: hex(c.rgb), share: +(c.n / samples.length).toFixed(3), x: c.sx / c.n / w, y: c.sy / c.n / h }));
+
+  // Shape (flat silhouette) and form (posterised light and shadow) images.
+  const shapeCv = document.createElement("canvas"), formCv = document.createElement("canvas");
+  shapeCv.width = formCv.width = w; shapeCv.height = formCv.height = h;
+  const sImg = shapeCv.getContext("2d").createImageData(w, h), fImg = formCv.getContext("2d").createImageData(w, h);
+  const tones = [38, 96, 160, 222];
+  for (let i = 0; i < N; i++) {
+    const o = i * 4, t = mask[i] ? tones[Math.min(3, Math.floor(gray[i] / 64))] : 246;
+    sImg.data[o] = sImg.data[o + 1] = sImg.data[o + 2] = mask[i] ? 30 : 244; sImg.data[o + 3] = 255;
+    fImg.data[o] = fImg.data[o + 1] = fImg.data[o + 2] = t; fImg.data[o + 3] = 255;
+  }
+  shapeCv.getContext("2d").putImageData(sImg, 0, 0);
+  formCv.getContext("2d").putImageData(fImg, 0, 0);
+
+  // Anchor for the shape line: the outline's left edge, 40% of the way down.
+  const ry = Math.round(y0 + 0.4 * bh);
+  let rx = x0;
+  for (let x = 0; x < w; x++) if (mask[ry * w + x]) { rx = x; break; }
+
+  const L2 = Math.max(w, h);
+  return {
+    maskOk, shapeCv, formCv,
+    bbox: { x: x0 / w, y: y0 / h, w: bw / w, h: bh / h },
+    anchors: {
+      shape: { x: rx / w, y: ry / h },
+      form: { x: sx / area / w, y: sy / area / h },
+      colour: palette.length ? { x: palette[0].x, y: palette[0].y } : { x: 0.5, y: 0.5 }
+    },
+    pattern: { x: pat.x / w, y: pat.y / h, size: s / L2 },
+    detail: { x: det.x / w, y: det.y / h, size: s / L2 },
+    palette
+  };
+}
+
+// Fallback when the canvas can't be read: fixed crops, no silhouette/palette.
+function fallbackAnalysis() {
+  return { maskOk: false, unreadable: true, bbox: { x: 0, y: 0, w: 1, h: 1 },
+           anchors: { shape: { x: 0.2, y: 0.4 }, form: { x: 0.5, y: 0.5 }, colour: { x: 0.5, y: 0.6 } },
+           pattern: { x: 0.5, y: 0.55, size: 0.22 }, detail: { x: 0.5, y: 0.22, size: 0.22 }, palette: [] };
+}
+
+/* ---------- tiles and connector lines ---------- */
+
+function makeTile(side, caption) {
+  const el = document.createElement("div");
+  el.className = "tile";
+  el.innerHTML = '<canvas></canvas><div class="cap"></div><div class="txt"></div>';
+  el.querySelector(".cap").textContent = caption;
+  $(side === "left" ? "col-left" : "col-right").appendChild(el);
+  return { el, canvas: el.querySelector("canvas"), txt: el.querySelector(".txt"), side };
+}
+function tileCtx(tile) {
+  const r = tile.canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  const W = Math.max(1, Math.round(r.width * dpr));
+  if (tile.canvas.width !== W) { tile.canvas.width = W; tile.canvas.height = W; }
+  const ctx = tile.canvas.getContext("2d");
+  ctx.fillStyle = "#f4f4f4"; ctx.fillRect(0, 0, W, W);
+  return { ctx, W };
+}
+// Draw a normalised region of a source (img or canvas) into the tile, letterboxed.
+function drawRegion(tile, src, sw, sh, r) {
+  const { ctx, W } = tileCtx(tile);
+  const x = r.x * sw, y = r.y * sh, w = r.w * sw, h = r.h * sh;
+  const k = Math.min(W / w, W / h) * 0.9;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(src, x, y, w, h, (W - w * k) / 2, (W - h * k) / 2, w * k, h * k);
+}
+// Square crop around a point: cx, cy normalised to the image; size normalised to its long side.
+function drawCrop(tile, img, cx, cy, size) {
+  const { ctx, W } = tileCtx(tile);
+  const nw = img.naturalWidth, nh = img.naturalHeight, c = size * Math.max(nw, nh);
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(img, cx * nw - c / 2, cy * nh - c / 2, c, c, 0, 0, W, W);
+  return { ctx, W };
+}
+function drawText(tile, text) {
+  const { ctx, W } = tileCtx(tile);
+  ctx.fillStyle = "#555"; ctx.font = `${Math.round(W / 11)}px sans-serif`; ctx.textAlign = "center";
+  ctx.fillText(text, W / 2, W / 2);
+}
+function drawPalette(tile, palette) {
+  const { ctx, W } = tileCtx(tile);
+  let y = 0;
+  palette.forEach(p => { const h = p.share * W; ctx.fillStyle = p.hex; ctx.fillRect(0, y, W, Math.ceil(h)); y += h; });
+}
+
+// links: [{ tile, x, y (px in collage), r (px, optional), on }]
+function drawLinks(links) {
+  const svg = $("links"), NS = "http://www.w3.org/2000/svg", origin = $("collage");
+  svg.replaceChildren();
+  links.forEach(l => {
+    const t = relRect(l.tile.canvas, origin);
+    const ax = l.tile.side === "left" ? t.right : t.left, ay = t.top + t.height / 2;
+    // End the line on the circle's edge when there is a circle.
+    let ex = l.x, ey = l.y;
+    if (l.r) { const d = Math.hypot(ax - l.x, ay - l.y) || 1; ex = l.x + (ax - l.x) / d * l.r; ey = l.y + (ay - l.y) / d * l.r; }
+    const line = document.createElementNS(NS, "line");
+    line.setAttribute("x1", ax); line.setAttribute("y1", ay); line.setAttribute("x2", ex); line.setAttribute("y2", ey);
+    const mark = document.createElementNS(NS, "circle");
+    mark.setAttribute("cx", l.x); mark.setAttribute("cy", l.y);
+    if (l.r) mark.setAttribute("r", l.r); else { mark.setAttribute("r", 4); mark.setAttribute("class", "dot"); }
+    [line, mark].forEach(e => { e.style.opacity = l.on ? 1 : 0; svg.appendChild(e); });
+  });
+}
+
+/* ---------- per item ---------- */
+
+async function showDissectItem(i) {
+  dx.index = i; dx.deciding = false; dx.busy = true; dx.debug = false; dx.layout = null;
+  const item = dx.items[i];
+  const collage = $("collage");
+  collage.className = dx.mode === "shown" ? "shown" : "";
+  $("col-left").replaceChildren(); $("col-right").replaceChildren(); $("links").replaceChildren();
+  collage.querySelectorAll(".sphere").forEach(s => s.remove());
+  $("sphere-pop").hidden = true;
+  $("dissect-prompt").textContent = DISSECT_PROMPT[dx.mode];
+  $("dissect-done").hidden = false; $("dissect-done").disabled = false;
+  $("dissect-skip").hidden = $("dissect-keep").hidden = true;
+  window.scrollTo(0, 0);
+
+  const { img } = await preload(item);
+  img.style.visibility = "visible";
+  $("dissect-stage").replaceChildren(img);
+  dx.item = item; dx.img = img;
+
+  if (dx.mode === "shown") setupShown(item, img);
+  else setupSpheres(item, img);
+  dx.layout();
+  dx.t0 = await nextPaint();
+  dx.busy = false;
+}
+
+function setupShown(item, img) {
+  if (!dx.cache[item.id]) {
+    const a = analyzeImage(img) || fallbackAnalysis();
+    // Optional hand-picked crops in catalogue.json, e.g.
+    // "dissect": { "pattern": {"x":0.5,"y":0.6,"size":0.2}, "detail": {"x":0.3,"y":0.2,"size":0.15} }
+    if (item.dissect) ["pattern", "detail"].forEach(k => { if (item.dissect[k]) a[k] = { ...a[k], ...item.dissect[k], manual: true }; });
+    dx.cache[item.id] = a;
+  }
+  const a = dx.cache[item.id];
+  const tiles = {};
+  SHOWN_ELEMENTS.forEach(e => { tiles[e.key] = makeTile(e.side, e.label); });
+  const on = new Set();
+  dx.elements = a;
+
+  dx.layout = () => {
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    if (a.unreadable) { drawText(tiles.shape, "needs a server"); drawText(tiles.form, "needs a server"); drawText(tiles.colour, "needs a server"); }
+    else {
+      if (a.maskOk) drawRegion(tiles.shape, a.shapeCv, a.shapeCv.width, a.shapeCv.height, a.bbox);
+      else drawText(tiles.shape, "no clear outline");
+      drawRegion(tiles.form, a.formCv, a.formCv.width, a.formCv.height, a.bbox);
+      drawPalette(tiles.colour, a.palette);
+    }
+    drawCrop(tiles.pattern, img, a.pattern.x, a.pattern.y, a.pattern.size);
+    drawCrop(tiles.detail, img, a.detail.x, a.detail.y, a.detail.size);
+
+    const ir = imgRect($("dissect-stage"), img, $("collage"));
+    const P = p => ({ x: ir.left + p.x * ir.width, y: ir.top + p.y * ir.height });
+    const R = p => p.size * Math.max(ir.width, ir.height) / 2;
+    drawLinks([
+      { tile: tiles.shape,   ...P(a.anchors.shape),  on: on.has("shape") },
+      { tile: tiles.form,    ...P(a.anchors.form),   on: on.has("form") },
+      { tile: tiles.colour,  ...P(a.anchors.colour), on: on.has("colour") },
+      { tile: tiles.pattern, ...P(a.pattern), r: R(a.pattern), on: on.has("pattern") },
+      { tile: tiles.detail,  ...P(a.detail),  r: R(a.detail),  on: on.has("detail") }
+    ]);
+  };
+
+  // Take the object apart one element at a time.
+  SHOWN_ELEMENTS.forEach((e, n) => setTimeout(() => {
+    if (dx.item !== item) return;
+    on.add(e.key); tiles[e.key].el.classList.add("on"); dx.layout();
+  }, 250 + n * 350));
+  $("dissect-done").disabled = true;
+  setTimeout(() => { if (dx.item === item) $("dissect-done").disabled = false; }, DISSECT_MIN_VIEW_MS);
+}
+
+function setupSpheres(item, img) {
+  const defs = dx.mode === "guided"
+    ? SHOWN_ELEMENTS.map(e => ({ label: e.label, side: e.side }))
+    : Array.from({ length: FREE_SPHERES }, (_, n) => ({ label: String(n + 1), side: n % 2 ? "right" : "left" }));
+  const collage = $("collage");
+  const spheres = defs.map(d => {
+    const el = document.createElement("div");
+    el.className = "sphere";
+    if (dx.mode === "guided") { const l = document.createElement("span"); l.className = "lbl"; l.textContent = d.label; el.appendChild(l); }
+    collage.appendChild(el);
+    const tile = makeTile(d.side, dx.mode === "guided" ? d.label : "Detail " + d.label);
+    tile.el.classList.add("on", "empty");
+    return { label: d.label, el, tile, placed: false, x: null, y: null, text: "", moves: 0,
+             first_placed_ms: null, selections: 0, colour: null, drag: null };
+  });
+  dx.spheres = spheres;
+  dx.selected = null;
+
+  const D = () => parseFloat(getComputedStyle(collage).getPropertyValue("--sph")) || 84;
+  // Tray slots spread across the full collage width, under the object.
+  const trayPos = n => {
+    const t = relRect($("tray"), collage), W = collage.clientWidth, gap = W * 0.7 / spheres.length;
+    return { x: W * 0.15 + gap * (n + 0.5), y: t.top + D() / 2 + 8 };
+  };
+  const sizeSpheres = () => {
+    const stageW = $("dissect-stage").getBoundingClientRect().width;
+    collage.style.setProperty("--sph", Math.round(Math.max(56, Math.min(84, stageW * 0.28))) + "px");
+  };
+
+  function renderSphere(sp, cx, cy, ir) {
+    sp.el.style.left = cx + "px"; sp.el.style.top = cy + "px";
+    const over = cx >= ir.left && cx <= ir.left + ir.width && cy >= ir.top && cy <= ir.top + ir.height;
+    if (over) {
+      const Z = LENS_ZOOM, d = D();
+      const bx = (cx - ir.left) * Z - d / 2, by = (cy - ir.top) * Z - d / 2;
+      sp.el.style.background = `url("${item.image}") ${-bx}px ${-by}px / ${ir.width * Z}px ${ir.height * Z}px no-repeat, #ececec`;
+    } else sp.el.style.background = "";
+    return over;
+  }
+
+  function drawTile(sp, ir) {
+    if (!sp.placed) { tileCtx(sp.tile); sp.tile.el.classList.add("empty"); sp.tile.txt.textContent = ""; return; }
+    sp.tile.el.classList.remove("empty");
+    const size = D() / LENS_ZOOM / Math.max(ir.width, ir.height);
+    const { ctx, W } = drawCrop(sp.tile, img, sp.x, sp.y, size);
+    if (dx.mode === "guided" && sp.label === "Colour") {
+      try {
+        const d = ctx.getImageData(Math.round(W * 0.3), Math.round(W * 0.3), Math.round(W * 0.4), Math.round(W * 0.4)).data;
+        let r = 0, g = 0, b = 0, n = d.length / 4;
+        for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+        sp.colour = hex([r / n, g / n, b / n]);
+        ctx.fillStyle = sp.colour; ctx.fillRect(0, W * 0.78, W, W * 0.22);
+      } catch (e) { sp.colour = null; }
+    }
+    sp.tile.txt.textContent = sp.text;
+  }
+
+  function placePop() {
+    const pop = $("sphere-pop"), sp = dx.selected;
+    if (!sp || !sp.placed || dx.deciding) { pop.hidden = true; return; }
+    pop.hidden = false;
+    const c = relRect(collage, collage), x = parseFloat(sp.el.style.left), y = parseFloat(sp.el.style.top), d = D();
+    const right = x + d / 2 + 12 + 230 < c.width;
+    pop.style.left = (right ? x + d / 2 + 12 : x - d / 2 - 12 - 230) + "px";
+    pop.style.top = (y - 18) + "px";
+    $("sphere-text").placeholder = dx.mode === "guided" ? `What is the ${sp.label.toLowerCase()}?` : "What is this detail?";
+    if ($("sphere-text").value !== sp.text) $("sphere-text").value = sp.text;
+  }
+
+  function select(sp) {
+    spheres.forEach(s => s.el.classList.toggle("sel", s === sp));
+    if (sp && dx.selected !== sp) sp.selections++;
+    dx.selected = sp;
+    placePop();
+    if (sp && sp.placed) setTimeout(() => $("sphere-text").focus(), 0);
+  }
+
+  dx.layout = () => {
+    sizeSpheres();
+    const ir = imgRect($("dissect-stage"), img, collage);
+    const links = [];
+    spheres.forEach((sp, n) => {
+      if (sp.drag) return;
+      const p = sp.placed ? { x: ir.left + sp.x * ir.width, y: ir.top + sp.y * ir.height } : trayPos(n);
+      renderSphere(sp, p.x, p.y, ir);
+      drawTile(sp, ir);
+      if (sp.placed) links.push({ tile: sp.tile, x: p.x, y: p.y, r: D() / 2 + 2, on: true });
+    });
+    drawLinks(links);
+    placePop();
+  };
+
+  spheres.forEach(sp => {
+    sp.el.addEventListener("pointerdown", e => {
+      if (dx.deciding) return;
+      e.preventDefault();
+      sp.el.setPointerCapture(e.pointerId);
+      const x = parseFloat(sp.el.style.left), y = parseFloat(sp.el.style.top);
+      sp.drag = { dx: e.clientX - x, dy: e.clientY - y, moved: false };
+      sp.el.classList.add("dragging");
+      select(sp);
+    });
+    sp.el.addEventListener("pointermove", e => {
+      if (!sp.drag) return;
+      const x = e.clientX - sp.drag.dx, y = e.clientY - sp.drag.dy;
+      sp.drag.moved = true;
+      renderSphere(sp, x, y, imgRect($("dissect-stage"), img, collage));
+      $("sphere-pop").hidden = true;
+    });
+    const end = () => {
+      if (!sp.drag) return;
+      const moved = sp.drag.moved;
+      sp.drag = null;
+      sp.el.classList.remove("dragging");
+      if (moved) {
+        const ir = imgRect($("dissect-stage"), img, collage);
+        const x = parseFloat(sp.el.style.left), y = parseFloat(sp.el.style.top);
+        const over = x >= ir.left && x <= ir.left + ir.width && y >= ir.top && y <= ir.top + ir.height;
+        sp.moves++;
+        if (over) {
+          sp.x = +((x - ir.left) / ir.width).toFixed(4); sp.y = +((y - ir.top) / ir.height).toFixed(4);
+          if (!sp.placed && sp.first_placed_ms === null) sp.first_placed_ms = Math.round(performance.now() - dx.t0);
+          sp.placed = true;
+        } else { sp.placed = false; sp.x = sp.y = null; }
+      }
+      dx.layout();
+      if (sp.placed) select(sp);
+    };
+    sp.el.addEventListener("pointerup", end);
+    sp.el.addEventListener("pointercancel", end);
+  });
+
+  collage.onpointerdown = e => {
+    if (!e.target.closest(".sphere") && !e.target.closest("#sphere-pop")) select(null);
+  };
+  $("sphere-text").oninput = e => {
+    if (!dx.selected) return;
+    dx.selected.text = e.target.value;
+    dx.selected.tile.txt.textContent = e.target.value;
+  };
+}
+
+async function enterDecision() {
+  if (dx.deciding || dx.busy) return;
+  dx.activity_ms = Math.round(performance.now() - dx.t0);
+  $("sphere-pop").hidden = true;
+  $("collage").classList.add("locked");
+  (dx.spheres || []).forEach(s => s.el.classList.remove("sel"));
+  $("dissect-prompt").textContent = DISSECT_DECIDE_PROMPT;
+  $("dissect-done").hidden = true;
+  $("dissect-skip").hidden = $("dissect-keep").hidden = false;
+  dx.decisionT0 = await nextPaint();
+  dx.deciding = true;
+}
+
+function dissectDecide(action) {
+  if (!dx.deciding) return;
+  dx.deciding = false;
+  const dwell = Math.round(performance.now() - dx.decisionT0);
+  const item = dx.item;
+  const first = data.browse.find(b => b.item_id === item.id);
+  const entry = {
+    item_id: item.id,
+    mode: dx.mode,
+    action,
+    first_action: first ? first.action : null,
+    changed: first ? first.action !== action : null,
+    activity_ms: dx.activity_ms,                 // time looking at / working on the dissection
+    dwell_ms: dwell,                             // time from keep/skip appearing to the choice
+    speed: speedOf(dwell),
+    position: dx.index,
+    timestamp: nowISO(),
+    tags: tagsOf(item.id)
+  };
+  if (dx.mode === "shown") {
+    const a = dx.cache[item.id];
+    entry.elements = {
+      outline_found: a.maskOk, canvas_readable: !a.unreadable,
+      bbox: a.bbox, pattern: a.pattern, detail: a.detail,
+      colour_palette: a.palette.map(p => ({ hex: p.hex, share: p.share }))
+    };
+  } else {
+    entry.spheres = dx.spheres.map(s => ({
+      label: s.label, placed: s.placed, x: s.x, y: s.y, text: s.text, text_blank: s.text.trim() === "",
+      moves: s.moves, first_placed_ms: s.first_placed_ms, selections: s.selections,
+      ...(s.colour ? { colour: s.colour } : {})
+    }));
+    entry.placed_count = dx.spheres.filter(s => s.placed).length;
+  }
+  if (dx.debug || action === "debug") entry.debug = true;
+  data.dissect.push(entry);
+  backup("skipstudy_inprogress");
+  $("collage").classList.remove("locked");
+  if (dx.index + 1 < dx.items.length) showDissectItem(dx.index + 1);
+  else {
+    perf.dissect[1] = performance.now();
+    data.dissect_finished_at = nowISO();
+    finish();
+  }
+}
+
+/* ============================================================
    4. END
    ============================================================ */
 let exportName = "";
@@ -777,10 +1453,12 @@ function finish() {
     browse_ms: span(perf.browse),
     replay_ms: span(perf.replay),
     rebrowse_ms: span(perf.rebrowse),
+    dissect_ms: span(perf.dissect),
     glance_threshold_ms: GLANCE_MS,
     linger_threshold_ms: LINGER_MS
   };
   data.summary = { browse: roundSummary(data.browse), rebrowse: roundSummary(data.rebrowse) };
+  if (data.dissect) data.summary.dissect = roundSummary(data.dissect);
   const stamp = data.finished_at.replace(/[:.]/g, "-");
   exportName = `${participantId}_${stamp}.json`;
   exportJSON = JSON.stringify(data, null, 2);
@@ -802,9 +1480,10 @@ function finish() {
    ============================================================ */
 const END_PARTS = {
   off:     { label: "Off", start: () => finish() },
-  flicker: { label: "Flicker with references", start: () => startRebrowseIntro() }
-  // v2:   { label: "Version 2", start: () => startVersion2() },
-  // v3:   { label: "Version 3", start: () => startVersion3() },
+  flicker: { label: "Flicker with references", start: () => startRebrowseIntro() },
+  dissect_shown:  { label: "Dissection – shown", start: () => startDissect("shown") },
+  dissect_guided: { label: "Dissection – you label it", start: () => startDissect("guided") },
+  dissect_free:   { label: "Dissection – find a detail", start: () => startDissect("free") }
 };
 function startEndPart() {
   (END_PARTS[settings.endPart] || END_PARTS.off).start();
@@ -861,6 +1540,11 @@ $("debug-skip").addEventListener("click", e => {
   if (screen === "start") $("start-btn").click();
   else if (screen === "replay-intro") $("replay-go").click();
   else if (screen === "rebrowse-intro") $("rebrowse-go").click();
+  else if (screen === "dissect-intro") $("dissect-go").click();
+  else if (screen === "dissect") {
+    if (dx.deciding) dissectDecide("debug");
+    else if (!dx.busy) { dx.debug = true; enterDecision(); }
+  }
   else if (screen === "browse") act("debug");
   else if (screen === "replay") {
     clearTimeout(revealTimer);
