@@ -41,7 +41,7 @@ const DISSECT_INTRO = {
 };
 const DISSECT_PROMPT = {
   shown:  "",
-  guided: "Draw around it with your mouse. Adding words is optional, and you can skip any question.",
+  guided: "Draw around it with your mouse. You can skip any question.",
   free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is."
 };
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
@@ -155,9 +155,10 @@ const DEFAULT_SETTINGS = {
   #collage.guided #dissect-stage { width: min(60vh, 44vw); cursor: crosshair; touch-action: none; }
   #collage.guided #tray { display: none; }
   #lasso-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
-  #lasso-controls { display: none; gap: 10px; align-items: center; margin-top: 14px;
-                    width: min(92vw, 620px); }
-  #lasso-controls.on { display: flex; }
+  #lasso-panel { display: none; width: min(92vw, 620px); margin-top: 14px; }
+  #lasso-panel.on { display: block; }
+  #lasso-ask { text-align: center; margin-bottom: 10px; }
+  #lasso-controls { display: flex; gap: 10px; align-items: center; }
   #lasso-controls input { flex: 1; font-size: 15px; }
   #lasso-controls button { width: auto; padding: 10px 18px; }
   .q-step { display: block; font-size: 13px; opacity: .7; letter-spacing: .06em; }
@@ -319,10 +320,13 @@ const DEFAULT_SETTINGS = {
       <button id="sphere-remove" type="button">Remove</button>
     </div>
   </div>
-  <div id="lasso-controls">
-    <input type="text" id="lasso-text" autocomplete="off" placeholder="A few words (optional)">
-    <button id="lasso-clear" type="button">Clear</button>
-    <button id="lasso-next" type="button">Next</button>
+  <div id="lasso-panel">
+    <div id="lasso-ask"></div>
+    <div id="lasso-controls">
+      <input type="text" id="lasso-text" autocomplete="off" placeholder="A few words">
+      <button id="lasso-clear" type="button">Clear</button>
+      <button id="lasso-next" type="button">Next</button>
+    </div>
   </div>
   <div class="actions">
     <button id="dissect-done">Done</button>
@@ -1001,7 +1005,7 @@ async function showDissectItem(i) {
   const item = dx.items[i];
   const collage = $("collage");
   collage.className = dx.mode;
-  $("lasso-controls").classList.remove("on");
+  $("lasso-panel").classList.remove("on");
   $("col-left").replaceChildren(); $("col-right").replaceChildren(); $("links").replaceChildren();
   collage.querySelectorAll(".sphere").forEach(s => s.remove());
   $("sphere-pop").hidden = true;
@@ -1238,7 +1242,7 @@ function setupLasso(item, img) {
   }));
   let qi = 0, qStart = 0, drawing = null;
   $("dissect-done").hidden = true;
-  $("lasso-controls").classList.add("on");
+  $("lasso-panel").classList.add("on");
 
   const ir = () => imgRect(stage, img, stage);       // image rect inside the stage
   const toNorm = e => {
@@ -1307,11 +1311,11 @@ function setupLasso(item, img) {
 
   function showQuestion() {
     const q = dx.questions[qi];
-    $("dissect-prompt").innerHTML = "";
+    $("dissect-prompt").textContent = "";
     const step = document.createElement("span"); step.className = "q-step";
     step.textContent = `${qi + 1} of ${dx.questions.length}  ·  ${DISSECT_PROMPT.guided}`;
     const text = document.createElement("span"); text.className = "q-text"; text.textContent = q.question;
-    $("dissect-prompt").append(text, step);
+    $("lasso-ask").replaceChildren(text, step);
     $("lasso-text").value = q.text;
     $("lasso-next").textContent = qi === dx.questions.length - 1 ? "Done" : "Next";
     qStart = performance.now();
@@ -1360,7 +1364,7 @@ function setupLasso(item, img) {
     const q = dx.questions[qi];
     q.time_ms += Math.round(performance.now() - qStart);
     if (qi < dx.questions.length - 1) { qi++; showQuestion(); }
-    else { $("lasso-controls").classList.remove("on"); stage.onpointerdown = null; enterDecision(); }
+    else { $("lasso-panel").classList.remove("on"); stage.onpointerdown = null; enterDecision(); }
   };
   dx.lassoNext = () => $("lasso-next").click();
   showQuestion();
@@ -1574,7 +1578,7 @@ $("debug-skip").addEventListener("click", e => {
     if (dx.deciding) dissectDecide("debug");
     else if (!dx.busy) {
       dx.debug = true;
-      if (dx.mode === "guided" && $("lasso-controls").classList.contains("on")) dx.lassoNext();  // next question
+      if (dx.mode === "guided" && $("lasso-panel").classList.contains("on")) dx.lassoNext();  // next question
       else enterDecision();
     }
   }
