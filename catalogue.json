@@ -21,7 +21,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_01.png"
     },
     {
       "id": "vase_02",
@@ -43,7 +44,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_02.png"
     },
     {
       "id": "vase_03",
@@ -65,7 +67,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_03.png"
     },
     {
       "id": "vase_04",
@@ -87,7 +90,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_04.png"
     },
     {
       "id": "vase_05",
@@ -109,7 +113,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_05.png"
     },
     {
       "id": "vase_06",
@@ -131,7 +136,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_06.png"
     },
     {
       "id": "vase_07",
@@ -153,7 +159,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_07.png"
     },
     {
       "id": "vase_08",
@@ -175,7 +182,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_08.png"
     },
     {
       "id": "vase_09",
@@ -197,7 +205,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_09.png"
     },
     {
       "id": "vase_10",
@@ -219,7 +228,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_10.png"
     },
     {
       "id": "vase_11",
@@ -241,7 +251,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_11.png"
     },
     {
       "id": "vase_12",
@@ -263,7 +274,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_12.png"
     },
     {
       "id": "vase_13",
@@ -285,7 +297,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_13.png"
     },
     {
       "id": "vase_14",
@@ -307,7 +320,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_14.png"
     },
     {
       "id": "vase_15",
@@ -329,7 +343,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_15.png"
     },
     {
       "id": "vase_16",
@@ -351,7 +366,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_16.png"
     },
     {
       "id": "vase_17",
@@ -373,7 +389,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_17.png"
     },
     {
       "id": "vase_18",
@@ -395,7 +412,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_18.png"
     },
     {
       "id": "vase_19",
@@ -410,7 +428,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_19.png"
     },
     {
       "id": "vase_20",
@@ -425,7 +444,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_20.png"
     },
     {
       "id": "vase_21",
@@ -440,7 +460,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_21.png"
     },
     {
       "id": "vase_22",
@@ -455,7 +476,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_22.png"
     },
     {
       "id": "vase_23",
@@ -470,7 +492,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_23.png"
     },
     {
       "id": "vase_24",
@@ -485,7 +508,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_24.png"
     },
     {
       "id": "vase_25",
@@ -500,7 +524,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_25.png"
     },
     {
       "id": "vase_26",
@@ -515,7 +540,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_26.png"
     },
     {
       "id": "vase_27",
@@ -530,7 +556,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_27.png"
     },
     {
       "id": "vase_28",
@@ -545,7 +572,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_28.png"
     },
     {
       "id": "vase_29",
@@ -560,7 +588,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_29.png"
     },
     {
       "id": "vase_30",
@@ -575,7 +604,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_30.png"
     },
     {
       "id": "vase_31",
@@ -590,7 +620,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_31.png"
     },
     {
       "id": "vase_32",
@@ -605,7 +636,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_32.png"
     },
     {
       "id": "vase_33",
@@ -620,7 +652,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_33.png"
     },
     {
       "id": "vase_34",
@@ -635,7 +668,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_34.png"
     },
     {
       "id": "vase_35",
@@ -650,7 +684,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_35.png"
     },
     {
       "id": "vase_36",
@@ -665,7 +700,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_36.png"
     },
     {
       "id": "vase_37",
@@ -680,7 +716,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_37.png"
     },
     {
       "id": "vase_38",
@@ -695,7 +732,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_38.png"
     },
     {
       "id": "vase_39",
@@ -710,7 +748,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_39.png"
     },
     {
       "id": "vase_40",
@@ -725,7 +764,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_40.png"
     },
     {
       "id": "vase_41",
@@ -740,7 +780,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_41.png"
     },
     {
       "id": "vase_42",
@@ -755,7 +796,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_42.png"
     },
     {
       "id": "vase_43",
@@ -770,7 +812,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_43.png"
     },
     {
       "id": "vase_44",
@@ -785,7 +828,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_44.png"
     },
     {
       "id": "vase_45",
@@ -800,7 +844,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_45.png"
     },
     {
       "id": "vase_46",
@@ -815,7 +860,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_46.png"
     },
     {
       "id": "vase_47",
@@ -830,7 +876,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_47.png"
     },
     {
       "id": "vase_48",
@@ -845,7 +892,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_48.png"
     },
     {
       "id": "vase_49",
@@ -860,7 +908,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_49.png"
     },
     {
       "id": "vase_50",
@@ -875,7 +924,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_50.png"
     },
     {
       "id": "vase_51",
@@ -890,7 +940,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_51.png"
     },
     {
       "id": "vase_52",
@@ -905,7 +956,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_52.png"
     },
     {
       "id": "vase_53",
@@ -920,7 +972,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_53.png"
     },
     {
       "id": "vase_54",
@@ -935,7 +988,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_54.png"
     },
     {
       "id": "vase_55",
@@ -950,7 +1004,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_55.png"
     },
     {
       "id": "vase_56",
@@ -965,7 +1020,8 @@
       },
       "dissect": {
         "show_pattern": false
-      }
+      },
+      "cutout": "images/cut/vase_56.png"
     },
     {
       "id": "vase_57",
@@ -980,7 +1036,8 @@
       },
       "dissect": {
         "show_pattern": true
-      }
+      },
+      "cutout": "images/cut/vase_57.png"
     }
   ]
 }
