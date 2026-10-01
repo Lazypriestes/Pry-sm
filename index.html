@@ -49,8 +49,8 @@ const DISSECT_PROMPT = {
 const REFS_COUNT = 8;              // references found per circled part (live search, ranked by CLIP)
 const REFS_HEADING = "Reads like";
 // Generated image (via server.mjs → fal.ai): the circled part is the shape, the words the context.
-const GEN_STRENGTH = 0.65;         // 0.2 = stays close to the circled part … 0.95 = mostly the words
-const GEN_STYLE = "photographic, natural light, rich detail, high quality";
+const GEN_STRENGTH = 0.75;         // 0.6 = stays close to the circled part … 0.92 = mostly the words
+const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detail, photographic";
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
 // "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
 const GUIDED_QUESTIONS = [
@@ -388,7 +388,7 @@ const DEFAULT_SETTINGS = {
       <div id="ref-status"></div>
       <div id="gen-row">
         <span>closer to the part</span>
-        <input type="range" id="gen-strength" min="0.35" max="0.9" step="0.05">
+        <input type="range" id="gen-strength" min="0.6" max="0.92" step="0.02">
         <span>more real</span>
         <button type="button" id="gen-again">↻ another</button>
       </div>
@@ -1596,24 +1596,55 @@ function renderRefs(q) {
 
 /* ---------- generation: shape from the circle, context from the words ---------- */
 
-// What the generator starts from: the circled part at 512px on a neutral backdrop, so its outline is the shape.
+// What the generator starts from (512px square around the circle): the circled part sharp, its
+// surroundings blurred and faded, with a soft edge between. A hard cut-out on a flat backdrop made
+// the model paint the circle's outline as an object; this way the forms *inside* the part lead.
 function genSource(img, q) {
   const W = 512, nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
   const side = Math.max(b.w * nw, b.h * nh) * 1.15, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
   const ox = cx - side / 2, oy = cy - side / 2, k = W / side;
-  const cv = document.createElement("canvas"); cv.width = cv.height = W;
-  const ctx = cv.getContext("2d");
-  ctx.fillStyle = "#9a9a9a"; ctx.fillRect(0, 0, W, W);
-  ctx.save(); ctx.beginPath();
-  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
-  ctx.closePath(); ctx.clip();
-  ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
-  ctx.restore();
+  const mk = () => { const c = document.createElement("canvas"); c.width = c.height = W; return [c, c.getContext("2d")]; };
+  const [cv, ctx] = mk();
+  ctx.filter = "blur(5px) saturate(0.75) brightness(1.06)";             // softer, faded surroundings
+  ctx.drawImage(img, ox - side * 0.05, oy - side * 0.05, side * 1.1, side * 1.1, 0, 0, W, W);
+  ctx.filter = "none";
+  const [part, pctx] = mk();                                            // sharp part with a feathered edge
+  pctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
+  const [mask, mctx] = mk();
+  mctx.filter = "blur(18px)"; mctx.fillStyle = "#fff"; mctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? mctx.lineTo(x, y) : mctx.moveTo(x, y); });
+  mctx.closePath(); mctx.fill();
+  pctx.globalCompositeOperation = "destination-in"; pctx.drawImage(mask, 0, 0);
+  ctx.drawImage(part, 0, 0);
   return cv.toDataURL("image/jpeg", 0.9);
 }
+// A rough colour name for the circled part, so the prompt carries its tone ("warm amber").
+function partColour(img, q) {
+  const cv = document.createElement("canvas"); cv.width = cv.height = 48;
+  const ctx = cv.getContext("2d"), nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  ctx.drawImage(img, b.x * nw, b.y * nh, b.w * nw, b.h * nh, 0, 0, 48, 48);
+  let r = 0, g = 0, bl = 0, n = 0;
+  try { const d = ctx.getImageData(0, 0, 48, 48).data; for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; bl += d[i + 2]; n++; } }
+  catch (e) { return ""; }
+  r /= n; g /= n; bl /= n;
+  const max = Math.max(r, g, bl), min = Math.min(r, g, bl), l = (max + min) / 2, sat = max - min;
+  if (sat < 22) return l > 190 ? "pale white" : l < 60 ? "deep black" : "soft grey";
+  let h = max === r ? ((g - bl) / sat) % 6 : max === g ? (bl - r) / sat + 2 : (r - g) / sat + 4;
+  h = (h * 60 + 360) % 360;
+  const tone = l < 80 ? "deep " : l > 180 ? "pale " : "warm ";
+  const name = h < 15 || h >= 345 ? "red" : h < 45 ? "amber" : h < 70 ? "golden yellow" : h < 160 ? "green"
+    : h < 200 ? "teal" : h < 260 ? "blue" : h < 300 ? "violet" : "rose";
+  return tone + name;
+}
+// One blended phenomenon rather than a list of things to depict:
+// "a close-up photograph of tree rings, its forms flowing like swirl, with the texture of pine cone, warm amber tones, …"
 function genPrompt(q) {
   const typed = q.text.trim();
-  return [typed, ...(q.words || []).filter(w => w !== typed)].filter(Boolean).join(", ") + ", " + GEN_STYLE;
+  const [a, b, c] = [typed, ...(q.words || []).filter(w => w !== typed)].filter(Boolean);
+  const colour = partColour(dx.img, q);
+  return `a close-up photograph of ${a || "an abstract form"}` +
+    (b ? `, its forms flowing like ${b}` : "") + (c ? `, with the texture of ${c}` : "") +
+    (colour ? `, ${colour} tones` : "") + `, ${GEN_STYLE}`;
 }
 async function generateFor(q, newSeed = false) {
   if (!dx.genAvailable || !q.path) return;

@@ -9,8 +9,11 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 8001);
-// Fast image-to-image model; any fal image-to-image endpoint taking image_url/prompt/strength works.
-const GEN_MODEL = process.env.GEN_MODEL || "fal-ai/fast-lightning-sdxl/image-to-image";
+// Image-to-image model. FLUX-dev gave the best "realistic but still the circled shape" results at
+// ~2 s per image (SDXL-Lightning was as fast but mostly repainted the object). Any fal
+// image-to-image endpoint taking image_url / prompt / strength works.
+const GEN_MODEL = process.env.GEN_MODEL || "fal-ai/flux/dev/image-to-image";
+const GEN_STEPS = Number(process.env.GEN_STEPS || 14);
 
 let FAL_KEY = process.env.FAL_KEY;
 try {
@@ -43,10 +46,8 @@ async function generate(req, res) {
   const body = {
     image_url: b.image,
     prompt: b.prompt.slice(0, 500),
-    negative_prompt: "text, watermark, logo, frame, border",
-    strength: Math.min(0.95, Math.max(0.2, Number(b.strength) || 0.65)),
-    num_inference_steps: 4,
-    image_size: "square",
+    strength: Math.min(0.95, Math.max(0.2, Number(b.strength) || 0.75)),
+    num_inference_steps: GEN_STEPS,
     num_images: 1,
     enable_safety_checker: true,
     ...(Number.isInteger(b.seed) ? { seed: b.seed } : {})
