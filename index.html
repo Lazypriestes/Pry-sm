@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* ============================================================
+   EDITABLE TEXT & DEFAULTS
+   Flow: 1 · field (objects drift in, click the ones you'd keep)
+         2 · explore (circle a part of a skipped object; it is imagined behind it)
+         3 · field again (same objects, new order)
+   The previous version of the study lives in classic.html.
+   ============================================================ */
+const TEXT = {
+  intro: "Objects will appear around the screen, a few at a time, and fade away. " +
+         "Click the ones you'd want to look at more. There's no right answer.",
+  field2: "Once more. Click the ones you'd want to look at more.",
+  explore: "Circle any part of the object that catches your eye.",
+  exploreHint: "Draw around it with your mouse",
+  thanks: "Thank you — that's everything."
+};
+const DEFAULTS = {
+  itemCount: 24,          // objects per field round (random subset of the catalogue; 0 = all)
+  visibleMs: 1000,        // time an object stays fully visible
+  fadeMs: 700,            // fade in / fade out
+  onScreen: 3,            // objects visible at the same time (roughly)
+  exploreCount: 5,        // skipped objects explored in stage 2
+  genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
+  debug: true             // "next" button bottom-left; turn off for participants
+};
+const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detail, photographic";
+</script>
+<style>
+  :root {
+    --bg: #111213; --surface: #1c1d1f; --surface-2: #26282b; --line: #34373b;
+    --ink: #e8eaed; --ink-2: #9aa0a6; --accent: #8ab4f8; --sel: #ffffff;
+    --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body { background: var(--bg) var(--noise); color: var(--ink);
+         font: 15px/1.55 Inter, "Google Sans", Roboto, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .screen { position: fixed; inset: 0; display: none; }
+  .screen.active { display: block; }
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 24px 16px; text-align: center; }
+  .lede { max-width: 520px; font-size: 18px; line-height: 1.6; color: var(--ink); margin: 0 0 28px; }
+  .small { font-size: 12px; color: var(--ink-2); letter-spacing: .02em; }
+
+  /* Buttons: pill, quiet */
+  .btn { font: inherit; font-size: 14px; font-weight: 500; height: 40px; padding: 0 22px; border-radius: 999px;
+         border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); cursor: pointer;
+         transition: background .15s, border-color .15s; }
+  .btn:hover { background: #303235; }
+  .btn.primary { background: var(--ink); color: #111; border-color: var(--ink); }
+  .btn.primary:hover { background: #fff; }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btn.icon { width: 40px; padding: 0; font-size: 18px; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  input[type=text], input[type=number] { font: inherit; height: 44px; padding: 0 16px; border-radius: 12px;
+         border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: 280px; }
+  input:focus { outline: none; border-color: var(--accent); }
+
+  /* Top-left settings, bottom-left debug, top-right timer */
+  #settings-btn { position: fixed; top: 16px; left: 16px; z-index: 20; }
+  #settings { position: fixed; top: 64px; left: 16px; z-index: 20; width: 300px; padding: 16px;
+              background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+              font-size: 13px; color: var(--ink-2); }
+  #settings[hidden] { display: none; }
+  #settings label { display: grid; grid-template-columns: 1fr 96px; align-items: center; gap: 8px; margin-bottom: 10px; }
+  #settings input[type=number] { width: 96px; height: 34px; padding: 0 10px; border-radius: 8px; }
+  #settings .check { grid-template-columns: auto 1fr; }
+  #debug-next { position: fixed; top: 16px; left: 16px; z-index: 20; height: 32px; font-size: 12px;
+                background: #3b3420; border-color: #6b5d2b; color: #f5d97b; display: none; }
+  #timer { position: fixed; top: 22px; right: 20px; z-index: 20; font-size: 12px; color: var(--ink-2);
+           font-variant-numeric: tabular-nums; }
+
+  /* Stage 1: the field */
+  #field { overflow: hidden; }
+  .drift { position: absolute; cursor: pointer; opacity: 0; filter: blur(14px);
+           transition-property: opacity, filter, transform; transition-timing-function: ease;
+           transform: scale(.97); user-select: none; -webkit-user-drag: none; }
+  .drift.in { opacity: 1; filter: blur(0); transform: scale(1); }
+  .drift.out { opacity: 0; filter: blur(14px); }
+  .drift.picked { filter: drop-shadow(0 0 18px rgba(255,255,255,.55)); }
+  .drift.picked.out { filter: blur(14px) drop-shadow(0 0 18px rgba(255,255,255,.55)); }
+  .tick { position: absolute; width: 28px; height: 28px; border-radius: 50%; background: var(--sel); color: #111;
+          display: grid; place-items: center; font-size: 15px; pointer-events: none;
+          transform: translate(-50%, -50%) scale(.6); opacity: 0; transition: opacity .2s, transform .2s; }
+  .tick.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  #field-hint { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; }
+
+  /* Stage 2: explore */
+  #explore { overflow: hidden; }
+  #gen-bg { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; opacity: 0;
+            transition: opacity 1.4s ease; }
+  #gen-bg.on { opacity: .95; }
+  #ex-vignette { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1s;
+                 background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.55)); }
+  #ex-vignette.on { opacity: 1; }
+  #ex-wrap { position: absolute; left: 50%; top: 50%; width: min(74vh, 74vw); height: min(74vh, 74vw);
+             transform: translate(-50%, -50%) scale(1); transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
+             touch-action: none; cursor: crosshair; }
+  #ex-wrap img, #ex-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #ex-wrap img { object-fit: contain; transition: filter 1s ease, opacity 1.2s ease; user-select: none; -webkit-user-drag: none; }
+  #ex-wrap.focus img { filter: blur(10px) brightness(.32); }
+  #ex-wrap.focus.imagined img { opacity: .35; }
+  #ex-frag { pointer-events: none; transition: filter .6s; }
+  #ex-wrap.imagined #ex-frag { filter: drop-shadow(0 0 30px rgba(0,0,0,.6)); }
+  #ex-ink { pointer-events: none; }
+  #ex-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; pointer-events: none; }
+  #ex-top .q { font-size: 17px; }
+  #ex-words { position: absolute; left: 24px; bottom: 24px; font-size: 12px; color: rgba(255,255,255,.75);
+              letter-spacing: .04em; text-shadow: 0 1px 6px rgba(0,0,0,.7); }
+  #ex-status { position: absolute; left: 0; right: 0; bottom: 64px; text-align: center; font-size: 12px;
+               color: rgba(255,255,255,.7); letter-spacing: .08em; }
+  #ex-status.pulse { animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  #ex-controls { position: absolute; right: 24px; bottom: 20px; display: flex; gap: 10px; }
+  #ex-controls .btn { backdrop-filter: blur(8px); background: rgba(38,40,43,.7); }
+  #ex-controls .btn.primary { background: var(--ink); }
+  #ex-count { position: absolute; right: 20px; top: 42px; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div id="timer"></div>
+<button class="btn" id="settings-btn">Settings</button>
+<div id="settings" hidden>
+  <label>Objects per round <input type="number" id="s-itemCount" min="0" step="1"></label>
+  <label>Visible (ms) <input type="number" id="s-visibleMs" min="200" step="100"></label>
+  <label>On screen at once <input type="number" id="s-onScreen" min="1" max="6" step="1"></label>
+  <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
+  <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
+  <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
+  <div class="small" id="s-note"></div>
+</div>
+<button class="btn" id="debug-next">next ⏭</button>
+
+<!-- START -->
+<section class="screen active" id="start">
+  <div class="center">
+    <p class="lede" id="intro"></p>
+    <input type="text" id="pid" placeholder="Participant ID (optional)" autocomplete="off" spellcheck="false">
+    <div style="height:20px"></div>
+    <button class="btn primary" id="start-btn" disabled>Loading…</button>
+    <p class="small" id="load-note" style="margin-top:16px"></p>
+  </div>
+</section>
+
+<!-- STAGE 1 / 3: FIELD -->
+<section class="screen" id="field"><div class="small" id="field-hint"></div></section>
+
+<!-- BETWEEN STAGES -->
+<section class="screen" id="pause">
+  <div class="center"><p class="lede" id="pause-text"></p><button class="btn primary" id="pause-go">Continue</button>
+  <p class="small" id="pause-note" style="margin-top:16px"></p></div>
+</section>
+
+<!-- STAGE 2: EXPLORE -->
+<section class="screen" id="explore">
+  <img id="gen-bg" alt="">
+  <div id="ex-vignette"></div>
+  <div id="ex-wrap"><img id="ex-img" alt="" draggable="false"><canvas id="ex-frag"></canvas><canvas id="ex-ink"></canvas></div>
+  <div id="ex-top"><div class="q" id="ex-q"></div><div class="small" id="ex-hint"></div></div>
+  <div id="ex-count"></div>
+  <div id="ex-words"></div>
+  <div id="ex-status"></div>
+  <div id="ex-controls">
+    <button class="btn icon" id="ex-again" title="Imagine another" hidden>↻</button>
+    <button class="btn primary" id="ex-next">Next</button>
+  </div>
+</section>
+
+<!-- END -->
+<section class="screen" id="end">
+  <div class="center"><p class="lede" id="thanks"></p><button class="btn primary" id="download">Download data</button>
+  <p class="small" id="saved-note" style="margin-top:16px"></p></div>
+</section>
+
+<script>
+/* ============================================================
+   STATE & UTILITIES
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const nowISO = () => new Date().toISOString();
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const frame = () => new Promise(r => requestAnimationFrame(t => r(t)));
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === id)); }
+
+let catalogue = null, itemsById = {}, phase = "start", T0 = 0;
+let settings = { ...DEFAULTS };
+try { Object.assign(settings, JSON.parse(localStorage.getItem("objview_settings") || "{}")); } catch (e) {}
+
+const data = {
+  version: "field-explore-v1", participant_id: "", started_at: null, finished_at: null,
+  catalogue_version: "", settings: null, environment: {},
+  rounds: [], explore: [], focus_events: [], debug_skips: []
+};
+
+/* ============================================================
+   SETTINGS (start screen only)
+   ============================================================ */
+const SETTING_KEYS = ["itemCount", "visibleMs", "onScreen", "exploreCount", "genStrength"];
+function applySettings() {
+  $("debug-next").style.display = settings.debug ? "block" : "none";
+  try { localStorage.setItem("objview_settings", JSON.stringify(settings)); } catch (e) {}
+}
+SETTING_KEYS.forEach(k => {
+  $("s-" + k).value = settings[k];
+  $("s-" + k).oninput = e => { const v = Number(e.target.value); if (!Number.isNaN(v)) { settings[k] = v; applySettings(); } };
+});
+$("s-debug").checked = settings.debug;
+$("s-debug").onchange = e => { settings.debug = e.target.checked; applySettings(); };
+$("settings-btn").onclick = () => { $("settings").hidden = !$("settings").hidden; };
+applySettings();
+
+/* ============================================================
+   FOCUS / TIMER
+   ============================================================ */
+function logFocus(type) { if (phase !== "start" && phase !== "end") data.focus_events.push({ type, phase, t_ms: Math.round(performance.now() - T0), timestamp: nowISO() }); }
+addEventListener("blur", () => logFocus("blur"));
+addEventListener("focus", () => logFocus("focus"));
+document.addEventListener("visibilitychange", () => logFocus(document.hidden ? "hidden" : "visible"));
+let timerInt = null;
+function startTimer() {
+  timerInt = setInterval(() => { const s = Math.floor((performance.now() - T0) / 1000); $("timer").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }, 250);
+}
+
+/* ============================================================
+   LOADING: catalogue + trimmed cut-outs (transparent margins removed)
+   ============================================================ */
+const cut = {};   // id → { url (trimmed PNG blob URL), w, h, trim:{x,y,w,h} in source pixels, srcW, srcH }
+function loadImage(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+async function prepareCut(item) {
+  const img = await loadImage(item.cutout || item.image);
+  const W = img.naturalWidth, H = img.naturalHeight;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d"); ctx.drawImage(img, 0, 0);
+  let x0 = W, y0 = H, x1 = 0, y1 = 0;
+  try {
+    const d = ctx.getImageData(0, 0, W, H).data;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3] > 12) {
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+  } catch (e) { x0 = 0; y0 = 0; x1 = W - 1; y1 = H - 1; }
+  if (x1 < x0) { x0 = 0; y0 = 0; x1 = W - 1; y1 = H - 1; }
+  const tw = x1 - x0 + 1, th = y1 - y0 + 1;
+  const t = document.createElement("canvas"); t.width = tw; t.height = th;
+  t.getContext("2d").drawImage(img, x0, y0, tw, th, 0, 0, tw, th);
+  const url = URL.createObjectURL(await new Promise(r => t.toBlob(r, "image/png")));
+  cut[item.id] = { url, w: tw, h: th, trim: { x: x0, y: y0, w: tw, h: th }, srcW: W, srcH: H };
+}
+
+(async () => {
+  $("intro").textContent = TEXT.intro;
+  catalogue = await (await fetch("catalogue.json", { cache: "no-store" })).json();
+  catalogue.items.forEach(it => { itemsById[it.id] = it; });
+  data.catalogue_version = catalogue.version || "";
+  let n = 0;
+  await Promise.all(catalogue.items.map(it => prepareCut(it).then(() => { $("load-note").textContent = `preparing ${++n}/${catalogue.items.length}`; })));
+  $("load-note").textContent = "";
+  $("s-note").textContent = `${catalogue.items.length} objects in the catalogue.`;
+  $("start-btn").disabled = false; $("start-btn").textContent = "Start";
+})();
+
+/* ============================================================
+   START
+   ============================================================ */
+let roundItems = [];
+$("start-btn").onclick = async () => {
+  data.participant_id = ($("pid").value.trim() || "P" + Math.random().toString(36).slice(2, 7).toUpperCase()).replace(/[^\w.-]+/g, "_");
+  data.started_at = nowISO();
+  data.settings = { ...settings };
+  data.environment = { user_agent: navigator.userAgent, viewport: { w: innerWidth, h: innerHeight }, dpr: devicePixelRatio };
+  $("settings-btn").style.display = "none"; $("settings").hidden = true;
+  T0 = performance.now(); startTimer();
+  const all = shuffle(catalogue.items);
+  roundItems = settings.itemCount > 0 ? all.slice(0, settings.itemCount) : all;
+  prepareImagination();                         // load CLIP + check generation while stage 1 runs
+  await runField(1);
+  await runExplore();
+  await pauseScreen(TEXT.field2);
+  await runField(2);
+  finish();
+};
+
+function pauseScreen(text, note = "") {
+  return new Promise(res => {
+    phase = "pause"; $("pause-text").textContent = text; $("pause-note").textContent = note;
+    show("pause"); $("pause-go").focus();
+    $("pause-go").onclick = () => res();
+    dbgNext = () => res();
+  });
+}
+
+/* ============================================================
+   STAGE 1 / 3: FIELD — objects drift in at random places, a few at a time
+   ============================================================ */
+let dbgNext = null;
+async function runField(round) {
+  phase = "field" + round;
+  const field = $("field");
+  field.querySelectorAll(".drift,.tick").forEach(e => e.remove());
+  $("field-hint").textContent = round === 1 ? "click the ones you'd keep looking at" : "";
+  show("field");
+  const rec = { round, started_at: nowISO(), t_start_ms: Math.round(performance.now() - T0), items: [] };
+  data.rounds.push(rec);
+  const order = shuffle(roundItems);
+  const visible = new Set();
+  const life = settings.fadeMs * 2 + settings.visibleMs;
+  const gap = life / Math.max(1, settings.onScreen);
+  let stop = false;
+  dbgNext = () => { stop = true; };
+  await sleep(600);
+
+  const sizeH = () => Math.min(innerHeight * 0.34, innerWidth * 0.26);
+  function place(w, h) {
+    const m = 24, top = 60, bottom = 60;
+    for (let tries = 0; tries < 40; tries++) {
+      const x = m + Math.random() * (innerWidth - w - 2 * m), y = top + Math.random() * (innerHeight - h - top - bottom);
+      const free = [...visible].every(v => x + w + 20 < v.x || v.x + v.w + 20 < x || y + h + 20 < v.y || v.y + v.h + 20 < y);
+      if (free) return { x, y };
+    }
+    return { x: m + Math.random() * (innerWidth - w - 2 * m), y: top + Math.random() * (innerHeight - h - top - bottom) };
+  }
+
+  const done = [];
+  for (let k = 0; k < order.length && !stop; k++) {
+    const item = order[k], c = cut[item.id];
+    const h = sizeH(), w = Math.min(h * c.w / c.h, innerWidth * 0.3), hh = w * c.h / c.w;
+    const p = place(w, hh);
+    const el = new Image(); el.src = c.url; el.className = "drift"; el.draggable = false;
+    Object.assign(el.style, { left: p.x + "px", top: p.y + "px", width: w + "px", height: hh + "px",
+                              transitionDuration: settings.fadeMs + "ms" });
+    const slot = { x: p.x, y: p.y, w, h: hh, id: item.id };
+    visible.add(slot);
+    const entry = { item_id: item.id, order: k, x: +(p.x / innerWidth).toFixed(3), y: +(p.y / innerHeight).toFixed(3),
+                    w: +(w / innerWidth).toFixed(3), selected: false, click_ms: null,
+                    co_visible: [...visible].filter(v => v !== slot).map(v => v.id), tags: item.tags };
+    rec.items.push(entry);
+    field.appendChild(el);
+    done.push((async () => {
+      await frame();
+      const tIn = await frame();
+      entry.t_appear_ms = Math.round(tIn - T0);
+      el.classList.add("in");
+      el.onclick = ev => {
+        if (entry.selected) return;
+        entry.selected = true;
+        entry.click_ms = Math.round(performance.now() - tIn);            // from the start of the fade-in
+        el.classList.add("picked");
+        const tick = document.createElement("div"); tick.className = "tick"; tick.textContent = "✓";
+        tick.style.left = p.x + w / 2 + "px"; tick.style.top = p.y + hh / 2 + "px";
+        field.appendChild(tick); requestAnimationFrame(() => tick.classList.add("on"));
+        setTimeout(() => { tick.classList.remove("on"); setTimeout(() => tick.remove(), 300); }, 600);
+      };
+      await sleep(settings.fadeMs + settings.visibleMs);
+      el.classList.add("out");
+      el.style.pointerEvents = "none";
+      await sleep(settings.fadeMs);
+      el.remove(); visible.delete(slot);
+    })());
+    await sleep(gap * (0.8 + Math.random() * 0.4));
+  }
+  await Promise.all(done);
+  rec.finished_at = nowISO();
+  rec.selected = rec.items.filter(i => i.selected).map(i => i.item_id);
+  backup();
+  await sleep(400);
+}
+
+/* ============================================================
+   STAGE 2: EXPLORE — circle a part; everything else blurs and darkens,
+   the view moves in, and an image imagined from that part fills the background.
+   CLIP (references.js) names what the part reads like → prompt;
+   the part itself (soft-edged) is the shape → server.mjs → fal.ai.
+   ============================================================ */
+let refsLib = null, genAvailable = false;
+function prepareImagination() {
+  fetch("api/status").then(r => r.json()).then(s => { genAvailable = !!s.generation; data.generation_model = s.model; }).catch(() => {});
+  import("./references.js").then(lib => { refsLib = lib; return lib.loadReferences(); })
+    .then(info => { data.clip = info; }).catch(e => { data.clip_error = String(e.message || e); });
+}
+
+async function runExplore() {
+  const skipped = data.rounds[0].items.filter(i => !i.selected).map(i => itemsById[i.item_id]);
+  const list = shuffle(skipped).slice(0, settings.exploreCount);
+  if (!list.length) return;
+  await pauseScreen(TEXT.explore, "");
+  phase = "explore";
+  show("explore");
+  for (let n = 0; n < list.length; n++) await exploreItem(list[n], n, list.length);
+}
+
+function exploreItem(item, n, total) {
+  return new Promise(async resolve => {
+    const wrap = $("ex-wrap"), img = $("ex-img"), frag = $("ex-frag"), ink = $("ex-ink"), bg = $("gen-bg");
+    const c = cut[item.id], source = await loadImage(item.image);
+    wrap.className = ""; wrap.style.transform = "translate(-50%, -50%) scale(1)";
+    bg.classList.remove("on"); $("ex-vignette").classList.remove("on");
+    img.src = c.url;
+    $("ex-q").textContent = TEXT.explore; $("ex-hint").textContent = TEXT.exploreHint;
+    $("ex-count").textContent = `${n + 1} / ${total}`;
+    $("ex-words").textContent = ""; $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse");
+    $("ex-again").hidden = true;
+    const rec = { item_id: item.id, order: n, t_start_ms: Math.round(performance.now() - T0), circles: [], tags: item.tags };
+    data.explore.push(rec);
+    const t0 = performance.now();
+    let cur = null, drawing = null, token = 0;
+
+    // Where the trimmed cut-out sits inside the square wrap (object-fit: contain).
+    const rect = () => {
+      const W = wrap.offsetWidth, k = Math.min(W / c.w, W / c.h);
+      return { x: (W - c.w * k) / 2, y: (W - c.h * k) / 2, w: c.w * k, h: c.h * k, W };
+    };
+    const sizeCanvases = () => {
+      const d = devicePixelRatio || 1, W = wrap.offsetWidth;
+      [frag, ink].forEach(cv => { cv.width = Math.round(W * d); cv.height = Math.round(W * d); });
+    };
+    sizeCanvases();
+    const toNorm = e => {
+      const b = wrap.getBoundingClientRect(), r = rect(), s = b.width / r.W;      // account for the zoom
+      return { x: Math.min(1, Math.max(0, ((e.clientX - b.left) / s - r.x) / r.w)),
+               y: Math.min(1, Math.max(0, ((e.clientY - b.top) / s - r.y) / r.h)) };
+    };
+    function trace(ctx, pts) {
+      const r = rect(), d = devicePixelRatio || 1;
+      ctx.beginPath();
+      pts.forEach((p, i) => { const x = (r.x + p.x * r.w) * d, y = (r.y + p.y * r.h) * d; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+    }
+    function drawInk(pts, closed) {
+      const ctx = ink.getContext("2d"), d = devicePixelRatio || 1;
+      ctx.clearRect(0, 0, ink.width, ink.height);
+      if (!pts || pts.length < 2) return;
+      trace(ctx, pts); if (closed) ctx.closePath();
+      ctx.lineWidth = 1.5 * d; ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineJoin = "round";
+      ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 6 * d; ctx.stroke();
+    }
+    function drawFrag(pts) {
+      const ctx = frag.getContext("2d"), r = rect(), d = devicePixelRatio || 1;
+      ctx.clearRect(0, 0, frag.width, frag.height);
+      if (!pts) return;
+      const ci = new Image(); ci.src = c.url;
+      const paint = () => { ctx.save(); trace(ctx, pts); ctx.closePath(); ctx.clip();
+        ctx.drawImage(ci, r.x * d, r.y * d, r.w * d, r.h * d); ctx.restore(); };
+      ci.complete ? paint() : (ci.onload = paint);
+    }
+    // Normalised (trimmed cut-out) → normalised (original photo).
+    const toSrc = p => ({ x: (c.trim.x + p.x * c.trim.w) / c.srcW, y: (c.trim.y + p.y * c.trim.h) / c.srcH });
+
+    function reset(instant = false) {
+      if (instant) wrap.style.transition = "none";               // a new stroke must map onto the unzoomed view
+      wrap.className = ""; wrap.style.transform = "translate(-50%, -50%) scale(1)";
+      if (instant) { void wrap.offsetWidth; wrap.style.transition = ""; }
+      bg.classList.remove("on"); $("ex-vignette").classList.remove("on");
+      drawFrag(null); $("ex-words").textContent = ""; $("ex-status").textContent = ""; $("ex-again").hidden = true;
+    }
+
+    wrap.onpointerdown = e => {
+      e.preventDefault(); wrap.setPointerCapture(e.pointerId);
+      if (cur) { reset(true); cur = null; token++; }
+      drawing = [toNorm(e)];
+      if (!rec.first_stroke_ms) rec.first_stroke_ms = Math.round(performance.now() - t0);
+    };
+    wrap.onpointermove = e => { if (!drawing) return; drawing.push(toNorm(e)); drawInk(drawing, false); };
+    wrap.onpointerup = wrap.onpointercancel = () => {
+      if (!drawing) return;
+      const pts = drawing; drawing = null;
+      const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+      const bb = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+      if (pts.length < 4 || Math.max(bb.w, bb.h) < 0.03) { drawInk(null); return; }
+      drawInk(pts, true);
+      focusOn(pts, bb);
+    };
+
+    async function focusOn(pts, bb) {
+      const my = ++token;
+      const r = rect(), cx = (r.x + (bb.x + bb.w / 2) * r.w) / r.W * 100, cy = (r.y + (bb.y + bb.h / 2) * r.h) / r.W * 100;
+      wrap.style.transformOrigin = `${cx}% ${cy}%`;
+      wrap.style.transform = "translate(-50%, -50%) scale(1.14)";
+      wrap.classList.add("focus");
+      $("ex-vignette").classList.add("on");
+      drawFrag(pts);
+      const circ = { path: pts.map(p => [+p.x.toFixed(4), +p.y.toFixed(4)]), bbox: bb, t_ms: Math.round(performance.now() - t0) };
+      rec.circles.push(circ); cur = circ;
+      // Geometry in the original photo, for CLIP and the generator.
+      const sp = pts.map(toSrc), sxs = sp.map(p => p.x), sys = sp.map(p => p.y);
+      const sbb = { x: Math.min(...sxs), y: Math.min(...sys), w: Math.max(...sxs) - Math.min(...sxs), h: Math.max(...sys) - Math.min(...sys) };
+      const q = { path: sp, bbox: sbb, text: "" };
+      $("ex-status").textContent = "imagining"; $("ex-status").classList.add("pulse");
+      try {
+        let words = [];
+        if (refsLib) {
+          await refsLib.loadReferences();
+          const part = await refsLib.embedPart(cropForClip(source, q));
+          words = refsLib.readsLike(part);
+        }
+        if (my !== token) return;
+        circ.reads_like = words;
+        $("ex-words").textContent = words.join("  ·  ");
+        await imagine(q, words, circ, my);
+      } catch (e) {
+        circ.error = String(e.message || e);
+        if (my === token) { $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse"); }
+      }
+    }
+
+    async function imagine(q, words, circ, my, newSeed = false) {
+      if (!genAvailable) { $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse"); return; }
+      const prompt = genPrompt(source, q, words), strength = settings.genStrength;
+      const seed = newSeed || !circ.seed ? Math.floor(Math.random() * 1e9) : circ.seed;
+      const t = performance.now();
+      const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: genSource(source, q), prompt, strength, seed }) });
+      const j = await res.json();
+      if (my !== token) return;
+      if (!res.ok) throw new Error(j.error || res.status);
+      const gen = { url: j.url, prompt, strength, seed: j.seed ?? seed, ms: Math.round(performance.now() - t) };
+      (circ.generated = circ.generated || []).push(gen); circ.seed = gen.seed;
+      await loadImage(j.url).catch(() => {});
+      if (my !== token) return;
+      bg.classList.remove("on");
+      await sleep(bg.src ? 300 : 0);
+      bg.src = j.url;
+      bg.classList.add("on"); wrap.classList.add("imagined");
+      $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse");
+      $("ex-again").hidden = false;
+      $("ex-again").onclick = async e => {
+        e.currentTarget.blur();
+        circ.again = (circ.again || 0) + 1;
+        $("ex-status").textContent = "imagining"; $("ex-status").classList.add("pulse");
+        const mine = ++token;
+        try { await imagine(q, words, circ, mine, true); } catch (err) { $("ex-status").textContent = ""; }
+      };
+    }
+
+    const next = () => {
+      token++;
+      wrap.onpointerdown = wrap.onpointermove = wrap.onpointerup = null;
+      rec.time_ms = Math.round(performance.now() - t0);
+      drawInk(null); reset(); bg.removeAttribute("src");
+      backup();
+      resolve();
+    };
+    $("ex-next").onclick = e => { e.currentTarget.blur(); next(); };
+    dbgNext = next;
+  });
+}
+
+// CLIP input: the circled part, square crop, outside the circle greyed out.
+function cropForClip(img, q) {
+  const nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.1, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const ox = cx - side / 2, oy = cy - side / 2, W = 224, k = W / side;
+  const cv = document.createElement("canvas"); cv.width = cv.height = W;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#808080"; ctx.fillRect(0, 0, W, W);
+  ctx.save(); ctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  ctx.closePath(); ctx.clip(); ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W); ctx.restore();
+  return cv;
+}
+// Generator input: the part sharp, its surroundings softened, feathered edge (so the inner forms lead).
+function genSource(img, q) {
+  const W = 512, nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.15, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const ox = cx - side / 2, oy = cy - side / 2, k = W / side;
+  const mk = () => { const c = document.createElement("canvas"); c.width = c.height = W; return [c, c.getContext("2d")]; };
+  const [cv, ctx] = mk();
+  ctx.filter = "blur(5px) saturate(0.75) brightness(1.06)";
+  ctx.drawImage(img, ox - side * 0.05, oy - side * 0.05, side * 1.1, side * 1.1, 0, 0, W, W);
+  ctx.filter = "none";
+  const [part, pctx] = mk(); pctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
+  const [mask, mctx] = mk();
+  mctx.filter = "blur(18px)"; mctx.fillStyle = "#fff"; mctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? mctx.lineTo(x, y) : mctx.moveTo(x, y); });
+  mctx.closePath(); mctx.fill();
+  pctx.globalCompositeOperation = "destination-in"; pctx.drawImage(mask, 0, 0);
+  ctx.drawImage(part, 0, 0);
+  return cv.toDataURL("image/jpeg", 0.9);
+}
+function partColour(img, q) {
+  const cv = document.createElement("canvas"); cv.width = cv.height = 48;
+  const ctx = cv.getContext("2d"), nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  ctx.drawImage(img, b.x * nw, b.y * nh, b.w * nw, b.h * nh, 0, 0, 48, 48);
+  let r = 0, g = 0, bl = 0, n = 0;
+  try { const d = ctx.getImageData(0, 0, 48, 48).data; for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; bl += d[i + 2]; n++; } } catch (e) { return ""; }
+  r /= n; g /= n; bl /= n;
+  const max = Math.max(r, g, bl), min = Math.min(r, g, bl), l = (max + min) / 2, sat = max - min;
+  if (sat < 22) return l > 190 ? "pale white" : l < 60 ? "deep black" : "soft grey";
+  let h = max === r ? ((g - bl) / sat) % 6 : max === g ? (bl - r) / sat + 2 : (r - g) / sat + 4;
+  h = (h * 60 + 360) % 360;
+  const tone = l < 80 ? "deep " : l > 180 ? "pale " : "warm ";
+  return tone + (h < 15 || h >= 345 ? "red" : h < 45 ? "amber" : h < 70 ? "golden yellow" : h < 160 ? "green" : h < 200 ? "teal" : h < 260 ? "blue" : h < 300 ? "violet" : "rose");
+}
+function genPrompt(img, q, words) {
+  const [a, b, c] = words, colour = partColour(img, q);
+  return `a close-up photograph of ${a || "an abstract form"}` + (b ? `, its forms flowing like ${b}` : "") +
+    (c ? `, with the texture of ${c}` : "") + (colour ? `, ${colour} tones` : "") + `, ${GEN_STYLE}`;
+}
+
+/* ============================================================
+   END
+   ============================================================ */
+let exportName = "", exportJSON = "";
+function backup() { try { localStorage.setItem("objview_inprogress", JSON.stringify(data)); } catch (e) {} }
+function summarise() {
+  const [r1, r2] = data.rounds;
+  const sum = r => r && { shown: r.items.length, selected: r.items.filter(i => i.selected).length,
+    mean_click_ms: Math.round(r.items.filter(i => i.selected).reduce((a, i) => a + i.click_ms, 0) / Math.max(1, r.items.filter(i => i.selected).length)) };
+  const s = { round1: sum(r1), round2: sum(r2) };
+  if (r1 && r2) {
+    const sel2 = new Map(r2.items.map(i => [i.item_id, i.selected]));
+    const explored = new Set(data.explore.map(e => e.item_id));
+    const changes = r1.items.filter(i => sel2.has(i.item_id) && sel2.get(i.item_id) !== i.selected)
+      .map(i => ({ item_id: i.item_id, round1: i.selected, round2: sel2.get(i.item_id), explored: explored.has(i.item_id) }));
+    s.changed = changes;
+    s.explored_now_selected = [...explored].filter(id => sel2.get(id)).length;
+    s.explored_count = explored.size;
+  }
+  return s;
+}
+function finish() {
+  phase = "end"; clearInterval(timerInt);
+  data.finished_at = nowISO(); data.session_ms = Math.round(performance.now() - T0);
+  data.summary = summarise();
+  exportName = `${data.participant_id}_${data.finished_at.replace(/[:.]/g, "-")}.json`;
+  exportJSON = JSON.stringify(data, null, 2);
+  try { localStorage.setItem("objview_" + exportName, exportJSON); localStorage.removeItem("objview_inprogress");
+        $("saved-note").textContent = "A backup copy has also been saved in this browser."; } catch (e) {}
+  $("thanks").textContent = TEXT.thanks;
+  show("end");
+}
+$("download").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([exportJSON], { type: "application/json" }));
+  a.download = exportName; document.body.appendChild(a); a.click(); a.remove();
+};
+$("debug-next").onclick = e => { e.currentTarget.blur(); data.debug_skips.push({ phase, timestamp: nowISO() }); if (dbgNext) dbgNext(); };
+</script>
+</body>
+</html>
