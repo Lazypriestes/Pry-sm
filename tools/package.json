@@ -1,0 +1,9 @@
+{
+  "name": "skipstudy-tools",
+  "private": true,
+  "type": "module",
+  "description": "Offline helpers: fetch the reference library and compute its CLIP embeddings.",
+  "dependencies": {
+    "@huggingface/transformers": "^3"
+  }
+}

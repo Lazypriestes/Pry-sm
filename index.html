@@ -37,13 +37,17 @@ const FLICKER_MS = 400;            // time each image stays up before switching.
 const DISSECT_INTRO = {
   shown:  "Let's look again at some of the ones you skipped, taken apart into their elements.",
   guided: "Let's look again at some of the ones you skipped, one part at a time.",
-  free:   "Let's look again at some of the ones you skipped."
+  free:   "Let's look again at some of the ones you skipped.",
+  refs:   "Let's look again at some of the ones you skipped, one part at a time. As you circle a part, related images will appear."
 };
 const DISSECT_PROMPT = {
   shown:  "",
   guided: "Draw around it with your mouse. You can skip any question.",
-  free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is."
+  free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is.",
+  refs:   "Draw around it with your mouse. You can skip any question."
 };
+const REFS_COUNT = 4;              // references shown per circled part
+const REFS_HEADING = "This part might connect to…";
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
 // "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
 const GUIDED_QUESTIONS = [
@@ -161,6 +165,32 @@ const DEFAULT_SETTINGS = {
   #lasso-controls { display: flex; gap: 10px; align-items: center; }
   #lasso-controls input { flex: 1; font-size: 15px; }
   #lasso-controls button { width: auto; padding: 10px 18px; }
+  #collage.refs #dissect-stage { width: min(50vh, 40vw); }
+  #ref-strip { display: none; margin-top: 12px; }
+  #ref-strip.on { display: block; }
+  #ref-strip .head { font-size: 13px; opacity: .75; margin-bottom: 6px; }
+  #ref-list { display: grid; grid-template-columns: repeat(4, minmax(0, 140px)); justify-content: space-between;
+              gap: 10px; min-height: 40px; }
+  .ref { background: #e6e6e6; border: 1px solid #555; border-radius: 4px; padding: 4px; cursor: pointer;
+         font-size: 11px; line-height: 1.3; text-align: left; width: 100%; min-width: 0; }
+  .ref:hover, .ref:focus { background: #e6e6e6; }
+  .ref img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #ccc; }
+  .ref .t { margin-top: 4px; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden; }
+  .ref .m { opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #ref-status { font-size: 13px; opacity: .7; }
+  #ref-view { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.75);
+              display: flex; align-items: center; justify-content: center; padding: 24px; }
+  #ref-view[hidden] { display: none; }
+  #ref-view .box { background: #eee; max-width: min(900px, 94vw); max-height: 92vh; display: grid;
+                   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; padding: 16px; border-radius: 4px; }
+  #ref-view img { width: 100%; max-height: 80vh; object-fit: contain; background: #ddd; }
+  #ref-view .info { font-size: 14px; overflow: auto; }
+  #ref-view .info h3 { margin: 0 0 6px; font-size: 18px; }
+  #ref-view .info p { margin: 0 0 6px; }
+  #ref-view .src { font-size: 12px; opacity: .7; margin-top: 12px; }
+  #ref-view button { margin-top: 12px; width: auto; padding: 6px 14px; font-size: 14px; }
+  #ref-ready { font-size: 14px; opacity: .75; margin-top: 10px; min-height: 1.4em; }
   .q-step { display: block; font-size: 13px; opacity: .7; letter-spacing: .06em; }
   .q-text { display: block; font-size: 20px; margin-top: 2px; }
   #tray { width: 100%; height: 118px; }
@@ -303,6 +333,7 @@ const DEFAULT_SETTINGS = {
   <div class="panel">
     <p id="dissect-intro-text"></p>
     <div class="actions"><button id="dissect-go">Continue</button></div>
+    <div id="ref-ready"></div>
   </div>
 </section>
 <section id="dissect" class="screen">
@@ -327,6 +358,11 @@ const DEFAULT_SETTINGS = {
       <button id="lasso-clear" type="button">Clear</button>
       <button id="lasso-next" type="button">Next</button>
     </div>
+    <div id="ref-strip">
+      <div class="head" id="ref-head"></div>
+      <div id="ref-list"></div>
+      <div id="ref-status"></div>
+    </div>
   </div>
   <div class="actions">
     <button id="dissect-done">Done</button>
@@ -334,6 +370,18 @@ const DEFAULT_SETTINGS = {
     <button id="dissect-keep" hidden>Keep</button>
   </div>
 </section>
+
+<div id="ref-view" hidden>
+  <div class="box">
+    <img id="ref-view-img" alt="">
+    <div class="info">
+      <h3 id="ref-view-title"></h3>
+      <div id="ref-view-meta"></div>
+      <div class="src">The Metropolitan Museum of Art · Open Access (CC0)</div>
+      <button id="ref-view-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- 4. END -->
 <section id="end" class="screen">
@@ -871,6 +919,7 @@ function advanceRebrowse() {
    Afterwards the participant chooses keep or skip again.
    ============================================================ */
 const dx = { mode: null, items: [], index: -1, cache: {}, deciding: false, busy: false };
+const isLasso = () => dx.mode === "guided" || dx.mode === "refs";
 
 // Pattern is only offered for objects that have one: "dissect": { "show_pattern": true } in catalogue.json.
 const hasPattern = item => !item.dissect || item.dissect.show_pattern !== false;
@@ -905,6 +954,8 @@ function startDissect(mode) {
   if (!dx.items.length) return finish();
   dx.items.forEach(it => preload(it));
   $("dissect-intro-text").textContent = DISSECT_INTRO[mode];
+  $("ref-ready").textContent = "";
+  if (mode === "refs") prepareReferences();
   show("dissect-intro");
   $("dissect-go").focus();
 }
@@ -1004,7 +1055,7 @@ async function showDissectItem(i) {
   dx.index = i; dx.deciding = false; dx.busy = true; dx.debug = false; dx.layout = null;
   const item = dx.items[i];
   const collage = $("collage");
-  collage.className = dx.mode;
+  collage.className = dx.mode === "refs" ? "guided refs" : dx.mode;
   $("lasso-panel").classList.remove("on");
   $("col-left").replaceChildren(); $("col-right").replaceChildren(); $("links").replaceChildren();
   collage.querySelectorAll(".sphere").forEach(s => s.remove());
@@ -1021,7 +1072,7 @@ async function showDissectItem(i) {
 
   dx.spheres = null;
   if (dx.mode === "shown") setupShown(item, img);
-  else if (dx.mode === "guided") setupLasso(item, img);
+  else if (isLasso()) setupLasso(item, img);
   else setupSpheres(item, img);
   dx.layout();
   dx.t0 = await nextPaint();
@@ -1238,8 +1289,12 @@ function setupLasso(item, img) {
   stage.appendChild(cv);
   dx.questions = GUIDED_QUESTIONS.map(q => ({
     ...q, tile: makeTile(q.side, q.label), path: null, bbox: null, area: null,
-    text: "", redraws: 0, first_stroke_ms: null, time_ms: 0
+    text: "", redraws: 0, first_stroke_ms: null, time_ms: 0,
+    refs: null, refsText: "", opened: [], imageVec: null
   }));
+  const withRefs = dx.mode === "refs" && dx.refsReady;
+  $("ref-strip").classList.toggle("on", dx.mode === "refs");
+  $("ref-head").textContent = REFS_HEADING;
   let qi = 0, qStart = 0, drawing = null;
   $("dissect-done").hidden = true;
   $("lasso-panel").classList.add("on");
@@ -1313,11 +1368,12 @@ function setupLasso(item, img) {
     const q = dx.questions[qi];
     $("dissect-prompt").textContent = "";
     const step = document.createElement("span"); step.className = "q-step";
-    step.textContent = `${qi + 1} of ${dx.questions.length}  ·  ${DISSECT_PROMPT.guided}`;
+    step.textContent = `${qi + 1} of ${dx.questions.length}  ·  ${DISSECT_PROMPT[dx.mode]}`;
     const text = document.createElement("span"); text.className = "q-text"; text.textContent = q.question;
     $("lasso-ask").replaceChildren(text, step);
     $("lasso-text").value = q.text;
     $("lasso-next").textContent = qi === dx.questions.length - 1 ? "Done" : "Next";
+    if (dx.mode === "refs") renderRefs(q);
     qStart = performance.now();
     dx.layout();
   }
@@ -1348,15 +1404,22 @@ function setupLasso(item, img) {
       q.path = pts;
       q.bbox = { x: +bbox.x.toFixed(4), y: +bbox.y.toFixed(4), w: +bbox.w.toFixed(4), h: +bbox.h.toFixed(4) };
       q.area = +polyArea(pts).toFixed(4);
+      if (withRefs) findRefs(q, true);
     }
     dx.layout();
   };
-  $("lasso-text").oninput = e => { const q = dx.questions[qi]; q.text = e.target.value; q.tile.txt.textContent = q.text; };
+  let textTimer = null;
+  $("lasso-text").oninput = e => {
+    const q = dx.questions[qi]; q.text = e.target.value; q.tile.txt.textContent = q.text;
+    if (withRefs && q.path) { clearTimeout(textTimer); textTimer = setTimeout(() => findRefs(q, false), 600); }
+  };
   $("lasso-clear").onclick = e => {
     e.currentTarget.blur();
     const q = dx.questions[qi];
     if (q.path) q.redraws++;
     q.path = q.bbox = q.area = null;
+    q.refs = null; q.imageVec = null;
+    if (dx.mode === "refs") renderRefs(q);
     dx.layout();
   };
   $("lasso-next").onclick = e => {
@@ -1369,6 +1432,97 @@ function setupLasso(item, img) {
   dx.lassoNext = () => $("lasso-next").click();
   showQuestion();
 }
+
+/* ---------- Circle + references (references.js) ---------- */
+
+let refsLib = null;
+function prepareReferences() {
+  dx.refsReady = false;
+  $("dissect-go").disabled = true;
+  $("ref-ready").textContent = "Preparing…";
+  const fallback = setTimeout(() => {                    // don't hold the participant up forever
+    $("dissect-go").disabled = false;
+  }, 60000);
+  import("./references.js").then(lib => {
+    refsLib = lib;
+    return lib.loadReferences(f => { $("ref-ready").textContent = `Preparing… ${Math.round(f * 100)}%`; });
+  }).then(info => {
+    dx.refsReady = true;
+    data.references_model = info;
+    $("ref-ready").textContent = "";
+  }).catch(err => {
+    console.error(err);
+    data.references_error = String(err.message || err);
+    $("ref-ready").textContent = "";
+  }).finally(() => { clearTimeout(fallback); $("dissect-go").disabled = false; });
+}
+
+// What CLIP sees: the circled part, cropped square, with everything outside the circle greyed out.
+function cropForClip(img, q) {
+  const nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.1, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const ox = cx - side / 2, oy = cy - side / 2, W = 224, k = W / side;
+  const cv = document.createElement("canvas"); cv.width = cv.height = W;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#808080"; ctx.fillRect(0, 0, W, W);
+  ctx.save();
+  ctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  ctx.closePath(); ctx.clip();
+  ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
+  ctx.restore();
+  return cv;
+}
+
+async function findRefs(q, newCircle) {
+  const token = (q.refToken = (q.refToken || 0) + 1);
+  $("ref-status").textContent = "Looking…";
+  try {
+    if (newCircle || !q.imageVec) q.imageVec = await refsLib.embedCanvas(cropForClip(dx.img, q));
+    const words = q.text.trim();
+    const textVec = words ? await refsLib.embedText(words) : null;
+    if (token !== q.refToken) return;                    // a newer circle or edit superseded this one
+    q.refs = refsLib.rank(q.imageVec, textVec, REFS_COUNT);
+    q.refsText = words;
+  } catch (e) {
+    console.error(e);
+    q.refs = [];
+  }
+  if (dx.questions && dx.questions.includes(q) && dx.currentQuestion === q) renderRefs(q);
+}
+
+function renderRefs(q) {
+  dx.currentQuestion = q;
+  const list = $("ref-list");
+  list.replaceChildren();
+  if (!dx.refsReady) { $("ref-status").textContent = q.path ? "References are unavailable right now." : ""; return; }
+  if (!q.refs) { $("ref-status").textContent = q.path ? "Looking…" : "Circle a part to see related images."; return; }
+  $("ref-status").textContent = "";
+  q.refs.forEach(r => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ref";
+    const im = new Image(); im.src = "references/" + r.file; im.alt = "";
+    const t = document.createElement("div"); t.className = "t"; t.textContent = r.title || r.name;
+    const m = document.createElement("div"); m.className = "m"; m.textContent = [r.date, r.culture].filter(Boolean).join(" · ");
+    b.append(im, t, m);
+    b.onclick = () => openRef(q, r);
+    list.appendChild(b);
+  });
+}
+
+function openRef(q, r) {
+  q.opened.push({ id: r.id, at_ms: Math.round(performance.now() - dx.t0) });
+  $("ref-view-img").src = "references/" + r.file;
+  $("ref-view-title").textContent = r.title || r.name;
+  const lines = [
+    r.artist, [r.date, r.culture].filter(Boolean).join(" · "), r.medium, r.name, r.department
+  ].filter(Boolean);
+  $("ref-view-meta").replaceChildren(...lines.map(l => { const p = document.createElement("p"); p.textContent = l; return p; }));
+  $("ref-view").hidden = false;
+}
+$("ref-view-close").onclick = () => { $("ref-view").hidden = true; };
+$("ref-view").onclick = e => { if (e.target.id === "ref-view") $("ref-view").hidden = true; };
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("ref-view").hidden = true; });
 
 async function enterDecision() {
   if (dx.deciding || dx.busy) return;
@@ -1409,12 +1563,18 @@ function dissectDecide(action) {
       bbox: a.bbox, pattern: hasPattern(item) ? a.pattern : null, detail: a.detail,
       colour_palette: a.palette.map(p => ({ hex: p.hex, share: p.share }))
     };
-  } else if (dx.mode === "guided") {
+  } else if (isLasso()) {
     entry.questions = dx.questions.map(q => ({
       key: q.key, question: q.question, selected: !!q.path,
       path: q.path ? q.path.map(p => [+p.x.toFixed(4), +p.y.toFixed(4)]) : null,   // normalised to the image
       bbox: q.bbox, area: q.area, text: q.text, text_blank: q.text.trim() === "",
-      redraws: q.redraws, first_stroke_ms: q.first_stroke_ms, time_ms: q.time_ms
+      redraws: q.redraws, first_stroke_ms: q.first_stroke_ms, time_ms: q.time_ms,
+      ...(dx.mode === "refs" ? {
+        references: (q.refs || []).map(r => ({ id: r.id, score: r.score, image_sim: r.image_sim,
+                                              ...(r.text_sim !== undefined ? { text_sim: r.text_sim } : {}) })),
+        references_used_text: !!(q.refs && q.refsText),
+        references_opened: q.opened
+      } : {})
     }));
     entry.selected_count = dx.questions.filter(q => q.path).length;
   } else {
@@ -1516,7 +1676,8 @@ const END_PARTS = {
   flicker: { label: "Flicker with references", start: () => startRebrowseIntro() },
   dissect_shown:  { label: "Dissection – shown", start: () => startDissect("shown") },
   dissect_guided: { label: "Dissection – you label it", start: () => startDissect("guided") },
-  dissect_free:   { label: "Dissection – find a detail", start: () => startDissect("free") }
+  dissect_free:   { label: "Dissection – find a detail", start: () => startDissect("free") },
+  dissect_refs:   { label: "Circle + references", start: () => startDissect("refs") }
 };
 function startEndPart() {
   (END_PARTS[settings.endPart] || END_PARTS.off).start();
@@ -1578,7 +1739,7 @@ $("debug-skip").addEventListener("click", e => {
     if (dx.deciding) dissectDecide("debug");
     else if (!dx.busy) {
       dx.debug = true;
-      if (dx.mode === "guided" && $("lasso-panel").classList.contains("on")) dx.lassoNext();  // next question
+      if (isLasso() && $("lasso-panel").classList.contains("on")) dx.lassoNext();  // next question
       else enterDecision();
     }
   }
