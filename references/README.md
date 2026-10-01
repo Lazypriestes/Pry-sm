@@ -1,4 +1,7 @@
-# Reference library
+# Reference library (offline fallback)
+
+"Circle + references" now searches Openverse live (see references.js). This library is only used
+when the live search fails, e.g. without internet.
 
 400 public-domain (CC0) images from The Metropolitan Museum of Art Open Access,
 20 per theme, used by the "Circle + references" end part.

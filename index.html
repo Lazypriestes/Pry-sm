@@ -46,8 +46,8 @@ const DISSECT_PROMPT = {
   free:   "Find one detail you didn't notice the first time. Drag a circle onto it and write what it is.",
   refs:   "Draw around it with your mouse. You can skip any question."
 };
-const REFS_COUNT = 4;              // references shown per circled part
-const REFS_HEADING = "This part might connect to…";
+const REFS_COUNT = 8;              // references found per circled part (live search, ranked by CLIP)
+const REFS_HEADING = "Reads like";
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
 // "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
 const GUIDED_QUESTIONS = [
@@ -168,28 +168,37 @@ const DEFAULT_SETTINGS = {
   #collage.refs #dissect-stage { width: min(50vh, 40vw); }
   #ref-strip { display: none; margin-top: 12px; }
   #ref-strip.on { display: block; }
-  #ref-strip .head { font-size: 13px; opacity: .75; margin-bottom: 6px; }
-  #ref-list { display: grid; grid-template-columns: repeat(4, minmax(0, 140px)); justify-content: space-between;
-              gap: 10px; min-height: 40px; }
-  .ref { background: #e6e6e6; border: 1px solid #555; border-radius: 4px; padding: 4px; cursor: pointer;
-         font-size: 11px; line-height: 1.3; text-align: left; width: 100%; min-width: 0; }
-  .ref:hover, .ref:focus { background: #e6e6e6; }
-  .ref img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #ccc; }
-  .ref .t { margin-top: 4px; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical; overflow: hidden; }
-  .ref .m { opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #ref-status { font-size: 13px; opacity: .7; }
-  #ref-view { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.75);
-              display: flex; align-items: center; justify-content: center; padding: 24px; }
-  #ref-view[hidden] { display: none; }
-  #ref-view .box { background: #eee; max-width: min(900px, 94vw); max-height: 92vh; display: grid;
-                   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; padding: 16px; border-radius: 4px; }
-  #ref-view img { width: 100%; max-height: 80vh; object-fit: contain; background: #ddd; }
-  #ref-view .info { font-size: 14px; overflow: auto; }
-  #ref-view .info h3 { margin: 0 0 6px; font-size: 18px; }
-  #ref-view .info p { margin: 0 0 6px; }
-  #ref-view .src { font-size: 12px; opacity: .7; margin-top: 12px; }
-  #ref-view button { margin-top: 12px; width: auto; padding: 6px 14px; font-size: 14px; }
+  #ref-strip .head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; margin-bottom: 8px; }
+  #ref-strip .head > span { opacity: .75; margin-right: 2px; }
+  .chip { width: auto; padding: 3px 10px; font-size: 13px; border-radius: 999px; background: #e6e6e6; }
+  #ref-list { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; min-height: 30px; }
+  .ref { width: 100%; padding: 0; border: 1px solid #555; border-radius: 3px; overflow: hidden; background: #ccc; }
+  .ref img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  #ref-status { font-size: 13px; opacity: .7; margin-top: 6px; }
+
+  /* Full-screen explorer, Land Lines style: the reference fills the screen, your part sits on it. */
+  #explore { position: fixed; inset: 0; z-index: 30; background: #000; color: #f2f2f2; }
+  #explore[hidden] { display: none; }
+  #explore .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+                 transition: opacity 350ms linear; }
+  #explore .shade { position: absolute; inset: 0; pointer-events: none;
+                    background: linear-gradient(to bottom, rgba(0,0,0,.45), transparent 22%, transparent 70%, rgba(0,0,0,.6)); }
+  #explore .top { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; gap: 8px;
+                  flex-wrap: wrap; align-items: center; font-size: 14px; }
+  #explore .top .chip { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.5); }
+  #explore .top .chip.on { background: #fbe36b; color: #111; border-color: #fbe36b; }
+  #explore .part { position: absolute; left: 24px; bottom: 24px; width: min(26vh, 220px); text-align: center;
+                   font-size: 12px; letter-spacing: .06em; }
+  #explore .part canvas { width: 100%; display: block; filter: drop-shadow(0 4px 14px rgba(0,0,0,.6)); }
+  #explore .cap { position: absolute; right: 24px; bottom: 24px; max-width: 46vw; text-align: right; font-size: 13px; }
+  #explore .cap b { display: block; font-size: 16px; font-weight: 600; }
+  #explore .cap .lic { opacity: .7; font-size: 11px; margin-top: 2px; }
+  #explore .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 56px; height: 56px; padding: 0;
+                  border-radius: 50%; font-size: 26px; background: rgba(0,0,0,.35); color: #fff; border: 1px solid rgba(255,255,255,.6); }
+  #explore .nav:hover, #explore .nav:focus { background: rgba(0,0,0,.35); color: #fff; }
+  #explore .prev { left: 16px; } #explore .next { right: 16px; }
+  #explore .back { position: absolute; top: 14px; right: 16px; width: auto; padding: 6px 14px; font-size: 14px; }
+  #explore .count { opacity: .7; margin-top: 6px; font-size: 12px; }
   #ref-ready { font-size: 14px; opacity: .75; margin-top: 10px; min-height: 1.4em; }
   .q-step { display: block; font-size: 13px; opacity: .7; letter-spacing: .06em; }
   .q-text { display: block; font-size: 20px; margin-top: 2px; }
@@ -371,16 +380,15 @@ const DEFAULT_SETTINGS = {
   </div>
 </section>
 
-<div id="ref-view" hidden>
-  <div class="box">
-    <img id="ref-view-img" alt="">
-    <div class="info">
-      <h3 id="ref-view-title"></h3>
-      <div id="ref-view-meta"></div>
-      <div class="src">The Metropolitan Museum of Art · Open Access (CC0)</div>
-      <button id="ref-view-close" type="button">Close</button>
-    </div>
-  </div>
+<div id="explore" hidden>
+  <img class="bg" id="ex-a" alt=""><img class="bg" id="ex-b" alt="">
+  <div class="shade"></div>
+  <div class="top" id="ex-words"></div>
+  <button class="back" id="ex-back" type="button">Back to the object</button>
+  <button class="nav prev" id="ex-prev" type="button" aria-label="Previous">‹</button>
+  <button class="nav next" id="ex-next" type="button" aria-label="Next">›</button>
+  <div class="part"><canvas id="ex-part"></canvas><div>your part</div></div>
+  <div class="cap"><b id="ex-title"></b><span id="ex-meta"></span><div class="lic" id="ex-lic"></div><div class="count" id="ex-count"></div></div>
 </div>
 
 <!-- 4. END -->
@@ -462,7 +470,9 @@ function preload(item) {
     const p = new Promise((resolve, reject) => {
       img.onload = () => {
         const loadedAt = performance.now();
-        (img.decode ? img.decode().catch(() => {}) : Promise.resolve())
+        // decode() can stall while the tab is hidden; don't wait on it for more than 1.5 s.
+        const decoded = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+        Promise.race([decoded, new Promise(r => setTimeout(r, 1500))])
           .then(() => resolve({ img, loadedAt }));
       };
       img.onerror = () => reject(new Error("Image failed to load: " + item.image));
@@ -1290,11 +1300,11 @@ function setupLasso(item, img) {
   dx.questions = GUIDED_QUESTIONS.map(q => ({
     ...q, tile: makeTile(q.side, q.label), path: null, bbox: null, area: null,
     text: "", redraws: 0, first_stroke_ms: null, time_ms: 0,
-    refs: null, refsText: "", opened: [], imageVec: null
+    refs: null, refsText: "", opened: [], part: null, words: null, explore_opens: 0
   }));
   const withRefs = dx.mode === "refs" && dx.refsReady;
   $("ref-strip").classList.toggle("on", dx.mode === "refs");
-  $("ref-head").textContent = REFS_HEADING;
+
   let qi = 0, qStart = 0, drawing = null;
   $("dissect-done").hidden = true;
   $("lasso-panel").classList.add("on");
@@ -1418,7 +1428,7 @@ function setupLasso(item, img) {
     const q = dx.questions[qi];
     if (q.path) q.redraws++;
     q.path = q.bbox = q.area = null;
-    q.refs = null; q.imageVec = null;
+    q.refs = null; q.part = null; q.words = null;
     if (dx.mode === "refs") renderRefs(q);
     dx.layout();
   };
@@ -1474,55 +1484,130 @@ function cropForClip(img, q) {
   return cv;
 }
 
+// The circled part on a transparent background, for the explorer.
+function cutout(img, q, W = 360) {
+  const nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.05, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const ox = cx - side / 2, oy = cy - side / 2, k = W / side;
+  const cv = document.createElement("canvas"); cv.width = cv.height = W;
+  const ctx = cv.getContext("2d");
+  ctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  ctx.closePath();
+  ctx.save(); ctx.clip(); ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W); ctx.restore();
+  ctx.lineWidth = 4; ctx.strokeStyle = "#fbe36b"; ctx.stroke();
+  return cv;
+}
+
 async function findRefs(q, newCircle) {
   const token = (q.refToken = (q.refToken || 0) + 1);
-  $("ref-status").textContent = "Looking…";
+  q.refs = null;
+  if (dx.currentQuestion === q) renderRefs(q);
   try {
-    if (newCircle || !q.imageVec) q.imageVec = await refsLib.embedCanvas(cropForClip(dx.img, q));
-    const words = q.text.trim();
-    const textVec = words ? await refsLib.embedText(words) : null;
+    if (newCircle || !q.part) q.part = await refsLib.embedPart(cropForClip(dx.img, q));
+    const typed = q.text.trim() || null;
+    const res = await refsLib.findReferences(q.part, {
+      typed, k: REFS_COUNT,
+      onWords: words => {
+        if (token !== q.refToken) return;
+        q.words = words;
+        if (dx.currentQuestion === q) renderRefs(q);
+      },
+      onPartial: (results, words) => {                   // show results as each search returns
+        if (token !== q.refToken) return;
+        q.refs = results; q.words = words;
+        if (dx.currentQuestion === q) renderRefs(q);
+      }
+    });
     if (token !== q.refToken) return;                    // a newer circle or edit superseded this one
-    q.refs = refsLib.rank(q.imageVec, textVec, REFS_COUNT);
-    q.refsText = words;
+    q.refs = res.results; q.words = res.words; q.refsText = typed || "";
+    q.refsOffline = res.offline;
   } catch (e) {
     console.error(e);
-    q.refs = [];
+    if (token === q.refToken) q.refs = [];
   }
-  if (dx.questions && dx.questions.includes(q) && dx.currentQuestion === q) renderRefs(q);
+  if (dx.currentQuestion === q) renderRefs(q);
 }
 
 function renderRefs(q) {
   dx.currentQuestion = q;
-  const list = $("ref-list");
-  list.replaceChildren();
+  const list = $("ref-list"), head = $("ref-head");
+  list.replaceChildren(); head.replaceChildren();
   if (!dx.refsReady) { $("ref-status").textContent = q.path ? "References are unavailable right now." : ""; return; }
-  if (!q.refs) { $("ref-status").textContent = q.path ? "Looking…" : "Circle a part to see related images."; return; }
-  $("ref-status").textContent = "";
-  q.refs.forEach(r => {
+  if (!q.path) { $("ref-status").textContent = "Circle a part to see what it might connect to."; return; }
+  if (q.refs) $("ref-status").textContent = q.refs.length ? "" : "Nothing found — try circling a different part or adding words.";
+  else $("ref-status").textContent = "Finding images…";
+  if (q.words && q.words.length) {
+    const label = document.createElement("span"); label.textContent = REFS_HEADING;
+    head.appendChild(label);
+    q.words.forEach(w => {
+      const c = document.createElement("button"); c.type = "button"; c.className = "chip"; c.textContent = w;
+      c.onclick = () => { if (q.refs && q.refs.length) openExplorer(q, 0, w); };
+      head.appendChild(c);
+    });
+  }
+  (q.refs || []).forEach((r, n) => {
     const b = document.createElement("button");
-    b.type = "button"; b.className = "ref";
-    const im = new Image(); im.src = "references/" + r.file; im.alt = "";
-    const t = document.createElement("div"); t.className = "t"; t.textContent = r.title || r.name;
-    const m = document.createElement("div"); m.className = "m"; m.textContent = [r.date, r.culture].filter(Boolean).join(" · ");
-    b.append(im, t, m);
-    b.onclick = () => openRef(q, r);
+    b.type = "button"; b.className = "ref"; b.title = r.title;
+    const im = new Image(); im.src = r.image; im.alt = "";
+    b.appendChild(im);
+    b.onclick = () => openExplorer(q, n);
     list.appendChild(b);
   });
 }
 
-function openRef(q, r) {
-  q.opened.push({ id: r.id, at_ms: Math.round(performance.now() - dx.t0) });
-  $("ref-view-img").src = "references/" + r.file;
-  $("ref-view-title").textContent = r.title || r.name;
-  const lines = [
-    r.artist, [r.date, r.culture].filter(Boolean).join(" · "), r.medium, r.name, r.department
-  ].filter(Boolean);
-  $("ref-view-meta").replaceChildren(...lines.map(l => { const p = document.createElement("p"); p.textContent = l; return p; }));
-  $("ref-view").hidden = false;
+/* ---------- explorer ---------- */
+const ex = { q: null, list: [], i: 0, word: null, shownAt: 0, front: "ex-a" };
+
+function openExplorer(q, i, word = null) {
+  ex.q = q; ex.word = word;
+  ex.list = word ? q.refs.filter(r => r.word === word) : q.refs.slice();
+  if (!ex.list.length) ex.list = q.refs.slice();
+  ex.i = Math.min(i, ex.list.length - 1);
+  q.explore_opens = (q.explore_opens || 0) + 1;
+  const part = cutout(dx.img, q), pc = $("ex-part");
+  pc.width = part.width; pc.height = part.height; pc.getContext("2d").drawImage(part, 0, 0);
+  const words = $("ex-words"); words.replaceChildren();
+  (q.words || []).forEach(w => {
+    const c = document.createElement("button"); c.type = "button"; c.className = "chip" + (w === word ? " on" : "");
+    c.textContent = w;
+    c.onclick = () => { logView(); openExplorer(q, 0, w === ex.word ? null : w); };
+    words.appendChild(c);
+  });
+  $("explore").hidden = false;
+  showExplore();
 }
-$("ref-view-close").onclick = () => { $("ref-view").hidden = true; };
-$("ref-view").onclick = e => { if (e.target.id === "ref-view") $("ref-view").hidden = true; };
-document.addEventListener("keydown", e => { if (e.key === "Escape") $("ref-view").hidden = true; });
+function logView() {
+  if (!ex.q || !ex.shown) return;
+  ex.q.opened.push({ id: ex.shown.id, word: ex.shown.word, view_ms: Math.round(performance.now() - ex.shownAt) });
+  ex.shown = null;
+}
+function showExplore() {
+  logView();
+  const r = ex.list[ex.i];
+  if (!r) return;
+  const back = ex.front === "ex-a" ? "ex-b" : "ex-a";
+  const im = $(back);
+  im.style.opacity = 0;
+  im.onload = () => { im.style.opacity = 1; $(ex.front).style.opacity = 0; ex.front = back; };
+  im.src = r.full || r.image;
+  im.onerror = () => { im.onerror = null; im.src = r.image; };     // fall back to the thumbnail
+  $("ex-title").textContent = r.title;
+  $("ex-meta").textContent = [r.creator, r.word && `“${r.word}”`].filter(Boolean).join(" · ");
+  $("ex-lic").textContent = r.source === "Openverse" ? `${(r.license || "").toUpperCase()} · via Openverse` : (r.source || "");
+  $("ex-count").textContent = `${ex.i + 1} / ${ex.list.length}`;
+  ex.shown = r; ex.shownAt = performance.now();
+}
+function closeExplorer() { logView(); $("explore").hidden = true; }
+$("ex-prev").onclick = () => { ex.i = (ex.i - 1 + ex.list.length) % ex.list.length; showExplore(); };
+$("ex-next").onclick = () => { ex.i = (ex.i + 1) % ex.list.length; showExplore(); };
+$("ex-back").onclick = closeExplorer;
+document.addEventListener("keydown", e => {
+  if ($("explore").hidden) return;
+  if (e.key === "Escape") closeExplorer();
+  if (e.key === "ArrowRight") { e.stopPropagation(); $("ex-next").click(); }
+  if (e.key === "ArrowLeft") { e.stopPropagation(); $("ex-prev").click(); }
+}, true);
 
 async function enterDecision() {
   if (dx.deciding || dx.busy) return;
@@ -1570,10 +1655,14 @@ function dissectDecide(action) {
       bbox: q.bbox, area: q.area, text: q.text, text_blank: q.text.trim() === "",
       redraws: q.redraws, first_stroke_ms: q.first_stroke_ms, time_ms: q.time_ms,
       ...(dx.mode === "refs" ? {
-        references: (q.refs || []).map(r => ({ id: r.id, score: r.score, image_sim: r.image_sim,
-                                              ...(r.text_sim !== undefined ? { text_sim: r.text_sim } : {}) })),
+        reads_like: q.words,
+        references: (q.refs || []).map(r => ({ id: r.id, word: r.word, title: r.title, source: r.source,
+                                              url: r.landing || r.url || "", score: r.score,
+                                              shape_sim: r.shape_sim })),
         references_used_text: !!(q.refs && q.refsText),
-        references_opened: q.opened
+        references_offline: !!q.refsOffline,
+        explore_opens: q.explore_opens,
+        references_viewed: q.opened
       } : {})
     }));
     entry.selected_count = dx.questions.filter(q => q.path).length;
