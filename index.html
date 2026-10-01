@@ -24,8 +24,9 @@ const TEXT = {
 };
 const DEFAULTS = {
   itemCount: 24,          // objects per field round (random subset of the catalogue; 0 = all)
-  visibleMs: 1000,        // time an object stays fully visible
-  fadeMs: 700,            // fade in / fade out
+  visibleMs: 2200,        // time an object stays fully visible
+  fadeMs: 900,            // fade in
+  fadeOutMs: 1800,        // fade out (slow, so objects dissolve rather than vanish)
   onScreen: 3,            // objects visible at the same time (roughly)
   exploreCount: 5,        // skipped objects explored in stage 2
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
@@ -95,7 +96,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
 
   /* Stage 2: explore */
   #explore { overflow: hidden; }
-  #gen-bg { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; opacity: 0;
+  #gen-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;
             transition: opacity 1.4s ease; }
   #gen-bg.on { opacity: .95; }
   #ex-vignette { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1s;
@@ -107,11 +108,11 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #ex-wrap img, #ex-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   #ex-wrap img { object-fit: contain; transition: filter 1s ease, opacity 1.2s ease; user-select: none; -webkit-user-drag: none; }
   #ex-wrap.focus img { filter: blur(10px) brightness(.32); }
-  #ex-wrap.focus.imagined img { opacity: .35; }
-  #ex-frag { pointer-events: none; transition: filter .6s; }
-  #ex-wrap.imagined #ex-frag { filter: drop-shadow(0 0 30px rgba(0,0,0,.6)); }
-  #ex-ink { pointer-events: none; }
-  #ex-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; pointer-events: none; }
+  #ex-wrap.focus.imagined img { opacity: 0; }
+  #ex-frag, #ex-ink { pointer-events: none; transition: opacity 3.2s ease; }
+  #ex-wrap.dissolve #ex-frag, #ex-wrap.dissolve #ex-ink { opacity: 0; }
+  #ex-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; pointer-events: none; transition: opacity 1.2s; }
+  #explore.imagined #ex-top { opacity: 0; }
   #ex-top .q { font-size: 17px; }
   #ex-words { position: absolute; left: 24px; bottom: 24px; font-size: 12px; color: rgba(255,255,255,.75);
               letter-spacing: .04em; text-shadow: 0 1px 6px rgba(0,0,0,.7); }
@@ -131,6 +132,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
 <div id="settings" hidden>
   <label>Objects per round <input type="number" id="s-itemCount" min="0" step="1"></label>
   <label>Visible (ms) <input type="number" id="s-visibleMs" min="200" step="100"></label>
+  <label>Fade out (ms) <input type="number" id="s-fadeOutMs" min="200" step="100"></label>
   <label>On screen at once <input type="number" id="s-onScreen" min="1" max="6" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
@@ -169,7 +171,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <div id="ex-words"></div>
   <div id="ex-status"></div>
   <div id="ex-controls">
-    <button class="btn icon" id="ex-again" title="Imagine another" hidden>↻</button>
+    <button class="btn icon" id="ex-again" title="Another reading" hidden>↻</button>
     <button class="btn primary" id="ex-next">Next</button>
   </div>
 </section>
@@ -204,7 +206,7 @@ const data = {
 /* ============================================================
    SETTINGS (start screen only)
    ============================================================ */
-const SETTING_KEYS = ["itemCount", "visibleMs", "onScreen", "exploreCount", "genStrength"];
+const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "onScreen", "exploreCount", "genStrength"];
 function applySettings() {
   $("debug-next").style.display = settings.debug ? "block" : "none";
   try { localStorage.setItem("objview_settings", JSON.stringify(settings)); } catch (e) {}
@@ -311,7 +313,7 @@ async function runField(round) {
   data.rounds.push(rec);
   const order = shuffle(roundItems);
   const visible = new Set();
-  const life = settings.fadeMs * 2 + settings.visibleMs;
+  const life = settings.fadeMs + settings.visibleMs + settings.fadeOutMs;
   const gap = life / Math.max(1, settings.onScreen);
   let stop = false;
   dbgNext = () => { stop = true; };
@@ -359,9 +361,10 @@ async function runField(round) {
         setTimeout(() => { tick.classList.remove("on"); setTimeout(() => tick.remove(), 300); }, 600);
       };
       await sleep(settings.fadeMs + settings.visibleMs);
+      el.style.transitionDuration = settings.fadeOutMs + "ms";
       el.classList.add("out");
       el.style.pointerEvents = "none";
-      await sleep(settings.fadeMs);
+      await sleep(settings.fadeOutMs);
       el.remove(); visible.delete(slot);
     })());
     await sleep(gap * (0.8 + Math.random() * 0.4));
@@ -456,7 +459,7 @@ function exploreItem(item, n, total) {
       if (instant) wrap.style.transition = "none";               // a new stroke must map onto the unzoomed view
       wrap.className = ""; wrap.style.transform = "translate(-50%, -50%) scale(1)";
       if (instant) { void wrap.offsetWidth; wrap.style.transition = ""; }
-      bg.classList.remove("on"); $("ex-vignette").classList.remove("on");
+      bg.classList.remove("on"); $("ex-vignette").classList.remove("on"); $("explore").classList.remove("imagined");
       drawFrag(null); $("ex-words").textContent = ""; $("ex-status").textContent = ""; $("ex-again").hidden = true;
     }
 
@@ -483,6 +486,7 @@ function exploreItem(item, n, total) {
       wrap.style.transformOrigin = `${cx}% ${cy}%`;
       wrap.style.transform = "translate(-50%, -50%) scale(1.14)";
       wrap.classList.add("focus");
+      const zoomDone = performance.now() + 1150;              // the zoom transition is 1.1 s
       $("ex-vignette").classList.add("on");
       drawFrag(pts);
       const circ = { path: pts.map(p => [+p.x.toFixed(4), +p.y.toFixed(4)]), bbox: bb, t_ms: Math.round(performance.now() - t0) };
@@ -493,15 +497,28 @@ function exploreItem(item, n, total) {
       const q = { path: sp, bbox: sbb, text: "" };
       $("ex-status").textContent = "imagining"; $("ex-status").classList.add("pulse");
       try {
+        // Reading: a vision-language model says what this could be a small part of (open vocabulary);
+        // CLIP with its fixed word list is the fallback.
         let words = [];
-        if (refsLib) {
-          await refsLib.loadReferences();
-          const part = await refsLib.embedPart(cropForClip(source, q));
-          words = refsLib.readsLike(part);
+        try {
+          const r = await fetch("api/interpret", { method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: partSquare(source, q) }) });
+          const j = await r.json();
+          if (!r.ok || !j.words || !j.words.length) throw new Error(j.error || r.status);
+          words = j.words; circ.reading = { source: "vlm", model: j.model, raw: j.raw, ms: j.ms };
+        } catch (e) {
+          circ.reading = { source: "clip", vlm_error: String(e.message || e) };
+          if (refsLib) {
+            await refsLib.loadReferences();
+            words = refsLib.readsLike(await refsLib.embedPart(partSquare(source, q, true)));
+          }
         }
         if (my !== token) return;
-        circ.reads_like = words;
-        $("ex-words").textContent = words.join("  ·  ");
+        circ.reads_like = words; circ.active = 0;
+        showWords(words, 0);
+        await sleep(Math.max(0, zoomDone - performance.now()));
+        if (my !== token) return;
+        q.screen = pts;                                         // where the part sits now, on screen
         await imagine(q, words, circ, my);
       } catch (e) {
         circ.error = String(e.message || e);
@@ -509,29 +526,81 @@ function exploreItem(item, n, total) {
       }
     }
 
+    // Outpainting input, in screen space: a frame shaped like the window with the circled part
+    // exactly where it is on screen, and a mask saying "keep the part, invent everything else".
+    // The result fills the screen, so the part reads as a small piece of something much larger,
+    // and it lines up with the part when the part dissolves.
+    async function outpaintInputs(pts) {
+      const b = wrap.getBoundingClientRect(), r = rect(), s = b.width / r.W;
+      const FW = 1024, k = FW / innerWidth, FH = Math.round(innerHeight * k);
+      const ci = await loadImage(c.url);
+      const box = { x: (b.left + r.x * s) * k, y: (b.top + r.y * s) * k, w: r.w * s * k, h: r.h * s * k };
+      const P = p => [box.x + p.x * box.w, box.y + p.y * box.h];
+      const path = ctx => { ctx.beginPath(); pts.forEach((p, i) => { const [x, y] = P(p); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); };
+      const mk = () => { const cv = document.createElement("canvas"); cv.width = FW; cv.height = FH; return [cv, cv.getContext("2d")]; };
+      const [frame, fctx] = mk();
+      fctx.fillStyle = "#6e6e6e"; fctx.fillRect(0, 0, FW, FH);
+      fctx.save(); path(fctx); fctx.clip(); fctx.drawImage(ci, box.x, box.y, box.w, box.h); fctx.restore();
+      // Mask: white = invent, black = keep (inside the circle AND on the object).
+      const [mask, mctx] = mk(), [keep, kctx] = mk();
+      mctx.fillStyle = "#fff"; mctx.fillRect(0, 0, FW, FH);
+      kctx.save(); path(kctx); kctx.clip(); kctx.drawImage(ci, box.x, box.y, box.w, box.h); kctx.restore();
+      kctx.globalCompositeOperation = "source-in"; kctx.fillStyle = "#000"; kctx.fillRect(0, 0, FW, FH);
+      mctx.drawImage(keep, 0, 0);
+      // Give the circle's rim back to the model so the part blends into what grows around it.
+      const xs = pts.map(p => P(p)[0]), ys = pts.map(p => P(p)[1]);
+      mctx.lineWidth = Math.max(6, 0.14 * Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)));
+      mctx.strokeStyle = "#fff"; mctx.lineJoin = "round"; path(mctx); mctx.stroke();
+      return { image: frame.toDataURL("image/jpeg", 0.92), mask: mask.toDataURL("image/png"), frame: [FW, FH] };
+    }
+
+    function showWords(words, active) {
+      const el = $("ex-words"); el.replaceChildren();
+      words.forEach((w, i) => {
+        const s = document.createElement("span"); s.textContent = w;
+        s.style.opacity = i === active ? 1 : .45;
+        el.append(s); if (i < words.length - 1) el.append("  ·  ");
+      });
+    }
+
     async function imagine(q, words, circ, my, newSeed = false) {
       if (!genAvailable) { $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse"); return; }
-      const prompt = genPrompt(source, q, words), strength = settings.genStrength;
       const seed = newSeed || !circ.seed ? Math.floor(Math.random() * 1e9) : circ.seed;
       const t = performance.now();
-      const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: genSource(source, q), prompt, strength, seed }) });
-      const j = await res.json();
+      let j, prompt, mode = "fill";
+      try {
+        const inp = await outpaintInputs(q.screen);
+        prompt = fillPrompt(source, q, words[circ.active] || words[0]);
+        const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed }) });
+        j = await res.json();
+        if (!res.ok) throw new Error(j.error || res.status);
+      } catch (e) {                                              // fall back to repainting the part itself
+        circ.fill_error = String(e.message || e);
+        mode = "img2img"; prompt = genPrompt(source, q, words);
+        const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: genSource(source, q), prompt, strength: settings.genStrength, seed }) });
+        j = await res.json();
+        if (!res.ok) throw new Error(j.error || res.status);
+      }
       if (my !== token) return;
-      if (!res.ok) throw new Error(j.error || res.status);
-      const gen = { url: j.url, prompt, strength, seed: j.seed ?? seed, ms: Math.round(performance.now() - t) };
+      const gen = { url: j.url, mode, model: j.model, prompt, reading: words[circ.active], seed: j.seed ?? seed, ms: Math.round(performance.now() - t),
+                    viewport: [innerWidth, innerHeight] };
       (circ.generated = circ.generated || []).push(gen); circ.seed = gen.seed;
       await loadImage(j.url).catch(() => {});
       if (my !== token) return;
       bg.classList.remove("on");
       await sleep(bg.src ? 300 : 0);
       bg.src = j.url;
-      bg.classList.add("on"); wrap.classList.add("imagined");
+      bg.classList.add("on"); wrap.classList.add("imagined"); $("explore").classList.add("imagined");
+      // Then the circled part slowly dissolves into what was imagined around it.
+      setTimeout(() => { if (my === token) wrap.classList.add("dissolve"); }, 1600);
       $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse");
       $("ex-again").hidden = false;
       $("ex-again").onclick = async e => {
         e.currentTarget.blur();
         circ.again = (circ.again || 0) + 1;
+        if (words.length > 1) { circ.active = (circ.active + 1) % words.length; showWords(words, circ.active); }
         $("ex-status").textContent = "imagining"; $("ex-status").classList.add("pulse");
         const mine = ++token;
         try { await imagine(q, words, circ, mine, true); } catch (err) { $("ex-status").textContent = ""; }
@@ -551,6 +620,15 @@ function exploreItem(item, n, total) {
   });
 }
 
+// The part as a plain square crop around the circle (for the reading). The circle's own outline
+// is left out on purpose: an oval mask made everything read as "eye" or "moon".
+function partSquare(img, q, asCanvas = false) {
+  const nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox, W = 384;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.05, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const cv = document.createElement("canvas"); cv.width = cv.height = W;
+  cv.getContext("2d").drawImage(img, cx - side / 2, cy - side / 2, side, side, 0, 0, W, W);
+  return asCanvas ? cv : cv.toDataURL("image/jpeg", 0.9);
+}
 // CLIP input: the circled part, square crop, outside the circle greyed out.
 function cropForClip(img, q) {
   const nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
@@ -595,7 +673,13 @@ function partColour(img, q) {
   let h = max === r ? ((g - bl) / sat) % 6 : max === g ? (bl - r) / sat + 2 : (r - g) / sat + 4;
   h = (h * 60 + 360) % 360;
   const tone = l < 80 ? "deep " : l > 180 ? "pale " : "warm ";
-  return tone + (h < 15 || h >= 345 ? "red" : h < 45 ? "amber" : h < 70 ? "golden yellow" : h < 160 ? "green" : h < 200 ? "teal" : h < 260 ? "blue" : h < 300 ? "violet" : "rose");
+  return tone + (h < 15 || h >= 345 ? "red" : h < 45 ? "amber" : h < 60 ? "golden yellow" : h < 85 ? "olive green" : h < 160 ? "green" : h < 200 ? "teal" : h < 260 ? "blue" : h < 300 ? "violet" : "rose");
+}
+// Outpainting prompt: the part is a small piece of one vast thing filling the frame.
+function fillPrompt(img, q, reading) {
+  const colour = partColour(img, q);
+  return `an extreme close-up photograph of a vast ${reading || "abstract form"} filling the entire frame` +
+    (colour ? `, ${colour} tones` : "") + ", seamless, one continuous surface, natural light, sharp focus, rich detail";
 }
 function genPrompt(img, q, words) {
   const [a, b, c] = words, colour = partColour(img, q);

@@ -29,7 +29,11 @@ export const FORM_WORDS = [
   "pebbles", "jellyfish", "tentacles", "butterfly wing", "tiger fur", "leopard spots", "honey",
   "amber", "glass", "silk fabric", "knot", "rope", "basket weave", "embroidery", "brushstroke",
   "ink wash painting", "mosaic", "stained glass", "arch", "dome", "spiral staircase", "fingerprint",
-  "topographic map", "tree rings", "eye", "skin", "hair", "bone", "flower bud", "mushroom gills"
+  "topographic map", "tree rings", "eye", "skin", "hair", "bone", "flower bud", "mushroom gills",
+  // structures and built forms, so geometric parts can read as more than a texture
+  "door", "doorway", "window", "picture frame", "gate", "column", "pillar", "panel", "shutters",
+  "tiles", "grid", "brick wall", "corridor", "ladder", "fence", "bridge", "tower", "staircase",
+  "temple facade", "room", "mirror", "book spine", "maze", "map", "screen", "curtain"
 ];
 
 let ready = null;
@@ -140,12 +144,18 @@ export async function embedPart(canvas) {
   return { colour: await embedImageLike(canvas), shape: await embedImageLike(abstractCanvas(canvas)) };
 }
 
+// Top-k form words for one embedding (for inspection / tuning).
+export function topWords(vec, k = 6) {
+  return S.words.map(w => [w.word, +dot(vec, w.vec).toFixed(4)]).sort((a, b) => b[1] - a[1]).slice(0, k);
+}
+
 // What the part reads like: 2 words from its shape, 1 from its colour/material, without repeats.
 export function readsLike(part, typed = null) {
   const top = vec => S.words.map(w => [w.word, dot(vec, w.vec)]).sort((a, b) => b[1] - a[1]).map(x => x[0]);
   const shape = top(part.shape), colour = top(part.colour);
-  const out = [];
-  for (const w of [...shape.slice(0, 2), ...colour]) { if (!out.includes(w)) out.push(w); if (out.length === 3) break; }
+  // Shape leads (2 words), colour/material adds one, unless it repeats.
+  const out = shape.slice(0, 2);
+  for (const w of colour) { if (!out.includes(w)) { out.push(w); break; } }
   if (typed) out.unshift(typed);              // the participant's own words lead the search
   return out;
 }
