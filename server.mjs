@@ -16,7 +16,8 @@ const GEN_MODEL = process.env.GEN_MODEL || "fal-ai/flux/dev/image-to-image";
 const GEN_STEPS = Number(process.env.GEN_STEPS || 14);
 // Outpainting model, used when the browser sends a mask: keeps the masked-out (black) part and
 // invents everything else, so the circled part becomes one small piece of a larger scene.
-const FILL_MODEL = process.env.FILL_MODEL || "fal-ai/flux-pro/v1/fill";
+// flux-lora-fill (FLUX-dev) ≈ 7 s; "fal-ai/flux-pro/v1/fill" is a little richer but ≈ 15 s.
+const FILL_MODEL = process.env.FILL_MODEL || "fal-ai/flux-lora-fill";
 // Interpretation: a vision-language model reads what a fragment could be part of, with an open
 // vocabulary (CLIP could only pick from a fixed word list). ~1.5 s, a fraction of a cent.
 const VLM_MODEL = process.env.VLM_MODEL || "google/gemini-2.5-flash";
