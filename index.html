@@ -48,6 +48,9 @@ const DISSECT_PROMPT = {
 };
 const REFS_COUNT = 8;              // references found per circled part (live search, ranked by CLIP)
 const REFS_HEADING = "Reads like";
+// Generated image (via server.mjs → fal.ai): the circled part is the shape, the words the context.
+const GEN_STRENGTH = 0.65;         // 0.2 = stays close to the circled part … 0.95 = mostly the words
+const GEN_STYLE = "photographic, natural light, rich detail, high quality";
 const DISSECT_DECIDE_PROMPT = "Keep or skip?";
 // "Dissection – you label it": asked one at a time; the participant circles the part with the mouse.
 const GUIDED_QUESTIONS = [
@@ -175,6 +178,18 @@ const DEFAULT_SETTINGS = {
   .ref { width: 100%; padding: 0; border: 1px solid #555; border-radius: 3px; overflow: hidden; background: #ccc; }
   .ref img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   #ref-status { font-size: 13px; opacity: .7; margin-top: 6px; }
+  .ref.gen { position: relative; outline: 2px solid #fbe36b; outline-offset: -2px; }
+  .ref.gen::after { content: "✦"; position: absolute; top: 2px; right: 4px; color: #fbe36b;
+                    text-shadow: 0 0 3px #000; font-size: 13px; }
+  .ref.gen.pending { background: linear-gradient(90deg, #bbb, #ddd, #bbb); background-size: 200% 100%;
+                     animation: shimmer 1.2s linear infinite; aspect-ratio: 1; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  #gen-row { display: none; align-items: center; gap: 8px; font-size: 12px; margin-top: 8px; opacity: .85; }
+  #gen-row.on { display: flex; }
+  #gen-row input { flex: 1; max-width: 220px; }
+  #gen-row button { width: auto; padding: 3px 10px; font-size: 12px; }
+  #explore .regen { position: absolute; top: 14px; right: 200px; width: auto; padding: 6px 14px; font-size: 14px; }
+  #explore .regen[hidden] { display: none; }
 
   /* Full-screen explorer, Land Lines style: the reference fills the screen, your part sits on it. */
   #explore { position: fixed; inset: 0; z-index: 30; background: #000; color: #f2f2f2; }
@@ -371,6 +386,12 @@ const DEFAULT_SETTINGS = {
       <div class="head" id="ref-head"></div>
       <div id="ref-list"></div>
       <div id="ref-status"></div>
+      <div id="gen-row">
+        <span>closer to the part</span>
+        <input type="range" id="gen-strength" min="0.35" max="0.9" step="0.05">
+        <span>more real</span>
+        <button type="button" id="gen-again">↻ another</button>
+      </div>
     </div>
   </div>
   <div class="actions">
@@ -385,6 +406,7 @@ const DEFAULT_SETTINGS = {
   <div class="shade"></div>
   <div class="top" id="ex-words"></div>
   <button class="back" id="ex-back" type="button">Back to the object</button>
+  <button class="regen" id="ex-regen" type="button" hidden>↻ imagine another</button>
   <button class="nav prev" id="ex-prev" type="button" aria-label="Previous">‹</button>
   <button class="nav next" id="ex-next" type="button" aria-label="Next">›</button>
   <div class="part"><canvas id="ex-part"></canvas><div>your part</div></div>
@@ -1300,7 +1322,8 @@ function setupLasso(item, img) {
   dx.questions = GUIDED_QUESTIONS.map(q => ({
     ...q, tile: makeTile(q.side, q.label), path: null, bbox: null, area: null,
     text: "", redraws: 0, first_stroke_ms: null, time_ms: 0,
-    refs: null, refsText: "", opened: [], part: null, words: null, explore_opens: 0
+    refs: null, refsText: "", opened: [], part: null, words: null, explore_opens: 0,
+    gen: null, generated: [], genStrength: GEN_STRENGTH
   }));
   const withRefs = dx.mode === "refs" && dx.refsReady;
   $("ref-strip").classList.toggle("on", dx.mode === "refs");
@@ -1428,7 +1451,7 @@ function setupLasso(item, img) {
     const q = dx.questions[qi];
     if (q.path) q.redraws++;
     q.path = q.bbox = q.area = null;
-    q.refs = null; q.part = null; q.words = null;
+    q.refs = null; q.part = null; q.words = null; q.gen = null;
     if (dx.mode === "refs") renderRefs(q);
     dx.layout();
   };
@@ -1448,6 +1471,9 @@ function setupLasso(item, img) {
 let refsLib = null;
 function prepareReferences() {
   dx.refsReady = false;
+  dx.genAvailable = false;
+  fetch("api/status").then(r => r.json()).then(s => { dx.genAvailable = !!s.generation; data.generation_model = s.model; })
+    .catch(() => {});                                    // plain static server: no generation
   $("dissect-go").disabled = true;
   $("ref-ready").textContent = "Preparing…";
   const fallback = setTimeout(() => {                    // don't hold the participant up forever
@@ -1511,6 +1537,7 @@ async function findRefs(q, newCircle) {
       onWords: words => {
         if (token !== q.refToken) return;
         q.words = words;
+        generateFor(q);
         if (dx.currentQuestion === q) renderRefs(q);
       },
       onPartial: (results, words) => {                   // show results as each search returns
@@ -1533,6 +1560,7 @@ function renderRefs(q) {
   dx.currentQuestion = q;
   const list = $("ref-list"), head = $("ref-head");
   list.replaceChildren(); head.replaceChildren();
+  $("gen-row").classList.remove("on");
   if (!dx.refsReady) { $("ref-status").textContent = q.path ? "References are unavailable right now." : ""; return; }
   if (!q.path) { $("ref-status").textContent = "Circle a part to see what it might connect to."; return; }
   if (q.refs) $("ref-status").textContent = q.refs.length ? "" : "Nothing found — try circling a different part or adding words.";
@@ -1546,23 +1574,95 @@ function renderRefs(q) {
       head.appendChild(c);
     });
   }
+  $("gen-row").classList.toggle("on", !!(dx.genAvailable && q.path));
+  $("gen-strength").value = q.genStrength;
+  if (q.gen) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ref gen" + (q.gen.pending ? " pending" : "");
+    b.title = "Imagined from your part";
+    if (!q.gen.pending && q.gen.url) { const im = new Image(); im.src = q.gen.url; im.alt = ""; b.appendChild(im); b.onclick = () => openExplorer(q, 0); }
+    if (q.gen.error) { b.classList.remove("pending"); b.textContent = "–"; b.title = "Couldn't imagine one: " + q.gen.error; }
+    list.appendChild(b);
+  }
   (q.refs || []).forEach((r, n) => {
     const b = document.createElement("button");
     b.type = "button"; b.className = "ref"; b.title = r.title;
     const im = new Image(); im.src = r.image; im.alt = "";
     b.appendChild(im);
-    b.onclick = () => openExplorer(q, n);
+    b.onclick = () => openExplorer(q, n + (genItem(q) ? 1 : 0));
     list.appendChild(b);
   });
 }
+
+/* ---------- generation: shape from the circle, context from the words ---------- */
+
+// What the generator starts from: the circled part at 512px on a neutral backdrop, so its outline is the shape.
+function genSource(img, q) {
+  const W = 512, nw = img.naturalWidth, nh = img.naturalHeight, b = q.bbox;
+  const side = Math.max(b.w * nw, b.h * nh) * 1.15, cx = (b.x + b.w / 2) * nw, cy = (b.y + b.h / 2) * nh;
+  const ox = cx - side / 2, oy = cy - side / 2, k = W / side;
+  const cv = document.createElement("canvas"); cv.width = cv.height = W;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#9a9a9a"; ctx.fillRect(0, 0, W, W);
+  ctx.save(); ctx.beginPath();
+  q.path.forEach((p, n) => { const x = (p.x * nw - ox) * k, y = (p.y * nh - oy) * k; n ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  ctx.closePath(); ctx.clip();
+  ctx.drawImage(img, ox, oy, side, side, 0, 0, W, W);
+  ctx.restore();
+  return cv.toDataURL("image/jpeg", 0.9);
+}
+function genPrompt(q) {
+  const typed = q.text.trim();
+  return [typed, ...(q.words || []).filter(w => w !== typed)].filter(Boolean).join(", ") + ", " + GEN_STYLE;
+}
+async function generateFor(q, newSeed = false) {
+  if (!dx.genAvailable || !q.path) return;
+  const token = (q.genToken = (q.genToken || 0) + 1);
+  const seed = newSeed || !q.gen || !Number.isInteger(q.gen.seed) ? Math.floor(Math.random() * 1e9) : q.gen.seed;
+  q.gen = { pending: true, seed };
+  if (dx.currentQuestion === q) renderRefs(q);
+  const prompt = genPrompt(q), strength = q.genStrength, t = performance.now();
+  try {
+    const r = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: genSource(dx.img, q), prompt, strength, seed }) });
+    const j = await r.json();
+    if (token !== q.genToken) return;
+    if (!r.ok) throw new Error(j.error || r.status);
+    q.gen = { url: j.url, seed: j.seed ?? seed, prompt, strength, ms: Math.round(performance.now() - t) };
+    q.generated.push({ url: j.url, prompt, strength, seed: q.gen.seed, ms: q.gen.ms, model: j.model,
+                       at_ms: Math.round(performance.now() - dx.t0) });
+  } catch (e) {
+    if (token !== q.genToken) return;
+    q.gen = { error: String(e.message || e), seed };
+    q.generated.push({ error: q.gen.error, prompt, strength, at_ms: Math.round(performance.now() - dx.t0) });
+  }
+  if (dx.currentQuestion === q) renderRefs(q);
+  if (!$("explore").hidden && ex.q === q && ex.list[0] && ex.list[0].generated) { ex.list[0] = genItem(q) || ex.list[0]; if (ex.i === 0) showExplore(); }
+}
+function genItem(q) {
+  if (!q.gen || !q.gen.url) return null;
+  return { id: "gen_" + q.gen.seed, generated: true, word: "imagined", image: q.gen.url, full: q.gen.url,
+           title: "Imagined from your part", creator: (q.words || []).join(" · "), source: "generated", license: "" };
+}
+let genTimer = null;
+$("gen-strength").oninput = e => {
+  const q = dx.currentQuestion; if (!q) return;
+  q.genStrength = Number(e.target.value);
+  clearTimeout(genTimer); genTimer = setTimeout(() => generateFor(q), 400);
+};
+$("gen-again").onclick = e => { e.currentTarget.blur(); if (dx.currentQuestion) generateFor(dx.currentQuestion, true); };
 
 /* ---------- explorer ---------- */
 const ex = { q: null, list: [], i: 0, word: null, shownAt: 0, front: "ex-a" };
 
 function openExplorer(q, i, word = null) {
   ex.q = q; ex.word = word;
-  ex.list = word ? q.refs.filter(r => r.word === word) : q.refs.slice();
-  if (!ex.list.length) ex.list = q.refs.slice();
+  const refs = q.refs || [];
+  ex.list = word ? refs.filter(r => r.word === word) : refs.slice();
+  if (!ex.list.length) ex.list = refs.slice();
+  const g = genItem(q);
+  if (g && !word) ex.list.unshift(g);
+  if (!ex.list.length) return;
   ex.i = Math.min(i, ex.list.length - 1);
   q.explore_opens = (q.explore_opens || 0) + 1;
   const part = cutout(dx.img, q), pc = $("ex-part");
@@ -1594,14 +1694,17 @@ function showExplore() {
   im.onerror = () => { im.onerror = null; im.src = r.image; };     // fall back to the thumbnail
   $("ex-title").textContent = r.title;
   $("ex-meta").textContent = [r.creator, r.word && `“${r.word}”`].filter(Boolean).join(" · ");
-  $("ex-lic").textContent = r.source === "Openverse" ? `${(r.license || "").toUpperCase()} · via Openverse` : (r.source || "");
+  $("ex-lic").textContent = r.source === "Openverse" ? `${(r.license || "").toUpperCase()} · via Openverse`
+    : r.generated ? "generated from your part and these words" : (r.source || "");
   $("ex-count").textContent = `${ex.i + 1} / ${ex.list.length}`;
+  $("ex-regen").hidden = !r.generated;
   ex.shown = r; ex.shownAt = performance.now();
 }
 function closeExplorer() { logView(); $("explore").hidden = true; }
 $("ex-prev").onclick = () => { ex.i = (ex.i - 1 + ex.list.length) % ex.list.length; showExplore(); };
 $("ex-next").onclick = () => { ex.i = (ex.i + 1) % ex.list.length; showExplore(); };
 $("ex-back").onclick = closeExplorer;
+$("ex-regen").onclick = e => { e.currentTarget.blur(); generateFor(ex.q, true); };
 document.addEventListener("keydown", e => {
   if ($("explore").hidden) return;
   if (e.key === "Escape") closeExplorer();
@@ -1662,6 +1765,7 @@ function dissectDecide(action) {
         references_used_text: !!(q.refs && q.refsText),
         references_offline: !!q.refsOffline,
         explore_opens: q.explore_opens,
+        generated: q.generated,
         references_viewed: q.opened
       } : {})
     }));

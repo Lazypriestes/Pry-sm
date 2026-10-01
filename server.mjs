@@ -1,0 +1,86 @@
+// Local server for the study: serves the static files and forwards image generation to fal.ai,
+// so the API key (in .env, never sent to the browser) stays on this machine.
+// Usage (from the prototype folder):  node server.mjs        → http://localhost:8001
+// No dependencies. Dotfiles (.env, .git) and tools/ are never served.
+import { createServer } from "node:http";
+import { readFile, stat } from "node:fs/promises";
+import { join, extname, normalize, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = dirname(fileURLToPath(import.meta.url));
+const PORT = Number(process.env.PORT || 8001);
+// Fast image-to-image model; any fal image-to-image endpoint taking image_url/prompt/strength works.
+const GEN_MODEL = process.env.GEN_MODEL || "fal-ai/fast-lightning-sdxl/image-to-image";
+
+let FAL_KEY = process.env.FAL_KEY;
+try {
+  for (const line of (await readFile(join(ROOT, ".env"), "utf8")).split("\n")) {
+    const m = line.match(/^\s*([A-Z_]+)\s*=\s*(.*)\s*$/);
+    if (m && m[1] === "FAL_KEY") FAL_KEY = m[2];
+  }
+} catch (e) { /* no .env: generation disabled */ }
+
+const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".mjs": "text/javascript",
+  ".json": "application/json", ".css": "text/css", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+  ".png": "image/png", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml", ".md": "text/plain" };
+
+async function readBody(req, limit = 8e6) {
+  let size = 0; const chunks = [];
+  for await (const c of req) { size += c.length; if (size > limit) throw new Error("too large"); chunks.push(c); }
+  return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
+}
+function send(res, code, obj) {
+  res.writeHead(code, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+  res.end(JSON.stringify(obj));
+}
+
+async function generate(req, res) {
+  if (!FAL_KEY) return send(res, 503, { error: "no FAL_KEY in .env" });
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (typeof b.image !== "string" || !b.image.startsWith("data:image/") || typeof b.prompt !== "string")
+    return send(res, 400, { error: "image (data URL) and prompt required" });
+  const body = {
+    image_url: b.image,
+    prompt: b.prompt.slice(0, 500),
+    negative_prompt: "text, watermark, logo, frame, border",
+    strength: Math.min(0.95, Math.max(0.2, Number(b.strength) || 0.65)),
+    num_inference_steps: 4,
+    image_size: "square",
+    num_images: 1,
+    enable_safety_checker: true,
+    ...(Number.isInteger(b.seed) ? { seed: b.seed } : {})
+  };
+  const t = performance.now();
+  try {
+    const r = await fetch(`https://fal.run/${GEN_MODEL}`, {
+      method: "POST",
+      headers: { Authorization: `Key ${FAL_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    const j = await r.json().catch(() => ({}));
+    const url = j.images && j.images[0] && j.images[0].url;
+    if (!r.ok || !url) return send(res, 502, { error: (j.detail && JSON.stringify(j.detail)) || `fal ${r.status}` });
+    send(res, 200, { url, model: GEN_MODEL, seed: j.seed, strength: body.strength, ms: Math.round(performance.now() - t) });
+  } catch (e) {
+    send(res, 502, { error: String(e.message || e) });
+  }
+}
+
+createServer(async (req, res) => {
+  const url = new URL(req.url, "http://x");
+  if (url.pathname === "/api/generate" && req.method === "POST") return generate(req, res);
+  if (url.pathname === "/api/status") return send(res, 200, { generation: !!FAL_KEY, model: GEN_MODEL });
+  // Static files, inside ROOT only, no dotfiles, no tools/.
+  let path = decodeURIComponent(url.pathname);
+  if (path.endsWith("/")) path += "index.html";
+  const file = normalize(join(ROOT, path));
+  if (!file.startsWith(ROOT) || /\/\.|^\/tools\//.test(path)) { res.writeHead(404); return res.end("not found"); }
+  try {
+    if (!(await stat(file)).isFile()) throw new Error();
+    res.writeHead(200, { "Content-Type": TYPES[extname(file).toLowerCase()] || "application/octet-stream" });
+    res.end(await readFile(file));
+  } catch (e) { res.writeHead(404); res.end("not found"); }
+}).listen(PORT, () => {
+  console.log(`study on http://localhost:${PORT}  ·  generation ${FAL_KEY ? "on (" + GEN_MODEL + ")" : "off (no FAL_KEY)"}`);
+});
