@@ -15,9 +15,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import torch
 from PIL import Image
-from diffusers import AutoPipelineForImage2Image, AutoPipelineForInpainting
+from diffusers import AutoPipelineForImage2Image, AutoPipelineForInpainting, AutoencoderKL
 
 MODEL = "stabilityai/sdxl-turbo"
+# SDXL's own VAE has to run in float32 (it overflows in fp16), which roughly doubled memory use.
+# This drop-in VAE is fixed to run in fp16.
+VAE = "madebyollin/sdxl-vae-fp16-fix"
 PORT = 8002
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 DTYPE = torch.float16 if DEVICE == "mps" else torch.float32
@@ -28,7 +31,9 @@ state = {"ready": False, "error": None}
 def load():
     try:
         t = time.time()
-        img2img = AutoPipelineForImage2Image.from_pretrained(MODEL, torch_dtype=DTYPE, variant="fp16").to(DEVICE)
+        vae = AutoencoderKL.from_pretrained(VAE, torch_dtype=DTYPE)
+        img2img = AutoPipelineForImage2Image.from_pretrained(MODEL, vae=vae, torch_dtype=DTYPE, variant="fp16").to(DEVICE)
+        img2img.enable_attention_slicing()           # lower peak memory on a 24 GB Mac shared with Ollama
         fill = AutoPipelineForInpainting.from_pipe(img2img)
         img2img.set_progress_bar_config(disable=True)
         fill.set_progress_bar_config(disable=True)
@@ -39,11 +44,19 @@ def load():
         wide = Image.new("RGB", (768, 480), (128, 128, 128))                 # typical outpainting frame
         fill("warm up", image=wide, mask_image=Image.new("L", wide.size, 255), strength=0.99,
              num_inference_steps=4, guidance_scale=0.0, width=768, height=480)
+        free_gpu()
         state["ready"] = True
         print(f"ready on {DEVICE} in {time.time() - t:.0f}s", flush=True)
     except Exception as e:  # noqa: BLE001 — report any load failure through /status
         state["error"] = repr(e)
         print("load failed:", e, flush=True)
+
+
+def free_gpu():
+    """Hand cached GPU memory back to macOS after each image (otherwise the MPS cache only grows)."""
+    if DEVICE == "mps":
+        torch.mps.synchronize()
+        torch.mps.empty_cache()
 
 
 def decode(data_url):
@@ -104,7 +117,10 @@ class Handler(BaseHTTPRequestHandler):
             b = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))))
             t = time.time()
             with LOCK:
-                out = run(kind, b)
+                try:
+                    out = run(kind, b)
+                finally:
+                    free_gpu()
             self._send(200, {"image": encode(out), "ms": round((time.time() - t) * 1000), "model": MODEL, "mode": kind})
         except Exception as e:  # noqa: BLE001
             self._send(500, {"error": repr(e)})

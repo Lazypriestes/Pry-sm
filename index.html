@@ -32,6 +32,7 @@ const DEFAULTS = {
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true             // "next" button bottom-left; turn off for participants
 };
+const GEN_TIMEOUT_MS = 25000;     // give up on an image after this long, so nobody waits forever
 const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detail, photographic";
 </script>
 <style>
@@ -407,9 +408,34 @@ async function runField(round) {
    ============================================================ */
 let refsLib = null, genAvailable = false;
 function prepareImagination() {
-  fetch("api/status").then(r => r.json()).then(s => { genAvailable = !!s.generation; data.generation_model = s.model; }).catch(() => {});
+  fetch("api/status").then(r => r.json()).then(s => {
+    genAvailable = !!s.generation; data.generation_model = s.model; data.backend = s.backend;
+    warmUp();
+  }).catch(() => {});
   import("./references.js").then(lib => { refsLib = lib; return lib.loadReferences(); })
     .then(info => { data.clip = info; }).catch(e => { data.clip_error = String(e.message || e); });
+}
+
+// While stage 1 runs, quietly do one practice reading and one practice image in the shape of this
+// screen. Local models are slow the first time after a pause (they are paged back into memory and the
+// GPU compiles for the frame size); this way the first real circle is as fast as the rest.
+async function warmUp() {
+  const t = performance.now();
+  try {
+    const sq = document.createElement("canvas"); sq.width = sq.height = 384;
+    const g = sq.getContext("2d"); g.fillStyle = "#6b7058"; g.fillRect(0, 0, 384, 384);
+    g.strokeStyle = "#3d4033"; g.lineWidth = 24; g.strokeRect(90, 60, 200, 260);
+    await fetch("api/interpret", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: sq.toDataURL("image/jpeg", 0.8) }) });
+    const FW = 1024, FH = Math.round(innerHeight * FW / innerWidth);
+    const fr = document.createElement("canvas"); fr.width = FW; fr.height = FH;
+    const f = fr.getContext("2d"); f.fillStyle = "#6e6e6e"; f.fillRect(0, 0, FW, FH);
+    const mk = document.createElement("canvas"); mk.width = FW; mk.height = FH;
+    const m = mk.getContext("2d"); m.fillStyle = "#fff"; m.fillRect(0, 0, FW, FH); m.fillStyle = "#000"; m.fillRect(FW * 0.45, FH * 0.4, FW * 0.1, FH * 0.2);
+    await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: fr.toDataURL("image/jpeg", 0.8), mask: mk.toDataURL("image/png"), prompt: "warm up", seed: 1 }) });
+    data.warmup_ms = Math.round(performance.now() - t);
+  } catch (e) { data.warmup_error = String(e.message || e); }
 }
 
 async function runExplore() {
@@ -545,7 +571,11 @@ function exploreItem(item, n, total) {
         await imagine(q, words, circ, my);
       } catch (e) {
         circ.error = String(e.message || e);
-        if (my === token) { $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse"); }
+        circ.timed_out = e.name === "TimeoutError" || e.name === "AbortError";
+        if (my === token) {
+          $("ex-status").classList.remove("pulse");
+          $("ex-status").textContent = circ.timed_out ? "couldn't imagine this one in time — circle again or go on" : "";
+        }
       }
     }
 
@@ -595,14 +625,16 @@ function exploreItem(item, n, total) {
         const inp = await outpaintInputs(q.screen);
         prompt = fillPrompt(source, q, words[circ.active] || words[0]);
         const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed }) });
+          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed }), signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
         j = await res.json();
         if (!res.ok) throw new Error(j.error || res.status);
       } catch (e) {                                              // fall back to repainting the part itself
         circ.fill_error = String(e.message || e);
+        if (e.name === "TimeoutError" || e.name === "AbortError") throw e;   // too slow: don't try again
         mode = "img2img"; prompt = genPrompt(source, q, words);
         const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: genSource(source, q), prompt, strength: settings.genStrength, seed }) });
+          body: JSON.stringify({ image: genSource(source, q), prompt, strength: settings.genStrength, seed }),
+          signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
         j = await res.json();
         if (!res.ok) throw new Error(j.error || res.status);
       }
