@@ -679,7 +679,7 @@ function partColour(img, q) {
 function fillPrompt(img, q, reading) {
   const colour = partColour(img, q);
   return `an extreme close-up photograph of a vast ${reading || "abstract form"} filling the entire frame` +
-    (colour ? `, ${colour} tones` : "") + ", seamless, one continuous surface, natural light, sharp focus, rich detail";
+    (colour ? `, ${colour} tones` : "") + ", seamless, one continuous surface, natural light, everything in sharp focus, deep focus, no depth of field, no blur, rich detail";
 }
 function genPrompt(img, q, words) {
   const [a, b, c] = words, colour = partColour(img, q);
