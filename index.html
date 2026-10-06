@@ -24,7 +24,7 @@ const TEXT = {
 };
 const DEFAULTS = {
   itemCount: 24,          // objects per field round (random subset of the catalogue; 0 = all)
-  visibleMs: 2200,        // time an object stays fully visible
+  visibleMs: 3700,        // time an object stays fully visible
   fadeMs: 900,            // fade in
   fadeOutMs: 1800,        // fade out (slow, so objects dissolve rather than vanish)
   minClear: 2,            // at least this many objects fully visible at any moment (often one more)
@@ -81,13 +81,13 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
 
   /* Stage 1: the field */
   #field { overflow: hidden; }
-  .drift { position: absolute; cursor: pointer; opacity: 0; filter: blur(14px);
+  .drift { position: absolute; cursor: pointer; opacity: 0; filter: blur(6px);
            transition-property: opacity, filter, transform; transition-timing-function: ease;
            transform: scale(.97); user-select: none; -webkit-user-drag: none; }
   .drift.in { opacity: 1; filter: blur(0); transform: scale(1); }
-  .drift.out { opacity: 0; filter: blur(14px); }
+  .drift.out { opacity: 0; filter: blur(3px); }      /* fade out mostly by opacity, a little blur */
   .drift.picked { filter: drop-shadow(0 0 18px rgba(255,255,255,.55)); }
-  .drift.picked.out { filter: blur(14px) drop-shadow(0 0 18px rgba(255,255,255,.55)); }
+  .drift.picked.out { filter: blur(3px) drop-shadow(0 0 18px rgba(255,255,255,.55)); }
   .tick { position: absolute; width: 28px; height: 28px; border-radius: 50%; background: var(--sel); color: #111;
           display: grid; place-items: center; font-size: 15px; pointer-events: none;
           transform: translate(-50%, -50%) scale(.6); opacity: 0; transition: opacity .2s, transform .2s; }
@@ -200,7 +200,12 @@ function show(id) { document.querySelectorAll(".screen").forEach(s => s.classLis
 
 let catalogue = null, itemsById = {}, phase = "start", T0 = 0;
 let settings = { ...DEFAULTS };
-try { Object.assign(settings, JSON.parse(localStorage.getItem("objview_settings") || "{}")); } catch (e) {}
+// Saved settings are kept only if they were saved with the current defaults' version.
+const SETTINGS_VERSION = 2;
+try {
+  const saved = JSON.parse(localStorage.getItem("objview_settings") || "{}");
+  if (saved._v === SETTINGS_VERSION) Object.assign(settings, saved);
+} catch (e) {}
 
 const data = {
   version: "field-explore-v1", participant_id: "", started_at: null, finished_at: null,
@@ -214,7 +219,7 @@ const data = {
 const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength"];
 function applySettings() {
   $("debug-next").style.display = settings.debug ? "block" : "none";
-  try { localStorage.setItem("objview_settings", JSON.stringify(settings)); } catch (e) {}
+  try { localStorage.setItem("objview_settings", JSON.stringify({ ...settings, _v: SETTINGS_VERSION })); } catch (e) {}
 }
 SETTING_KEYS.forEach(k => {
   $("s-" + k).value = settings[k];
@@ -324,7 +329,9 @@ async function runField(round) {
   // moment (checked in simulation). The first minClear arrive 250 ms apart so the field starts full.
   const M = Math.max(1, settings.minClear);
   const gap = settings.visibleMs / (M + 0.4);
-  const appearAt = k => (k < M ? k * 250 : (M - 1) * 250 + (k - M + 1.2) * gap + (Math.random() - 0.5) * 0.1 * gap);
+  // The first regular object is centred between "first object stops being fully visible" and
+  // "second one does", so the hand-off from the opening pair never drops below M or exceeds M + 1.
+  const appearAt = k => (k < M ? k * 250 : (M - 1) * 250 + (k - M + 1.4) * gap - 125 + (Math.random() - 0.5) * 0.1 * gap);
   let roundT0 = 0;
   let stop = false;
   dbgNext = () => { stop = true; };
@@ -367,7 +374,11 @@ async function runField(round) {
       el.onclick = ev => {
         if (entry.selected) return;
         entry.selected = true;
-        entry.click_ms = Math.round(performance.now() - tIn);            // from the start of the fade-in
+        const since = performance.now() - tIn;
+        entry.click_ms = Math.round(since);                              // from the start of the fade-in
+        // Objects stay clickable until gone; record when in their life the click came.
+        entry.click_phase = since < settings.fadeMs ? "fading_in"
+          : since < settings.fadeMs + settings.visibleMs ? "visible" : "fading_out";
         el.classList.add("picked");
         const tick = document.createElement("div"); tick.className = "tick"; tick.textContent = "✓";
         tick.style.left = p.x + w / 2 + "px"; tick.style.top = p.y + hh / 2 + "px";
@@ -377,7 +388,6 @@ async function runField(round) {
       await sleep(settings.fadeMs + settings.visibleMs);
       el.style.transitionDuration = settings.fadeOutMs + "ms";
       el.classList.add("out");
-      el.style.pointerEvents = "none";
       await sleep(settings.fadeOutMs);
       el.remove(); visible.delete(slot);
     })());
