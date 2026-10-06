@@ -1,5 +1,5 @@
 {
-  "version": "vases-57-v2",
+  "version": "vases-34-hires-v1",
   "items": [
     {
       "id": "vase_01",
@@ -22,7 +22,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_01.png"
+      "cutout": "images/cut/vase_01.png",
+      "object_px": [
+        615,
+        1198
+      ]
     },
     {
       "id": "vase_02",
@@ -45,7 +49,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_02.png"
+      "cutout": "images/cut/vase_02.png",
+      "object_px": [
+        400,
+        1061
+      ]
     },
     {
       "id": "vase_03",
@@ -68,53 +76,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_03.png"
-    },
-    {
-      "id": "vase_04",
-      "image": "images/vase_04.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "prime": {
-        "id": "bridge_04",
-        "image": "images/bridge_04.jpg",
-        "tags": {
-          "category": "bridge"
-        }
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_04.png"
-    },
-    {
-      "id": "vase_05",
-      "image": "images/vase_05.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "prime": {
-        "id": "bridge_05",
-        "image": "images/bridge_05.jpg",
-        "tags": {
-          "category": "bridge"
-        }
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_05.png"
+      "cutout": "images/cut/vase_03.png",
+      "object_px": [
+        251,
+        609
+      ]
     },
     {
       "id": "vase_06",
@@ -137,7 +103,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_06.png"
+      "cutout": "images/cut/vase_06.png",
+      "object_px": [
+        279,
+        569
+      ]
     },
     {
       "id": "vase_07",
@@ -160,30 +130,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_07.png"
-    },
-    {
-      "id": "vase_08",
-      "image": "images/vase_08.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "prime": {
-        "id": "bridge_08",
-        "image": "images/bridge_08.jpg",
-        "tags": {
-          "category": "bridge"
-        }
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_08.png"
+      "cutout": "images/cut/vase_07.png",
+      "object_px": [
+        262,
+        576
+      ]
     },
     {
       "id": "vase_09",
@@ -206,30 +157,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_09.png"
-    },
-    {
-      "id": "vase_10",
-      "image": "images/vase_10.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "prime": {
-        "id": "bridge_10",
-        "image": "images/bridge_10.jpg",
-        "tags": {
-          "category": "bridge"
-        }
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_10.png"
+      "cutout": "images/cut/vase_09.png",
+      "object_px": [
+        237,
+        505
+      ]
     },
     {
       "id": "vase_11",
@@ -252,7 +184,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_11.png"
+      "cutout": "images/cut/vase_11.png",
+      "object_px": [
+        845,
+        1172
+      ]
     },
     {
       "id": "vase_12",
@@ -275,7 +211,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_12.png"
+      "cutout": "images/cut/vase_12.png",
+      "object_px": [
+        546,
+        986
+      ]
     },
     {
       "id": "vase_13",
@@ -298,7 +238,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_13.png"
+      "cutout": "images/cut/vase_13.png",
+      "object_px": [
+        489,
+        1013
+      ]
     },
     {
       "id": "vase_14",
@@ -321,7 +265,11 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_14.png"
+      "cutout": "images/cut/vase_14.png",
+      "object_px": [
+        521,
+        547
+      ]
     },
     {
       "id": "vase_15",
@@ -344,7 +292,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_15.png"
+      "cutout": "images/cut/vase_15.png",
+      "object_px": [
+        548,
+        1281
+      ]
     },
     {
       "id": "vase_16",
@@ -367,7 +319,11 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_16.png"
+      "cutout": "images/cut/vase_16.png",
+      "object_px": [
+        479,
+        1138
+      ]
     },
     {
       "id": "vase_17",
@@ -390,7 +346,545 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_17.png"
+      "cutout": "images/cut/vase_17.png",
+      "object_px": [
+        408,
+        954
+      ]
+    },
+    {
+      "id": "vase_21",
+      "image": "images/vase_21.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_21.png",
+      "object_px": [
+        328,
+        663
+      ]
+    },
+    {
+      "id": "vase_23",
+      "image": "images/vase_23.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_23.png",
+      "object_px": [
+        300,
+        664
+      ]
+    },
+    {
+      "id": "vase_24",
+      "image": "images/vase_24.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_24.png",
+      "object_px": [
+        466,
+        967
+      ]
+    },
+    {
+      "id": "vase_26",
+      "image": "images/vase_26.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_26.png",
+      "object_px": [
+        270,
+        508
+      ]
+    },
+    {
+      "id": "vase_27",
+      "image": "images/vase_27.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_27.png",
+      "object_px": [
+        168,
+        513
+      ]
+    },
+    {
+      "id": "vase_35",
+      "image": "images/vase_35.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_35.png",
+      "object_px": [
+        306,
+        559
+      ]
+    },
+    {
+      "id": "vase_37",
+      "image": "images/vase_37.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_37.png",
+      "object_px": [
+        233,
+        597
+      ]
+    },
+    {
+      "id": "vase_38",
+      "image": "images/vase_38.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_38.png",
+      "object_px": [
+        279,
+        645
+      ]
+    },
+    {
+      "id": "vase_39",
+      "image": "images/vase_39.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_39.png",
+      "object_px": [
+        311,
+        626
+      ]
+    },
+    {
+      "id": "vase_40",
+      "image": "images/vase_40.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_40.png",
+      "object_px": [
+        413,
+        773
+      ]
+    },
+    {
+      "id": "vase_41",
+      "image": "images/vase_41.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_41.png",
+      "object_px": [
+        396,
+        627
+      ]
+    },
+    {
+      "id": "vase_42",
+      "image": "images/vase_42.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_42.png",
+      "object_px": [
+        217,
+        554
+      ]
+    },
+    {
+      "id": "vase_43",
+      "image": "images/vase_43.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_43.png",
+      "object_px": [
+        284,
+        524
+      ]
+    },
+    {
+      "id": "vase_44",
+      "image": "images/vase_44.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_44.png",
+      "object_px": [
+        261,
+        535
+      ]
+    },
+    {
+      "id": "vase_45",
+      "image": "images/vase_45.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_45.png",
+      "object_px": [
+        261,
+        576
+      ]
+    },
+    {
+      "id": "vase_47",
+      "image": "images/vase_47.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_47.png",
+      "object_px": [
+        288,
+        507
+      ]
+    },
+    {
+      "id": "vase_50",
+      "image": "images/vase_50.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_50.png",
+      "object_px": [
+        266,
+        707
+      ]
+    },
+    {
+      "id": "vase_54",
+      "image": "images/vase_54.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_54.png",
+      "object_px": [
+        800,
+        1094
+      ]
+    },
+    {
+      "id": "vase_55",
+      "image": "images/vase_55.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_55.png",
+      "object_px": [
+        458,
+        666
+      ]
+    },
+    {
+      "id": "vase_56",
+      "image": "images/vase_56.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_56.png",
+      "object_px": [
+        603,
+        700
+      ]
+    },
+    {
+      "id": "vase_57",
+      "image": "images/vase_57.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_57.png",
+      "object_px": [
+        535,
+        584
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "id": "vase_04",
+      "image": "images/vase_04.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_04",
+        "image": "images/bridge_04.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_04.png",
+      "object_px": [
+        306,
+        462
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
+    },
+    {
+      "id": "vase_05",
+      "image": "images/vase_05.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_05",
+        "image": "images/bridge_05.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_05.png",
+      "object_px": [
+        196,
+        492
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
+    },
+    {
+      "id": "vase_08",
+      "image": "images/vase_08.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_08",
+        "image": "images/bridge_08.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      },
+      "dissect": {
+        "show_pattern": true
+      },
+      "cutout": "images/cut/vase_08.png",
+      "object_px": [
+        204,
+        344
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
+    },
+    {
+      "id": "vase_10",
+      "image": "images/vase_10.jpg",
+      "tags": {
+        "category": "vase",
+        "material": null,
+        "ornament": null,
+        "era": null,
+        "saturation": null,
+        "finish": null
+      },
+      "prime": {
+        "id": "bridge_10",
+        "image": "images/bridge_10.jpg",
+        "tags": {
+          "category": "bridge"
+        }
+      },
+      "dissect": {
+        "show_pattern": false
+      },
+      "cutout": "images/cut/vase_10.png",
+      "object_px": [
+        155,
+        363
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_18",
@@ -413,7 +907,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_18.png"
+      "cutout": "images/cut/vase_18.png",
+      "object_px": [
+        336,
+        417
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_19",
@@ -429,7 +928,12 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_19.png"
+      "cutout": "images/cut/vase_19.png",
+      "object_px": [
+        130,
+        346
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_20",
@@ -445,23 +949,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_20.png"
-    },
-    {
-      "id": "vase_21",
-      "image": "images/vase_21.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_21.png"
+      "cutout": "images/cut/vase_20.png",
+      "object_px": [
+        194,
+        256
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_22",
@@ -477,39 +970,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_22.png"
-    },
-    {
-      "id": "vase_23",
-      "image": "images/vase_23.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_23.png"
-    },
-    {
-      "id": "vase_24",
-      "image": "images/vase_24.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_24.png"
+      "cutout": "images/cut/vase_22.png",
+      "object_px": [
+        378,
+        472
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_25",
@@ -525,39 +991,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_25.png"
-    },
-    {
-      "id": "vase_26",
-      "image": "images/vase_26.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_26.png"
-    },
-    {
-      "id": "vase_27",
-      "image": "images/vase_27.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_27.png"
+      "cutout": "images/cut/vase_25.png",
+      "object_px": [
+        236,
+        280
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_28",
@@ -573,7 +1012,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_28.png"
+      "cutout": "images/cut/vase_28.png",
+      "object_px": [
+        322,
+        439
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_29",
@@ -589,7 +1033,12 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_29.png"
+      "cutout": "images/cut/vase_29.png",
+      "object_px": [
+        218,
+        349
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_30",
@@ -605,7 +1054,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_30.png"
+      "cutout": "images/cut/vase_30.png",
+      "object_px": [
+        180,
+        331
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_31",
@@ -621,7 +1075,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_31.png"
+      "cutout": "images/cut/vase_31.png",
+      "object_px": [
+        408,
+        394
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_32",
@@ -637,7 +1096,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_32.png"
+      "cutout": "images/cut/vase_32.png",
+      "object_px": [
+        270,
+        398
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_33",
@@ -653,7 +1117,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_33.png"
+      "cutout": "images/cut/vase_33.png",
+      "object_px": [
+        211,
+        270
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_34",
@@ -669,23 +1138,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_34.png"
-    },
-    {
-      "id": "vase_35",
-      "image": "images/vase_35.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_35.png"
+      "cutout": "images/cut/vase_34.png",
+      "object_px": [
+        244,
+        470
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_36",
@@ -701,151 +1159,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_36.png"
-    },
-    {
-      "id": "vase_37",
-      "image": "images/vase_37.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_37.png"
-    },
-    {
-      "id": "vase_38",
-      "image": "images/vase_38.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_38.png"
-    },
-    {
-      "id": "vase_39",
-      "image": "images/vase_39.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_39.png"
-    },
-    {
-      "id": "vase_40",
-      "image": "images/vase_40.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_40.png"
-    },
-    {
-      "id": "vase_41",
-      "image": "images/vase_41.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_41.png"
-    },
-    {
-      "id": "vase_42",
-      "image": "images/vase_42.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_42.png"
-    },
-    {
-      "id": "vase_43",
-      "image": "images/vase_43.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_43.png"
-    },
-    {
-      "id": "vase_44",
-      "image": "images/vase_44.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_44.png"
-    },
-    {
-      "id": "vase_45",
-      "image": "images/vase_45.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_45.png"
+      "cutout": "images/cut/vase_36.png",
+      "object_px": [
+        257,
+        413
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_46",
@@ -861,23 +1180,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_46.png"
-    },
-    {
-      "id": "vase_47",
-      "image": "images/vase_47.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_47.png"
+      "cutout": "images/cut/vase_46.png",
+      "object_px": [
+        207,
+        354
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_48",
@@ -893,7 +1201,12 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_48.png"
+      "cutout": "images/cut/vase_48.png",
+      "object_px": [
+        339,
+        367
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_49",
@@ -909,23 +1222,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_49.png"
-    },
-    {
-      "id": "vase_50",
-      "image": "images/vase_50.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_50.png"
+      "cutout": "images/cut/vase_49.png",
+      "object_px": [
+        162,
+        430
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_51",
@@ -941,7 +1243,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_51.png"
+      "cutout": "images/cut/vase_51.png",
+      "object_px": [
+        151,
+        357
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_52",
@@ -957,7 +1264,12 @@
       "dissect": {
         "show_pattern": true
       },
-      "cutout": "images/cut/vase_52.png"
+      "cutout": "images/cut/vase_52.png",
+      "object_px": [
+        207,
+        235
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     },
     {
       "id": "vase_53",
@@ -973,71 +1285,12 @@
       "dissect": {
         "show_pattern": false
       },
-      "cutout": "images/cut/vase_53.png"
-    },
-    {
-      "id": "vase_54",
-      "image": "images/vase_54.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_54.png"
-    },
-    {
-      "id": "vase_55",
-      "image": "images/vase_55.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_55.png"
-    },
-    {
-      "id": "vase_56",
-      "image": "images/vase_56.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": false
-      },
-      "cutout": "images/cut/vase_56.png"
-    },
-    {
-      "id": "vase_57",
-      "image": "images/vase_57.jpg",
-      "tags": {
-        "category": "vase",
-        "material": null,
-        "ornament": null,
-        "era": null,
-        "saturation": null,
-        "finish": null
-      },
-      "dissect": {
-        "show_pattern": true
-      },
-      "cutout": "images/cut/vase_57.png"
+      "cutout": "images/cut/vase_53.png",
+      "object_px": [
+        194,
+        417
+      ],
+      "excluded_reason": "object height < 500px (low resolution)"
     }
   ]
 }

@@ -27,7 +27,7 @@ const DEFAULTS = {
   visibleMs: 2200,        // time an object stays fully visible
   fadeMs: 900,            // fade in
   fadeOutMs: 1800,        // fade out (slow, so objects dissolve rather than vanish)
-  onScreen: 3,            // objects visible at the same time (roughly)
+  minClear: 2,            // at least this many objects fully visible at any moment (often one more)
   exploreCount: 5,        // skipped objects explored in stage 2
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true             // "next" button bottom-left; turn off for participants
@@ -133,7 +133,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Objects per round <input type="number" id="s-itemCount" min="0" step="1"></label>
   <label>Visible (ms) <input type="number" id="s-visibleMs" min="200" step="100"></label>
   <label>Fade out (ms) <input type="number" id="s-fadeOutMs" min="200" step="100"></label>
-  <label>On screen at once <input type="number" id="s-onScreen" min="1" max="6" step="1"></label>
+  <label>Fully visible at once (min) <input type="number" id="s-minClear" min="1" max="4" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
@@ -189,7 +189,12 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
 const $ = id => document.getElementById(id);
 const nowISO = () => new Date().toISOString();
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const frame = () => new Promise(r => requestAnimationFrame(t => r(t)));
+// Next animation frame, or after 100 ms if frames are paused (hidden/throttled tab), so timing never stalls.
+const frame = () => new Promise(r => {
+  let done = false;
+  requestAnimationFrame(t => { if (!done) { done = true; r(t); } });
+  setTimeout(() => { if (!done) { done = true; r(performance.now()); } }, 100);
+});
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === id)); }
 
@@ -206,7 +211,7 @@ const data = {
 /* ============================================================
    SETTINGS (start screen only)
    ============================================================ */
-const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "onScreen", "exploreCount", "genStrength"];
+const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength"];
 function applySettings() {
   $("debug-next").style.display = settings.debug ? "block" : "none";
   try { localStorage.setItem("objview_settings", JSON.stringify(settings)); } catch (e) {}
@@ -314,12 +319,19 @@ async function runField(round) {
   const order = shuffle(roundItems);
   const visible = new Set();
   const life = settings.fadeMs + settings.visibleMs + settings.fadeOutMs;
-  const gap = life / Math.max(1, settings.onScreen);
+  // Fixed beat: object k appears at a set time (± 5% of a gap, never accumulating). With a gap of
+  // visibleMs / (minClear + 0.4), exactly minClear or minClear + 1 objects are fully visible at every
+  // moment (checked in simulation). The first minClear arrive 250 ms apart so the field starts full.
+  const M = Math.max(1, settings.minClear);
+  const gap = settings.visibleMs / (M + 0.4);
+  const appearAt = k => (k < M ? k * 250 : (M - 1) * 250 + (k - M + 1.2) * gap + (Math.random() - 0.5) * 0.1 * gap);
+  let roundT0 = 0;
   let stop = false;
   dbgNext = () => { stop = true; };
   await sleep(600);
+  roundT0 = performance.now();
 
-  const sizeH = () => Math.min(innerHeight * 0.34, innerWidth * 0.26);
+  const sizeH = () => Math.min(innerHeight * 0.30, innerWidth * 0.22);   // ~5–6 on screen incl. fading ones
   function place(w, h) {
     const m = 24, top = 60, bottom = 60;
     for (let tries = 0; tries < 40; tries++) {
@@ -332,6 +344,8 @@ async function runField(round) {
 
   const done = [];
   for (let k = 0; k < order.length && !stop; k++) {
+    await sleep(Math.max(0, roundT0 + appearAt(k) - performance.now()));
+    if (stop) break;
     const item = order[k], c = cut[item.id];
     const h = sizeH(), w = Math.min(h * c.w / c.h, innerWidth * 0.3), hh = w * c.h / c.w;
     const p = place(w, hh);
@@ -367,7 +381,6 @@ async function runField(round) {
       await sleep(settings.fadeOutMs);
       el.remove(); visible.delete(slot);
     })());
-    await sleep(gap * (0.8 + Math.random() * 0.4));
   }
   await Promise.all(done);
   rec.finished_at = nowISO();
