@@ -41,9 +41,9 @@ def load():
         # Warm-up so the first participant doesn't wait for kernel compilation.
         blank = Image.new("RGB", (512, 512), (128, 128, 128))
         img2img("warm up", image=blank, strength=0.5, num_inference_steps=2, guidance_scale=0.0)
-        wide = Image.new("RGB", (768, 480), (128, 128, 128))                 # typical outpainting frame
+        wide = Image.new("RGB", (1280, 800), (128, 128, 128))                # typical outpainting frame
         fill("warm up", image=wide, mask_image=Image.new("L", wide.size, 255), strength=0.99,
-             num_inference_steps=4, guidance_scale=0.0, width=768, height=480)
+             num_inference_steps=6, guidance_scale=0.0, width=1280, height=800)
         free_gpu()
         state["ready"] = True
         print(f"ready on {DEVICE} in {time.time() - t:.0f}s", flush=True)
@@ -86,9 +86,10 @@ def run(kind, b):
         out = state["img2img"](prompt, image=image, strength=strength, num_inference_steps=steps,
                                guidance_scale=0.0, generator=gen).images[0]
     else:
-        image = fit(decode(b["image"]).convert("RGB"), int(b.get("size") or 768))
+        image = fit(decode(b["image"]).convert("RGB"), min(1536, int(b.get("size") or 1280)))
         mask = decode(b["mask"]).convert("L").resize(image.size)
-        out = state["fill"](prompt, image=image, mask_image=mask, strength=0.99, num_inference_steps=4,
+        steps = min(12, max(2, int(b.get("steps") or 6)))
+        out = state["fill"](prompt, image=image, mask_image=mask, strength=0.99, num_inference_steps=steps,
                             guidance_scale=0.0, width=image.size[0], height=image.size[1], generator=gen).images[0]
     return out
 

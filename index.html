@@ -32,7 +32,10 @@ const DEFAULTS = {
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true             // "next" button bottom-left; turn off for participants
 };
-const GEN_TIMEOUT_MS = 25000;     // give up on an image after this long, so nobody waits forever
+// Outpainting resolution and steps (local SDXL-Turbo on an M4 Pro): 768 px/4 steps ≈ 3 s but too blurry
+// to recognise; 1280 px/6 steps ≈ 10 s and sharp.
+const GEN_SIZE = 1280, GEN_STEPS = 6;
+const GEN_TIMEOUT_MS = 40000;     // give up on an image after this long, so nobody waits forever
 const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detail, photographic";
 </script>
 <style>
@@ -110,7 +113,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #ex-wrap img { object-fit: contain; transition: filter 1s ease, opacity 1.2s ease; user-select: none; -webkit-user-drag: none; }
   #ex-wrap.focus img { filter: blur(10px) brightness(.32); }
   #ex-wrap.focus.imagined img { opacity: 0; }
-  #ex-frag, #ex-ink { pointer-events: none; transition: opacity 3.2s ease; }
+  #ex-frag, #ex-ink { pointer-events: none; transition: opacity 1.2s ease; }
   #ex-wrap.dissolve #ex-frag, #ex-wrap.dissolve #ex-ink { opacity: 0; }
   #ex-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; pointer-events: none; transition: opacity 1.2s; }
   #explore.imagined #ex-top { opacity: 0; }
@@ -427,13 +430,14 @@ async function warmUp() {
     g.strokeStyle = "#3d4033"; g.lineWidth = 24; g.strokeRect(90, 60, 200, 260);
     await fetch("api/interpret", { method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image: sq.toDataURL("image/jpeg", 0.8) }) });
-    const FW = 1024, FH = Math.round(innerHeight * FW / innerWidth);
+    const FW = GEN_SIZE, FH = Math.round(innerHeight * FW / innerWidth);
     const fr = document.createElement("canvas"); fr.width = FW; fr.height = FH;
     const f = fr.getContext("2d"); f.fillStyle = "#6e6e6e"; f.fillRect(0, 0, FW, FH);
     const mk = document.createElement("canvas"); mk.width = FW; mk.height = FH;
     const m = mk.getContext("2d"); m.fillStyle = "#fff"; m.fillRect(0, 0, FW, FH); m.fillStyle = "#000"; m.fillRect(FW * 0.45, FH * 0.4, FW * 0.1, FH * 0.2);
     await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ image: fr.toDataURL("image/jpeg", 0.8), mask: mk.toDataURL("image/png"), prompt: "warm up", seed: 1 }) });
+      body: JSON.stringify({ image: fr.toDataURL("image/jpeg", 0.8), mask: mk.toDataURL("image/png"), prompt: "warm up", seed: 1,
+                             size: GEN_SIZE, steps: GEN_STEPS }) });
     data.warmup_ms = Math.round(performance.now() - t);
   } catch (e) { data.warmup_error = String(e.message || e); }
 }
@@ -585,7 +589,7 @@ function exploreItem(item, n, total) {
     // and it lines up with the part when the part dissolves.
     async function outpaintInputs(pts) {
       const b = wrap.getBoundingClientRect(), r = rect(), s = b.width / r.W;
-      const FW = 1024, k = FW / innerWidth, FH = Math.round(innerHeight * k);
+      const FW = GEN_SIZE, k = FW / innerWidth, FH = Math.round(innerHeight * k);
       const ci = await loadImage(c.url);
       const box = { x: (b.left + r.x * s) * k, y: (b.top + r.y * s) * k, w: r.w * s * k, h: r.h * s * k };
       const P = p => [box.x + p.x * box.w, box.y + p.y * box.h];
@@ -625,7 +629,8 @@ function exploreItem(item, n, total) {
         const inp = await outpaintInputs(q.screen);
         prompt = fillPrompt(source, q, words[circ.active] || words[0]);
         const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed }), signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
+          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed, size: GEN_SIZE, steps: GEN_STEPS }),
+          signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
         j = await res.json();
         if (!res.ok) throw new Error(j.error || res.status);
       } catch (e) {                                              // fall back to repainting the part itself
@@ -649,7 +654,7 @@ function exploreItem(item, n, total) {
       bg.src = j.url;
       bg.classList.add("on"); wrap.classList.add("imagined"); $("explore").classList.add("imagined");
       // Then the circled part slowly dissolves into what was imagined around it.
-      setTimeout(() => { if (my === token) wrap.classList.add("dissolve"); }, 1600);
+      setTimeout(() => { if (my === token) wrap.classList.add("dissolve"); }, 500);
       $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse");
       $("ex-again").hidden = false;
       $("ex-again").onclick = async e => {

@@ -78,7 +78,8 @@ async function generate(req, res) {
     if (BACKEND === "local") {
       const r = await fetch(`${GEN_LOCAL}/${fill ? "fill" : "img2img"}`, {
         method: "POST", signal: AbortSignal.timeout(120000), headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: b.image, mask: b.mask, prompt: b.prompt, strength: b.strength, seed: b.seed })
+        body: JSON.stringify({ image: b.image, mask: b.mask, prompt: b.prompt, strength: b.strength, seed: b.seed,
+                               size: b.size, steps: b.steps })
       });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.image) return send(res, 502, { error: j.error || `local generator ${r.status}` });
