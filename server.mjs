@@ -8,7 +8,7 @@
 //
 // No dependencies. Dotfiles (.env, .git) and tools/ are never served.
 import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
+import { readFile, stat, writeFile, mkdir } from "node:fs/promises";
 import { join, extname, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -81,7 +81,7 @@ async function generate(req, res) {
       const r = await fetch(`${GEN_LOCAL}/${fill ? "fill" : "img2img"}`, {
         method: "POST", signal: AbortSignal.timeout(120000), headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: b.image, mask: b.mask, prompt: b.prompt, strength: b.strength, seed: b.seed,
-                               size: b.size, steps: b.steps })
+                               size: b.size, steps: b.steps, ref: b.ref })
       });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.image) return send(res, 502, { error: j.error || `local generator ${r.status}` });
@@ -158,6 +158,25 @@ async function photoProxy(id, res) {
     res.end(Buffer.from(await r.arrayBuffer()));
   } catch (e) { res.writeHead(404); res.end("not found"); }
 }
+// Per-vase words, reference images and weights for "imagined" mode (edited in imagine.html).
+async function saveImagine(req, res) {
+  let b;
+  try { b = await readBody(req, 2e6); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (!b || typeof b !== "object" || Array.isArray(b)) return send(res, 400, { error: "expected an object" });
+  await writeFile(join(ROOT, "imagine.json"), JSON.stringify(b, null, 2));
+  send(res, 200, { ok: true });
+}
+async function saveRef(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (!isDataImage(b.image) || !/^[\w-]+$/.test(b.vase || "")) return send(res, 400, { error: "vase and image required" });
+  const ext = b.image.startsWith("data:image/png") ? "png" : "jpg";
+  await mkdir(join(ROOT, "imagine_refs"), { recursive: true });
+  const path = `imagine_refs/${b.vase}_${Date.now()}.${ext}`;
+  await writeFile(join(ROOT, path), Buffer.from(b.image.split(",", 2)[1], "base64"));
+  send(res, 200, { path });
+}
+
 async function matchReady() {
   try { const r = await fetch(`${MATCH_LOCAL}/status`, { signal: AbortSignal.timeout(1500) }); const j = await r.json(); return j.ready ? j : false; }
   catch (e) { return false; }
@@ -166,6 +185,8 @@ async function matchReady() {
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   if (url.pathname === "/api/match" && req.method === "POST") return matchProxy(req, res);
+  if (url.pathname === "/api/imagine" && req.method === "POST") return saveImagine(req, res);
+  if (url.pathname === "/api/imagine/ref" && req.method === "POST") return saveRef(req, res);
   const photo = url.pathname.match(/^\/api\/photo\/([\w-]+)\.jpg$/);
   if (photo) return photoProxy(photo[1], res);
   if (url.pathname === "/api/interpret" && req.method === "POST") return interpret(req, res);

@@ -428,6 +428,42 @@ async function runField(round) {
    ============================================================ */
 let refsLib = null, genAvailable = false;
 let matchAvailable = false;
+
+/* ---------- per-vase steering for "imagined" mode (imagine.json, edited in imagine.html) ----------
+   Each vase can have its own words and reference images, each with a weight. Every generation
+   draws one subject at random (the circled part's reading, or one of the vase's words) and, if the
+   vase has references, one reference image; weights set the odds, and a reference's weight is also
+   how strongly it steers the look. Repeated circles therefore wander between those directions. */
+let imagineCfg = {};
+fetch("imagine.json", { cache: "no-store" }).then(r => r.json()).then(j => { imagineCfg = j || {}; }).catch(() => {});
+const refCache = {};
+function pickWeighted(list) {
+  const total = list.reduce((a, x) => a + Math.max(0, +x.weight || 0), 0);
+  if (total <= 0) return null;
+  let r = Math.random() * total;
+  for (const x of list) { r -= Math.max(0, +x.weight || 0); if (r <= 0) return x; }
+  return list[list.length - 1];
+}
+function steering(itemId, reading) {
+  const d = imagineCfg._default || {}, v = imagineCfg[itemId] || {};
+  const words = (v.words && v.words.length ? v.words : d.words || []).filter(w => w && w.text);
+  const refs = (v.refs && v.refs.length ? v.refs : d.refs || []).filter(r => r && r.image);
+  const readingWeight = v.reading_weight ?? d.reading_weight ?? 1;
+  const pool = [...(reading ? [{ text: reading, weight: readingWeight, from: "reading" }] : []),
+                ...words.map(w => ({ text: w.text, weight: w.weight ?? 1, from: "vase" }))];
+  const subject = pickWeighted(pool) || { text: reading || "", from: "reading" };
+  const ref = pickWeighted(refs);
+  return { subject, ref, echo: subject.from === "vase" ? reading : null };
+}
+async function refDataURL(path) {
+  if (!refCache[path]) refCache[path] = loadImage(path).then(im => {
+    const cv = document.createElement("canvas"), k = Math.min(1, 512 / Math.max(im.naturalWidth, im.naturalHeight));
+    cv.width = Math.round(im.naturalWidth * k); cv.height = Math.round(im.naturalHeight * k);
+    cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
+    return cv.toDataURL("image/jpeg", 0.9);
+  });
+  return refCache[path];
+}
 function prepareImagination() {
   fetch("api/status").then(r => r.json()).then(s => {
     genAvailable = !!s.generation; data.generation_model = s.model; data.backend = s.backend;
@@ -704,12 +740,14 @@ function exploreItem(item, n, total) {
       if (!genAvailable) { $("ex-status").textContent = ""; $("ex-status").classList.remove("pulse"); return; }
       const seed = newSeed || !circ.seed ? Math.floor(Math.random() * 1e9) : circ.seed;
       const t = performance.now();
-      let j, prompt, mode = "fill";
+      let j, prompt, mode = "fill", steer = null, refBody = null;
       try {
         const inp = await outpaintInputs(q.screen);
-        prompt = fillPrompt(source, q, words[circ.active] || words[0]);
+        steer = steering(item.id, words[circ.active] || words[0]);
+        prompt = fillPrompt(source, q, steer.subject.text) + (steer.echo ? `, echoing ${steer.echo}` : "");
+        if (steer.ref) refBody = { image: await refDataURL(steer.ref.image), weight: steer.ref.weight ?? 0.5 };
         const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed, size: GEN_SIZE, steps: GEN_STEPS }),
+          body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed, size: GEN_SIZE, steps: GEN_STEPS, ref: refBody }),
           signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
         j = await res.json();
         if (!res.ok) throw new Error(j.error || res.status);
@@ -718,13 +756,15 @@ function exploreItem(item, n, total) {
         if (e.name === "TimeoutError" || e.name === "AbortError") throw e;   // too slow: don't try again
         mode = "img2img"; prompt = genPrompt(source, q, words);
         const res = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: genSource(source, q), prompt, strength: settings.genStrength, seed }),
+          body: JSON.stringify({ image: genSource(source, q), prompt, strength: settings.genStrength, seed, ref: refBody }),
           signal: AbortSignal.timeout(GEN_TIMEOUT_MS) });
         j = await res.json();
         if (!res.ok) throw new Error(j.error || res.status);
       }
       if (my !== token) return;
       const gen = { url: j.url, mode, model: j.model, prompt, reading: words[circ.active], seed: j.seed ?? seed, ms: Math.round(performance.now() - t),
+                    subject: steer && steer.subject.text, subject_from: steer && steer.subject.from,
+                    reference: steer && steer.ref ? { image: steer.ref.image, weight: steer.ref.weight ?? 0.5 } : null,
                     viewport: [innerWidth, innerHeight] };
       (circ.generated = circ.generated || []).push(gen); circ.seed = gen.seed;
       await loadImage(j.url).catch(() => {});

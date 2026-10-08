@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imagine Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Editor for imagine.json: per-vase words, reference images and weights used by the study's
+     "imagined (AI)" explore mode. Each generation draws one subject and one reference by weight. -->
+<style>
+  :root { --bg: #111213; --surface: #1c1d1f; --surface-2: #26282b; --line: #34373b; --ink: #e8eaed; --ink-2: #9aa0a6; --accent: #8ab4f8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--ink); font: 14px/1.5 Inter, system-ui, sans-serif; display: grid;
+         grid-template-columns: minmax(260px, 34%) 1fr; }
+  aside { border-right: 1px solid var(--line); overflow: auto; padding: 16px; }
+  main { overflow: auto; padding: 20px 24px 40px; }
+  h1 { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+  .sub { color: var(--ink-2); font-size: 12px; margin: 0 0 14px; }
+  .default { width: 100%; margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+  .vase { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 4px;
+          cursor: pointer; aspect-ratio: 1; display: grid; place-items: center; }
+  .vase img { max-width: 100%; max-height: 100%; }
+  .vase.sel { border-color: var(--accent); }
+  .vase .dot { position: absolute; top: 5px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .vase span { position: absolute; bottom: 3px; left: 6px; font-size: 10px; color: var(--ink-2); }
+  .btn { font: inherit; font-size: 13px; font-weight: 500; height: 34px; padding: 0 16px; border-radius: 999px;
+         border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); cursor: pointer; }
+  .btn:hover { background: #303235; }
+  .btn.primary { background: var(--ink); color: #111; border-color: var(--ink); }
+  .btn.small { height: 28px; padding: 0 10px; font-size: 12px; }
+  .head { display: flex; gap: 20px; align-items: center; margin-bottom: 18px; }
+  .head img { width: 120px; height: 120px; object-fit: contain; background: var(--surface); border-radius: 12px; padding: 6px; }
+  .head .meta { color: var(--ink-2); font-size: 12px; }
+  section.block { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
+  section.block h2 { font-size: 13px; font-weight: 600; margin: 0 0 2px; }
+  section.block p { color: var(--ink-2); font-size: 12px; margin: 0 0 10px; }
+  .row { display: grid; grid-template-columns: 1fr 170px 44px 28px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .row input[type=text] { font: inherit; height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--line);
+                          background: var(--surface-2); color: var(--ink); }
+  .row output { font-variant-numeric: tabular-nums; color: var(--ink-2); text-align: right; }
+  .x { background: none; border: none; color: var(--ink-2); font-size: 18px; cursor: pointer; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .refs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .ref { background: var(--surface-2); border-radius: 10px; padding: 6px; position: relative; }
+  .ref img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block; }
+  .ref .x { position: absolute; top: 6px; right: 8px; text-shadow: 0 0 4px #000; color: #fff; }
+  .ref label { display: flex; gap: 8px; align-items: center; font-size: 11px; color: var(--ink-2); margin-top: 6px; }
+  .drop { border: 1px dashed var(--line); border-radius: 10px; display: grid; place-items: center; color: var(--ink-2);
+          font-size: 12px; aspect-ratio: 1; cursor: pointer; text-align: center; padding: 8px; }
+  .drop.over { border-color: var(--accent); color: var(--ink); }
+  .reading { display: grid; grid-template-columns: 1fr 170px 44px; gap: 10px; align-items: center; }
+  .tries { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .try { background: var(--surface-2); border-radius: 10px; overflow: hidden; }
+  .try img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #000; }
+  .try div { font-size: 11px; color: var(--ink-2); padding: 6px 8px; }
+  #status { color: var(--ink-2); font-size: 12px; margin-left: 10px; }
+  @media (max-width: 700px) { body { grid-template-columns: 1fr; } aside { border-right: none; border-bottom: 1px solid var(--line); max-height: 40vh; } }
+</style>
+</head>
+<body>
+<aside>
+  <h1>Imagine settings</h1>
+  <p class="sub">Words, reference images and weights per vase, for the study's “imagined (AI)” mode.</p>
+  <button class="btn default" id="pick-default">All vases (default)</button>
+  <div class="grid" id="grid"></div>
+</aside>
+<main id="main"></main>
+
+<script>
+const $ = id => document.getElementById(id);
+let cfg = { _default: { reading_weight: 1, words: [], refs: [] } }, cat = null, current = "_default", saveTimer = null;
+
+const configured = id => { const v = cfg[id]; return v && ((v.words && v.words.length) || (v.refs && v.refs.length) || v.reading_weight !== undefined); };
+function entry(id) { if (!cfg[id]) cfg[id] = { words: [], refs: [] }; return cfg[id]; }
+function save() {
+  clearTimeout(saveTimer);
+  $("status") && ($("status").textContent = "saving…");
+  saveTimer = setTimeout(async () => {
+    // Drop empty vase entries so the file stays readable.
+    for (const k of Object.keys(cfg)) if (k !== "_default" && !configured(k)) delete cfg[k];
+    const r = await fetch("api/imagine", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cfg) });
+    $("status") && ($("status").textContent = r.ok ? "saved" : "couldn't save");
+    renderGrid();
+  }, 400);
+}
+
+function renderGrid() {
+  $("grid").replaceChildren(...cat.items.map(it => {
+    const b = document.createElement("div"); b.className = "vase" + (it.id === current ? " sel" : "");
+    b.innerHTML = `<img src="${it.cutout || it.image}" alt="" loading="lazy"><span>${it.id.slice(5)}</span>${configured(it.id) ? '<i class="dot"></i>' : ""}`;
+    b.onclick = () => { current = it.id; render(); };
+    return b;
+  }));
+  $("pick-default").classList.toggle("primary", current === "_default");
+}
+
+function slider(min, max, step, value, onInput) {
+  const wrap = document.createElement("div"); wrap.style.display = "contents";
+  const r = document.createElement("input"); r.type = "range"; r.min = min; r.max = max; r.step = step; r.value = value;
+  const o = document.createElement("output"); o.textContent = (+value).toFixed(1);
+  r.oninput = () => { o.textContent = (+r.value).toFixed(1); onInput(+r.value); };
+  return [r, o];
+}
+
+function render() {
+  renderGrid();
+  const isDef = current === "_default", it = isDef ? null : cat.items.find(i => i.id === current);
+  const e = isDef ? cfg._default : (cfg[current] || { words: [], refs: [] });
+  const fallback = !isDef && !(e.words && e.words.length) && !(e.refs && e.refs.length);
+  const m = $("main"); m.replaceChildren();
+
+  const head = document.createElement("div"); head.className = "head";
+  head.innerHTML = isDef
+    ? `<div><h1>All vases (default)</h1><div class="meta">Used for any vase that has no words or references of its own.</div></div>`
+    : `<img src="${it.cutout || it.image}" alt=""><div><h1>${it.id}</h1><div class="meta">${it.source ? [it.source.title, it.source.culture, it.source.date].filter(Boolean).join(" · ") : ""}${fallback ? "<br>Uses the defaults until you add words or references." : ""}</div></div>`;
+  m.append(head);
+
+  // Reading weight
+  const rb = document.createElement("section"); rb.className = "block";
+  rb.innerHTML = `<h2>The circled part's own reading</h2><p>How likely the generator follows what the part reads like (e.g. “stone wall”) rather than one of the words below.</p>`;
+  const rr = document.createElement("div"); rr.className = "reading";
+  const lab = document.createElement("div"); lab.textContent = "weight"; lab.style.color = "var(--ink-2)";
+  const [rs, ro] = slider(0, 3, 0.1, e.reading_weight ?? 1, v => { entry(current).reading_weight = v; save(); });
+  rr.append(lab, rs, ro); rb.append(rr); m.append(rb);
+
+  // Words
+  const wb = document.createElement("section"); wb.className = "block";
+  wb.innerHTML = `<h2>Words</h2><p>Directions this vase can drift towards. Each image draws one word (or the reading) by weight.</p>`;
+  (e.words || []).forEach((w, i) => {
+    const row = document.createElement("div"); row.className = "row";
+    const t = document.createElement("input"); t.type = "text"; t.value = w.text || ""; t.placeholder = "e.g. harbour at dusk";
+    t.oninput = () => { entry(current).words[i].text = t.value; save(); };
+    const [s, o] = slider(0, 3, 0.1, w.weight ?? 1, v => { entry(current).words[i].weight = v; save(); });
+    const x = document.createElement("button"); x.className = "x"; x.textContent = "×"; x.title = "remove";
+    x.onclick = () => { entry(current).words.splice(i, 1); save(); render(); };
+    row.append(t, s, o, x); wb.append(row);
+  });
+  const add = document.createElement("button"); add.className = "btn small"; add.textContent = "+ add word";
+  add.onclick = () => { const en = entry(current); (en.words = en.words || []).push({ text: "", weight: 1 }); save(); render();
+                        const ins = m.querySelectorAll(".row input[type=text]"); ins[ins.length - 1]?.focus(); };
+  wb.append(add); m.append(wb);
+
+  // References
+  const fb = document.createElement("section"); fb.className = "block";
+  fb.innerHTML = `<h2>Reference images</h2><p>Each image draws one reference by weight; its weight is also how strongly it steers colour, texture and mood (0 = not at all, 1 = strongly).</p>`;
+  const refs = document.createElement("div"); refs.className = "refs";
+  (e.refs || []).forEach((r, i) => {
+    const c = document.createElement("div"); c.className = "ref";
+    c.innerHTML = `<img src="${r.image}" alt="">`;
+    const x = document.createElement("button"); x.className = "x"; x.textContent = "×";
+    x.onclick = () => { entry(current).refs.splice(i, 1); save(); render(); };
+    const l = document.createElement("label"); l.append("influence");
+    const [s, o] = slider(0, 1, 0.05, r.weight ?? 0.5, v => { entry(current).refs[i].weight = v; save(); });
+    l.append(s, o); c.append(x, l); refs.append(c);
+  });
+  const drop = document.createElement("label"); drop.className = "drop"; drop.innerHTML = "Drop images here<br>or click to choose";
+  const file = document.createElement("input"); file.type = "file"; file.accept = "image/*"; file.multiple = true; file.hidden = true;
+  drop.append(file);
+  const upload = async files => {
+    for (const f of files) {
+      if (!f.type.startsWith("image/")) continue;
+      const dataURL = await shrink(f);
+      const r = await fetch("api/imagine/ref", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vase: current === "_default" ? "default" : current, image: dataURL }) });
+      const j = await r.json();
+      if (j.path) { const en = entry(current); (en.refs = en.refs || []).push({ image: j.path, weight: 0.5 }); }
+    }
+    save(); render();
+  };
+  file.onchange = () => upload(file.files);
+  drop.ondragover = ev => { ev.preventDefault(); drop.classList.add("over"); };
+  drop.ondragleave = () => drop.classList.remove("over");
+  drop.ondrop = ev => { ev.preventDefault(); drop.classList.remove("over"); upload(ev.dataTransfer.files); };
+  refs.append(drop); fb.append(refs); m.append(fb);
+
+  // Try
+  const tb = document.createElement("section"); tb.className = "block";
+  tb.innerHTML = `<h2>Try</h2><p>Three quick previews from the middle of ${isDef ? "a random vase" : "this vase"}, each with its own random draw of word and reference. Uses the local image model.</p>`;
+  const go = document.createElement("button"); go.className = "btn primary"; go.textContent = "Try 3";
+  const st = document.createElement("span"); st.id = "status";
+  const tries = document.createElement("div"); tries.className = "tries";
+  go.onclick = () => tryThree(isDef ? cat.items[Math.floor(Math.random() * cat.items.length)] : it, tries, go);
+  tb.append(go, st, tries); m.append(tb);
+}
+
+function shrink(file, max = 1024) {
+  return new Promise(res => {
+    const im = new Image();
+    im.onload = () => { const k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+      const cv = document.createElement("canvas"); cv.width = Math.round(im.naturalWidth * k); cv.height = Math.round(im.naturalHeight * k);
+      cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height); res(cv.toDataURL("image/jpeg", 0.9)); URL.revokeObjectURL(im.src); };
+    im.src = URL.createObjectURL(file);
+  });
+}
+function loadImage(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+function pickWeighted(list) {
+  const total = list.reduce((a, x) => a + Math.max(0, +x.weight || 0), 0);
+  if (total <= 0) return null;
+  let r = Math.random() * total;
+  for (const x of list) { r -= Math.max(0, +x.weight || 0); if (r <= 0) return x; }
+  return list[list.length - 1];
+}
+async function asDataURL(src, max = 512) {
+  const im = await loadImage(src), k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+  const cv = document.createElement("canvas"); cv.width = Math.round(im.naturalWidth * k); cv.height = Math.round(im.naturalHeight * k);
+  cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height); return cv.toDataURL("image/jpeg", 0.9);
+}
+
+async function tryThree(it, box, btn) {
+  btn.disabled = true; box.replaceChildren();
+  const d = cfg._default || {}, v = cfg[it.id] || {};
+  const words = (v.words && v.words.length ? v.words : d.words || []).filter(w => w.text);
+  const refs = (v.refs && v.refs.length ? v.refs : d.refs || []).filter(r => r.image);
+  const rw = v.reading_weight ?? d.reading_weight ?? 1;
+  // A middle crop of the vase photo stands in for a circled part.
+  const im = await loadImage(it.image), side = Math.min(im.naturalWidth, im.naturalHeight) * 0.45;
+  const cv = document.createElement("canvas"); cv.width = cv.height = 512;
+  cv.getContext("2d").drawImage(im, (im.naturalWidth - side) / 2, (im.naturalHeight - side) / 2, side, side, 0, 0, 512, 512);
+  const part = cv.toDataURL("image/jpeg", 0.9);
+  let reading = "";
+  try { const r = await fetch("api/interpret", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: part }) });
+        reading = ((await r.json()).words || [])[0] || ""; } catch (e) {}
+  for (let n = 0; n < 3; n++) {
+    const cell = document.createElement("div"); cell.className = "try"; cell.innerHTML = `<img alt=""><div>imagining…</div>`; box.append(cell);
+    const pool = [...(reading ? [{ text: reading, weight: rw, from: "reading" }] : []), ...words.map(w => ({ ...w, from: "word" }))];
+    const subject = pickWeighted(pool) || { text: reading || "abstract form", from: "reading" };
+    const ref = pickWeighted(refs);
+    const prompt = `an extreme close-up photograph of a vast ${subject.text}` + (subject.from === "word" && reading ? `, echoing ${reading}` : "") +
+                   ", natural light, everything in sharp focus, rich detail";
+    try {
+      const r = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: part, prompt, strength: 0.85, seed: Math.floor(Math.random() * 1e9),
+                               ref: ref ? { image: await asDataURL(ref.image), weight: ref.weight ?? 0.5 } : undefined }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || r.status);
+      cell.querySelector("img").src = j.url;
+      cell.querySelector("div").textContent = `${subject.text} (${subject.from})` + (ref ? ` · ref ×${(+ref.weight).toFixed(2)}` : "");
+    } catch (e) { cell.querySelector("div").textContent = "couldn't imagine: " + e.message; }
+  }
+  btn.disabled = false;
+}
+
+$("pick-default").onclick = () => { current = "_default"; render(); };
+(async () => {
+  cat = await (await fetch("catalogue.json", { cache: "no-store" })).json();
+  try { cfg = await (await fetch("imagine.json", { cache: "no-store" })).json(); } catch (e) {}
+  cfg._default = cfg._default || { reading_weight: 1, words: [], refs: [] };
+  render();
+})();
+</script>
+</body>
+</html>

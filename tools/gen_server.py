@@ -33,17 +33,22 @@ def load():
         t = time.time()
         vae = AutoencoderKL.from_pretrained(VAE, torch_dtype=DTYPE)
         img2img = AutoPipelineForImage2Image.from_pretrained(MODEL, vae=vae, torch_dtype=DTYPE, variant="fp16").to(DEVICE)
-        img2img.enable_attention_slicing()           # lower peak memory on a 24 GB Mac shared with Ollama
+        # (attention slicing would save memory but replaces IP-Adapter's attention layers, so it's off)
+        # IP-Adapter: lets a reference image steer the look (per-vase references, imagine.json).
+        # Loaded before the inpainting pipe is made so both share it. Scale 0 = no reference.
+        img2img.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models",
+                                weight_name="ip-adapter_sdxl_vit-h.safetensors", image_encoder_folder="models/image_encoder")
+        img2img.set_ip_adapter_scale(0.0)
         fill = AutoPipelineForInpainting.from_pipe(img2img)
         img2img.set_progress_bar_config(disable=True)
         fill.set_progress_bar_config(disable=True)
         state.update(img2img=img2img, fill=fill)
         # Warm-up so the first participant doesn't wait for kernel compilation.
         blank = Image.new("RGB", (512, 512), (128, 128, 128))
-        img2img("warm up", image=blank, strength=0.5, num_inference_steps=2, guidance_scale=0.0)
+        img2img("warm up", image=blank, strength=0.5, num_inference_steps=2, guidance_scale=0.0, ip_adapter_image=blank)
         wide = Image.new("RGB", (1280, 800), (128, 128, 128))                # typical outpainting frame
         fill("warm up", image=wide, mask_image=Image.new("L", wide.size, 255), strength=0.99,
-             num_inference_steps=6, guidance_scale=0.0, width=1280, height=800)
+             num_inference_steps=6, guidance_scale=0.0, width=1280, height=800, ip_adapter_image=blank)
         free_gpu()
         state["ready"] = True
         print(f"ready on {DEVICE} in {time.time() - t:.0f}s", flush=True)
@@ -76,21 +81,35 @@ def fit(img, long_side):
     return img.resize((max(8, round(w * k / 8) * 8), max(8, round(h * k / 8) * 8)), Image.LANCZOS)
 
 
+NO_REF = Image.new("RGB", (224, 224), (128, 128, 128))
+
+
+def reference(b):
+    """The reference image for this request and how strongly it steers (0-1). No reference = scale 0."""
+    ref = b.get("ref") or {}
+    if isinstance(ref.get("image"), str) and ref["image"].startswith("data:image/"):
+        return decode(ref["image"]).convert("RGB"), min(1.0, max(0.0, float(ref.get("weight", 0.5))))
+    return NO_REF, 0.0
+
+
 def run(kind, b):
     gen = torch.Generator("cpu").manual_seed(int(b.get("seed") or 0) % (2**31))
     prompt = str(b.get("prompt", ""))[:400]
+    ref_img, ref_scale = reference(b)
+    state["img2img"].set_ip_adapter_scale(ref_scale)
     if kind == "img2img":
         image = fit(decode(b["image"]).convert("RGB"), 512)
         strength = min(0.95, max(0.2, float(b.get("strength") or 0.75)))
         steps = max(2, round(2 / strength + 0.5))      # turbo: steps × strength ≥ ~2 effective steps
         out = state["img2img"](prompt, image=image, strength=strength, num_inference_steps=steps,
-                               guidance_scale=0.0, generator=gen).images[0]
+                               guidance_scale=0.0, generator=gen, ip_adapter_image=ref_img).images[0]
     else:
         image = fit(decode(b["image"]).convert("RGB"), min(1536, int(b.get("size") or 1280)))
         mask = decode(b["mask"]).convert("L").resize(image.size)
         steps = min(12, max(2, int(b.get("steps") or 6)))
         out = state["fill"](prompt, image=image, mask_image=mask, strength=0.99, num_inference_steps=steps,
-                            guidance_scale=0.0, width=image.size[0], height=image.size[1], generator=gen).images[0]
+                            guidance_scale=0.0, width=image.size[0], height=image.size[1], generator=gen,
+                            ip_adapter_image=ref_img).images[0]
     return out
 
 
