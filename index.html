@@ -29,6 +29,7 @@ const DEFAULTS = {
   fadeOutMs: 1800,        // fade out (slow, so objects dissolve rather than vanish)
   minClear: 2,            // at least this many objects fully visible at any moment (often one more)
   exploreCount: 5,        // skipped objects explored in stage 2
+  exploreMode: "match",   // "match" = real photos with the same shape · "imagine" = AI-generated scene
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true             // "next" button bottom-left; turn off for participants
 };
@@ -76,7 +77,10 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
               font-size: 13px; color: var(--ink-2); }
   #settings[hidden] { display: none; }
   #settings label { display: grid; grid-template-columns: 1fr 96px; align-items: center; gap: 8px; margin-bottom: 10px; }
-  #settings input[type=number] { width: 96px; height: 34px; padding: 0 10px; border-radius: 8px; }
+  #settings input[type=number], #settings select { width: 96px; height: 34px; padding: 0 10px; border-radius: 8px;
+                     border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; font-size: 13px; }
+  #settings select { width: 130px; }
+  #settings label:has(select) { grid-template-columns: 1fr 130px; }
   #settings .check { grid-template-columns: auto 1fr; }
   #debug-next { position: fixed; top: 16px; left: 16px; z-index: 20; height: 32px; font-size: 12px;
                 background: #3b3420; border-color: #6b5d2b; color: #f5d97b; display: none; }
@@ -103,6 +107,15 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #gen-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;
             transition: opacity 1.4s ease; }
   #gen-bg.on { opacity: .95; }
+  /* Real matches: the photo is placed so its matching region sits under the circled part;
+     a softened copy of the same photo fills the rest of the screen. */
+  #match-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; overflow: hidden; }
+  #match-layer.on { opacity: 1; }
+  #match-layer .mbg { position: absolute; inset: -6%; width: 112%; height: 112%; object-fit: cover;
+                      filter: blur(30px) brightness(.5) saturate(.9); }
+  #match-layer .mimg { position: absolute; max-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-composite: source-in; mask-composite: intersect; }
   #ex-vignette { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1s;
                  background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.55)); }
   #ex-vignette.on { opacity: 1; }
@@ -139,6 +152,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Fade out (ms) <input type="number" id="s-fadeOutMs" min="200" step="100"></label>
   <label>Fully visible at once (min) <input type="number" id="s-minClear" min="1" max="4" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
+  <label>Explore with <select id="s-exploreMode"><option value="match">real matches</option><option value="imagine">imagined (AI)</option></select></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
   <div class="small" id="s-note"></div>
@@ -168,6 +182,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
 <!-- STAGE 2: EXPLORE -->
 <section class="screen" id="explore">
   <img id="gen-bg" alt="">
+  <div id="match-layer"><img class="mbg" alt=""><img class="mimg" alt=""></div>
   <div id="ex-vignette"></div>
   <div id="ex-wrap"><img id="ex-img" alt="" draggable="false"><canvas id="ex-frag"></canvas><canvas id="ex-ink"></canvas></div>
   <div id="ex-top"><div class="q" id="ex-q"></div><div class="small" id="ex-hint"></div></div>
@@ -229,6 +244,8 @@ SETTING_KEYS.forEach(k => {
   $("s-" + k).value = settings[k];
   $("s-" + k).oninput = e => { const v = Number(e.target.value); if (!Number.isNaN(v)) { settings[k] = v; applySettings(); } };
 });
+$("s-exploreMode").value = settings.exploreMode;
+$("s-exploreMode").onchange = e => { settings.exploreMode = e.target.value; applySettings(); };
 $("s-debug").checked = settings.debug;
 $("s-debug").onchange = e => { settings.debug = e.target.checked; applySettings(); };
 $("settings-btn").onclick = () => { $("settings").hidden = !$("settings").hidden; };
@@ -410,10 +427,13 @@ async function runField(round) {
    the part itself (soft-edged) is the shape → server.mjs → fal.ai.
    ============================================================ */
 let refsLib = null, genAvailable = false;
+let matchAvailable = false;
 function prepareImagination() {
   fetch("api/status").then(r => r.json()).then(s => {
     genAvailable = !!s.generation; data.generation_model = s.model; data.backend = s.backend;
-    warmUp();
+    matchAvailable = !!s.matching; data.match_library = { photos: s.match_photos, source: "Unsplash Lite Dataset 1.4.0" };
+    data.explore_mode = settings.exploreMode;
+    if (settings.exploreMode === "imagine") warmUp();
   }).catch(() => {});
   import("./references.js").then(lib => { refsLib = lib; return lib.loadReferences(); })
     .then(info => { data.clip = info; }).catch(e => { data.clip_error = String(e.message || e); });
@@ -513,12 +533,13 @@ function exploreItem(item, n, total) {
       wrap.className = ""; wrap.style.transform = "translate(-50%, -50%) scale(1)";
       if (instant) { void wrap.offsetWidth; wrap.style.transition = ""; }
       bg.classList.remove("on"); $("ex-vignette").classList.remove("on"); $("explore").classList.remove("imagined");
+      $("match-layer").classList.remove("on");
       drawFrag(null); $("ex-words").textContent = ""; $("ex-status").textContent = ""; $("ex-again").hidden = true;
     }
 
     wrap.onpointerdown = e => {
       e.preventDefault(); wrap.setPointerCapture(e.pointerId);
-      if (cur) { reset(true); cur = null; token++; }
+      if (cur) { if (cur.matches) logMatchView(cur); reset(true); cur = null; token++; }
       drawing = [toNorm(e)];
       if (!rec.first_stroke_ms) rec.first_stroke_ms = Math.round(performance.now() - t0);
     };
@@ -548,6 +569,7 @@ function exploreItem(item, n, total) {
       const sp = pts.map(toSrc), sxs = sp.map(p => p.x), sys = sp.map(p => p.y);
       const sbb = { x: Math.min(...sxs), y: Math.min(...sys), w: Math.max(...sxs) - Math.min(...sxs), h: Math.max(...sys) - Math.min(...sys) };
       const q = { path: sp, bbox: sbb, text: "" };
+      if (settings.exploreMode === "match") return findMatches(q, circ, my, zoomDone, bb);
       $("ex-status").textContent = "imagining"; $("ex-status").classList.add("pulse");
       try {
         // Reading: a vision-language model says what this could be a small part of (open vocabulary);
@@ -611,6 +633,64 @@ function exploreItem(item, n, total) {
       return { image: frame.toDataURL("image/jpeg", 0.92), mask: mask.toDataURL("image/png"), frame: [FW, FH] };
     }
 
+    // Real matches: photos from the library with a region shaped like the circled part (tools/match_server.py).
+    async function findMatches(q, circ, my, zoomDone, bb) {
+      $("ex-status").textContent = "looking"; $("ex-status").classList.add("pulse");
+      try {
+        const t = performance.now();
+        const r = await fetch("api/match", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: partSquare(source, q), k: 6 }), signal: AbortSignal.timeout(20000) });
+        const j = await r.json();
+        if (!r.ok || !j.matches || !j.matches.length) throw new Error(j.error || "no matches");
+        if (my !== token) return;
+        circ.matches = j.matches.map(m => ({ id: m.id, score: m.score, coarse: m.coarse, layout: m.layout, box: m.box,
+                                             desc: m.desc, by: m.by, url: m.url }));
+        circ.match_ms = Math.round(performance.now() - t);
+        circ.viewed = []; circ.active = 0;
+        await sleep(Math.max(0, zoomDone - performance.now()));
+        if (my !== token) return;
+        await showMatch(circ, 0, my, bb);
+        $("ex-again").hidden = circ.matches.length < 2;
+        $("ex-again").onclick = async e => {
+          e.currentTarget.blur();
+          logMatchView(circ);
+          circ.active = (circ.active + 1) % circ.matches.length;
+          await showMatch(circ, circ.active, my, bb);
+        };
+      } catch (e) {
+        circ.error = String(e.message || e);
+        if (my === token) { $("ex-status").classList.remove("pulse"); $("ex-status").textContent = "no match found — circle another part"; }
+      }
+    }
+    function logMatchView(circ) {
+      if (circ.shownAt == null) return;
+      circ.viewed.push({ index: circ.active, id: circ.matches[circ.active].id, view_ms: Math.round(performance.now() - circ.shownAt) });
+      circ.shownAt = null;
+    }
+    // Place the photo so its matching region sits exactly over the circled part on screen.
+    async function showMatch(circ, i, my, bb) {
+      const m = circ.matches[i], src = `api/photo/${m.id}.jpg`;
+      const im = await loadImage(src).catch(() => null);
+      if (!im || my !== token) return;
+      const b = wrap.getBoundingClientRect(), r = rect(), s = b.width / r.W;
+      const box = { x: b.left + r.x * s, y: b.top + r.y * s, w: r.w * s, h: r.h * s };
+      const cx = box.x + (bb.x + bb.w / 2) * box.w, cy = box.y + (bb.y + bb.h / 2) * box.h;
+      const side = Math.max(bb.w * box.w, bb.h * box.h) * 1.05;         // same square the matcher was given
+      const DW = side / m.box[2], DH = DW * im.naturalHeight / im.naturalWidth;
+      const layer = $("match-layer"), fg = layer.querySelector(".mimg"), back = layer.querySelector(".mbg");
+      layer.classList.remove("on");
+      await sleep(layer.style.opacity === "" && !circ.shownOnce ? 0 : 450);
+      fg.src = src; back.src = src;
+      Object.assign(fg.style, { width: DW + "px", height: DH + "px",
+        left: cx - (m.box[0] + m.box[2] / 2) * DW + "px", top: cy - (m.box[1] + m.box[3] / 2) * DH + "px" });
+      layer.classList.add("on"); circ.shownOnce = true;
+      wrap.classList.add("imagined"); $("explore").classList.add("imagined");
+      $("ex-status").classList.remove("pulse"); $("ex-status").textContent = "";
+      $("ex-words").textContent = (m.desc || "").toLowerCase().slice(0, 90) + (m.by ? `   ·   photo: ${m.by}, Unsplash` : "");
+      circ.shownAt = performance.now();
+      setTimeout(() => { if (my === token) wrap.classList.add("dissolve"); }, 500);
+    }
+
     function showWords(words, active) {
       const el = $("ex-words"); el.replaceChildren();
       words.forEach((w, i) => {
@@ -668,6 +748,7 @@ function exploreItem(item, n, total) {
     }
 
     const next = () => {
+      if (cur && cur.matches) logMatchView(cur);
       token++;
       wrap.onpointerdown = wrap.onpointermove = wrap.onpointerup = null;
       rec.time_ms = Math.round(performance.now() - t0);

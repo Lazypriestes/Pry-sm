@@ -20,6 +20,8 @@ const BACKEND = (process.env.BACKEND || "local").toLowerCase();
 const OLLAMA = process.env.OLLAMA_URL || "http://127.0.0.1:11434";
 const VLM_LOCAL = process.env.VLM_LOCAL || "gemma3:4b";
 const GEN_LOCAL = process.env.GEN_LOCAL_URL || "http://127.0.0.1:8002";
+// Real-image matching (tools/match_server.py): photos containing a region shaped like the circled part.
+const MATCH_LOCAL = process.env.MATCH_URL || "http://127.0.0.1:8003";
 
 // fal backend. Image-to-image: FLUX-dev (~2 s). Outpainting with a mask: flux-lora-fill (~7 s;
 // "fal-ai/flux-pro/v1/fill" is a little richer but ~15 s). Readings: Gemini Flash (~1.5 s).
@@ -136,13 +138,42 @@ async function interpret(req, res) {
   }
 }
 
+async function matchProxy(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
+  try {
+    const r = await fetch(`${MATCH_LOCAL}/match`, { method: "POST", signal: AbortSignal.timeout(20000),
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image, k: b.k || 6 }) });
+    const j = await r.json().catch(() => ({}));
+    send(res, r.status, j);
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+async function photoProxy(id, res) {
+  if (!/^[\w-]+$/.test(id)) { res.writeHead(404); return res.end("not found"); }
+  try {
+    const r = await fetch(`${MATCH_LOCAL}/photo/${id}.jpg`, { signal: AbortSignal.timeout(10000) });
+    if (!r.ok) throw new Error(r.status);
+    res.writeHead(200, { "Content-Type": "image/jpeg", "Cache-Control": "max-age=86400" });
+    res.end(Buffer.from(await r.arrayBuffer()));
+  } catch (e) { res.writeHead(404); res.end("not found"); }
+}
+async function matchReady() {
+  try { const r = await fetch(`${MATCH_LOCAL}/status`, { signal: AbortSignal.timeout(1500) }); const j = await r.json(); return j.ready ? j : false; }
+  catch (e) { return false; }
+}
+
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
+  if (url.pathname === "/api/match" && req.method === "POST") return matchProxy(req, res);
+  const photo = url.pathname.match(/^\/api\/photo\/([\w-]+)\.jpg$/);
+  if (photo) return photoProxy(photo[1], res);
   if (url.pathname === "/api/interpret" && req.method === "POST") return interpret(req, res);
   if (url.pathname === "/api/generate" && req.method === "POST") return generate(req, res);
   if (url.pathname === "/api/status") {
     const generation = BACKEND === "local" ? await localGenReady() : !!FAL_KEY;
-    return send(res, 200, { backend: BACKEND, generation,
+    const m = await matchReady();
+    return send(res, 200, { backend: BACKEND, generation, matching: !!m, match_photos: m ? m.photos : 0,
       model: BACKEND === "local" ? "sdxl-turbo (local)" : GEN_MODEL,
       fill_model: BACKEND === "local" ? "sdxl-turbo inpaint (local)" : FILL_MODEL,
       vlm_model: BACKEND === "local" ? VLM_LOCAL : VLM_MODEL });
