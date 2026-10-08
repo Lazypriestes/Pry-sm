@@ -1,5 +1,5 @@
 {
-  "version": "vases-34-hires-v1",
+  "version": "vases-70-v1",
   "items": [
     {
       "id": "vase_01",
@@ -771,6 +771,870 @@
         535,
         584
       ]
+    },
+    {
+      "id": "vase_58",
+      "image": "images/vase_58.jpg",
+      "cutout": "images/cut/vase_58.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1662\u20131722"
+      },
+      "object_px": [
+        444,
+        1202
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1975.184",
+        "title": "Vase",
+        "culture": "China, Jiangxi province, Jingdezhen kilns, Qing dynasty (1644-1911), Kangxi reign (1662-1722)",
+        "date": "1662\u20131722",
+        "url": "https://clevelandart.org/art/1975.184"
+      }
+    },
+    {
+      "id": "vase_59",
+      "image": "images/vase_59.jpg",
+      "cutout": "images/cut/vase_59.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1912\u201314"
+      },
+      "object_px": [
+        445,
+        1013
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "2022.233",
+        "title": "Flower Vase",
+        "culture": "Japan, Meiji period (1868\u20131912)",
+        "date": "1912\u201314",
+        "url": "https://clevelandart.org/art/2022.233"
+      }
+    },
+    {
+      "id": "vase_60",
+      "image": "images/vase_60.jpg",
+      "cutout": "images/cut/vase_60.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1740\u201360"
+      },
+      "object_px": [
+        620,
+        819
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1962.360.1",
+        "title": "Potpourri Vase with Cover",
+        "culture": "France, Saint Cloud, 18th century",
+        "date": "c. 1740\u201360",
+        "url": "https://clevelandart.org/art/1962.360.1"
+      }
+    },
+    {
+      "id": "vase_61",
+      "image": "images/vase_61.jpg",
+      "cutout": "images/cut/vase_61.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1300s"
+      },
+      "object_px": [
+        630,
+        1104
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1918.472",
+        "title": "Prunus Vase with Inlaid Lotus and Reed Design",
+        "culture": "Korea, Goryeo dynasty (918\u20131392)",
+        "date": "1300s",
+        "url": "https://clevelandart.org/art/1918.472"
+      }
+    },
+    {
+      "id": "vase_62",
+      "image": "images/vase_62.jpg",
+      "cutout": "images/cut/vase_62.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1850"
+      },
+      "object_px": [
+        614,
+        1172
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1951.300.a",
+        "title": "Vase",
+        "culture": "England, Staffordshire",
+        "date": "c. 1850",
+        "url": "https://clevelandart.org/art/1951.300.a"
+      }
+    },
+    {
+      "id": "vase_63",
+      "image": "images/vase_63.jpg",
+      "cutout": "images/cut/vase_63.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1900s"
+      },
+      "object_px": [
+        938,
+        1178
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1972.1062",
+        "title": "Vase",
+        "culture": "America, Louisiana, New Orleans, 20th century",
+        "date": "1900s",
+        "url": "https://clevelandart.org/art/1972.1062"
+      }
+    },
+    {
+      "id": "vase_64",
+      "image": "images/vase_64.jpg",
+      "cutout": "images/cut/vase_64.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1710\u20131715"
+      },
+      "object_px": [
+        552,
+        1197
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1947.285",
+        "title": "Vase",
+        "culture": "Germany, Meissen, 18th century",
+        "date": "c. 1710\u20131715",
+        "url": "https://clevelandart.org/art/1947.285"
+      }
+    },
+    {
+      "id": "vase_65",
+      "image": "images/vase_65.jpg",
+      "cutout": "images/cut/vase_65.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "916\u20131125"
+      },
+      "object_px": [
+        591,
+        1160
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1919.34",
+        "title": "Vase",
+        "culture": "Northeast China, Liao dynasty (916-1125)",
+        "date": "916\u20131125",
+        "url": "https://clevelandart.org/art/1919.34"
+      }
+    },
+    {
+      "id": "vase_66",
+      "image": "images/vase_66.jpg",
+      "cutout": "images/cut/vase_66.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1000"
+      },
+      "object_px": [
+        755,
+        1033
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1919.649",
+        "title": "Vase",
+        "culture": "Peru, South Coast, Nasca",
+        "date": "c. 1000",
+        "url": "https://clevelandart.org/art/1919.649"
+      }
+    },
+    {
+      "id": "vase_68",
+      "image": "images/vase_68.jpg",
+      "cutout": "images/cut/vase_68.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1889"
+      },
+      "object_px": [
+        940,
+        959
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "2017.208",
+        "title": "Vase",
+        "culture": "Britain",
+        "date": "1889",
+        "url": "https://clevelandart.org/art/2017.208"
+      }
+    },
+    {
+      "id": "vase_69",
+      "image": "images/vase_69.jpg",
+      "cutout": "images/cut/vase_69.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "c. 200\u2013500 CE"
+      },
+      "object_px": [
+        773,
+        974
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1915.542",
+        "title": "Vase",
+        "culture": "Eastern Mediterranean, Roman",
+        "date": "c. 200\u2013500 CE",
+        "url": "https://clevelandart.org/art/1915.542"
+      }
+    },
+    {
+      "id": "vase_70",
+      "image": "images/vase_70.jpg",
+      "cutout": "images/cut/vase_70.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "500\u20131500"
+      },
+      "object_px": [
+        681,
+        1186
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1971.27",
+        "title": "Anthropomorphic Vase",
+        "culture": "Colombia",
+        "date": "500\u20131500",
+        "url": "https://clevelandart.org/art/1971.27"
+      }
+    },
+    {
+      "id": "vase_71",
+      "image": "images/vase_71.jpg",
+      "cutout": "images/cut/vase_71.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1\u2013200 CE"
+      },
+      "object_px": [
+        730,
+        1000
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1933.188",
+        "title": "Vase",
+        "culture": "Parthian Empire (247 BCE\u2013224 CE)",
+        "date": "1\u2013200 CE",
+        "url": "https://clevelandart.org/art/1933.188"
+      }
+    },
+    {
+      "id": "vase_73",
+      "image": "images/vase_73.jpg",
+      "cutout": "images/cut/vase_73.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "600\u2013900"
+      },
+      "object_px": [
+        509,
+        1163
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1990.181",
+        "title": "Painted Vase with Ruler and Scribe",
+        "culture": "Guatemala, Northern Peten or Mexico, Southern Campeche, Maya, late Classic",
+        "date": "600\u2013900",
+        "url": "https://clevelandart.org/art/1990.181"
+      }
+    },
+    {
+      "id": "vase_74",
+      "image": "images/vase_74.jpg",
+      "cutout": "images/cut/vase_74.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "250\u2013900 CE"
+      },
+      "object_px": [
+        693,
+        1013
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1972.93",
+        "title": "Vase",
+        "culture": "Mexico, Maya, Campeche",
+        "date": "250\u2013900 CE",
+        "url": "https://clevelandart.org/art/1972.93"
+      }
+    },
+    {
+      "id": "vase_77",
+      "image": "images/vase_77.jpg",
+      "cutout": "images/cut/vase_77.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "1950s"
+      },
+      "object_px": [
+        402,
+        1140
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1993.169",
+        "title": "Vase",
+        "culture": "Finland",
+        "date": "1950s",
+        "url": "https://clevelandart.org/art/1993.169"
+      }
+    },
+    {
+      "id": "vase_78",
+      "image": "images/vase_78.jpg",
+      "cutout": "images/cut/vase_78.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1000\u20131550"
+      },
+      "object_px": [
+        721,
+        964
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1946.231",
+        "title": "Vase",
+        "culture": "Costa Rica, Filadelphia",
+        "date": "1000\u20131550",
+        "url": "https://clevelandart.org/art/1946.231"
+      }
+    },
+    {
+      "id": "vase_79",
+      "image": "images/vase_79.jpg",
+      "cutout": "images/cut/vase_79.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1100s"
+      },
+      "object_px": [
+        867,
+        1191
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1989.366",
+        "title": "Khmer Vase",
+        "culture": "Cambodia",
+        "date": "1100s",
+        "url": "https://clevelandart.org/art/1989.366"
+      }
+    },
+    {
+      "id": "vase_80",
+      "image": "images/vase_80.jpg",
+      "cutout": "images/cut/vase_80.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "1800s"
+      },
+      "object_px": [
+        764,
+        1181
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1949.168",
+        "title": "Ruby Vase",
+        "culture": "Bohemia",
+        "date": "1800s",
+        "url": "https://clevelandart.org/art/1949.168"
+      }
+    },
+    {
+      "id": "vase_81",
+      "image": "images/vase_81.jpg",
+      "cutout": "images/cut/vase_81.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1200s-1300s"
+      },
+      "object_px": [
+        661,
+        1160
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1930.310",
+        "title": "Bottle Vase:  Black Ware",
+        "culture": "Northern China, Jin dynasty (1115-1234) - Yuan dynasty (1271-1368)",
+        "date": "1200s-1300s",
+        "url": "https://clevelandart.org/art/1930.310"
+      }
+    },
+    {
+      "id": "vase_82",
+      "image": "images/vase_82.jpg",
+      "cutout": "images/cut/vase_82.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "c. 224\u2013650 CE"
+      },
+      "object_px": [
+        674,
+        765
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1915.540",
+        "title": "Vase",
+        "culture": "Iran, Sasanian Empire (224\u2013651 CE)",
+        "date": "c. 224\u2013650 CE",
+        "url": "https://clevelandart.org/art/1915.540"
+      }
+    },
+    {
+      "id": "vase_83",
+      "image": "images/vase_83.jpg",
+      "cutout": "images/cut/vase_83.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 580 BCE"
+      },
+      "object_px": [
+        991,
+        769
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1988.65",
+        "title": "Heron-Shaped Figure Vase (Oil Vessel)",
+        "culture": "East Greek, probably Milesian",
+        "date": "c. 580 BCE",
+        "url": "https://clevelandart.org/art/1988.65"
+      }
+    },
+    {
+      "id": "vase_84",
+      "image": "images/vase_84.jpg",
+      "cutout": "images/cut/vase_84.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "100\u2013300 CE"
+      },
+      "object_px": [
+        770,
+        994
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1923.960",
+        "title": "Vase",
+        "culture": "Italy, Roman",
+        "date": "100\u2013300 CE",
+        "url": "https://clevelandart.org/art/1923.960"
+      }
+    },
+    {
+      "id": "vase_85",
+      "image": "images/vase_85.jpg",
+      "cutout": "images/cut/vase_85.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1890\u201399"
+      },
+      "object_px": [
+        561,
+        958
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "2022.107",
+        "title": "Vase",
+        "culture": "Russian",
+        "date": "c. 1890\u201399",
+        "url": "https://clevelandart.org/art/2022.107"
+      }
+    },
+    {
+      "id": "vase_86",
+      "image": "images/vase_86.jpg",
+      "cutout": "images/cut/vase_86.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "250\u2013900 CE"
+      },
+      "object_px": [
+        891,
+        1055
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1945.375",
+        "title": "Vase",
+        "culture": "Honduras, Maya",
+        "date": "250\u2013900 CE",
+        "url": "https://clevelandart.org/art/1945.375"
+      }
+    },
+    {
+      "id": "vase_87",
+      "image": "images/vase_87.jpg",
+      "cutout": "images/cut/vase_87.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1900"
+      },
+      "object_px": [
+        688,
+        1170
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1995.102",
+        "title": "Vase",
+        "culture": "Czech Republic, Turn-Teplitz, early 20th Century",
+        "date": "c. 1900",
+        "url": "https://clevelandart.org/art/1995.102"
+      }
+    },
+    {
+      "id": "vase_88",
+      "image": "images/vase_88.jpg",
+      "cutout": "images/cut/vase_88.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "mid-100s CE"
+      },
+      "object_px": [
+        985,
+        1072
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1992.126",
+        "title": "\"Caster Ware\" Vase with Hunt Scene",
+        "culture": "Rhenish (Cologne), Gallo-Roman, mid-2nd Century",
+        "date": "mid-100s CE",
+        "url": "https://clevelandart.org/art/1992.126"
+      }
+    },
+    {
+      "id": "vase_89",
+      "image": "images/vase_89.jpg",
+      "cutout": "images/cut/vase_89.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "600s\u2013800s"
+      },
+      "object_px": [
+        697,
+        806
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1915.546",
+        "title": "Vase",
+        "culture": "Early Islamic, Eastern Mediterranean",
+        "date": "600s\u2013800s",
+        "url": "https://clevelandart.org/art/1915.546"
+      }
+    },
+    {
+      "id": "vase_90",
+      "image": "images/vase_90.jpg",
+      "cutout": "images/cut/vase_90.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1300s"
+      },
+      "object_px": [
+        549,
+        952
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "2020.189",
+        "title": "Meiping Vase with carved Dragon Motif",
+        "culture": "South China, Yuan dynasty (1279\u20131368)",
+        "date": "1300s",
+        "url": "https://clevelandart.org/art/2020.189"
+      }
+    },
+    {
+      "id": "vase_91",
+      "image": "images/vase_91.jpg",
+      "cutout": "images/cut/vase_91.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1820\u20131830"
+      },
+      "object_px": [
+        599,
+        1198
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1963.671",
+        "title": "Vase",
+        "culture": "Russia, St. Petersburg",
+        "date": "c. 1820\u20131830",
+        "url": "https://clevelandart.org/art/1963.671"
+      }
+    },
+    {
+      "id": "vase_92",
+      "image": "images/vase_92.jpg",
+      "cutout": "images/cut/vase_92.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1885"
+      },
+      "object_px": [
+        830,
+        1143
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1973.225",
+        "title": "Vase",
+        "culture": "Denmark",
+        "date": "1885",
+        "url": "https://clevelandart.org/art/1973.225"
+      }
+    },
+    {
+      "id": "vase_93",
+      "image": "images/vase_93.jpg",
+      "cutout": "images/cut/vase_93.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1900"
+      },
+      "object_px": [
+        695,
+        909
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1997.272",
+        "title": "Miniature Vase",
+        "culture": "Hungary",
+        "date": "c. 1900",
+        "url": "https://clevelandart.org/art/1997.272"
+      }
+    },
+    {
+      "id": "vase_94",
+      "image": "images/vase_94.jpg",
+      "cutout": "images/cut/vase_94.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "late 1400s"
+      },
+      "object_px": [
+        584,
+        1172
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1920.405",
+        "title": "Vase",
+        "culture": "China, Jiangxi Province, Ming dynasty (1368\u20131644)",
+        "date": "late 1400s",
+        "url": "https://clevelandart.org/art/1920.405"
+      }
+    },
+    {
+      "id": "vase_95",
+      "image": "images/vase_95.jpg",
+      "cutout": "images/cut/vase_95.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1900\u20131914"
+      },
+      "object_px": [
+        649,
+        933
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "2022.198",
+        "title": "Vase with Peonies",
+        "culture": "Japan, Meiji period (1868\u20131912)",
+        "date": "1900\u20131914",
+        "url": "https://clevelandart.org/art/2022.198"
+      }
+    },
+    {
+      "id": "vase_96",
+      "image": "images/vase_96.jpg",
+      "cutout": "images/cut/vase_96.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 1700"
+      },
+      "object_px": [
+        359,
+        951
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1964.537",
+        "title": "Bottle-Shaped Vase",
+        "culture": "France, Rouen",
+        "date": "c. 1700",
+        "url": "https://clevelandart.org/art/1964.537"
+      }
+    },
+    {
+      "id": "vase_97",
+      "image": "images/vase_97.jpg",
+      "cutout": "images/cut/vase_97.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "1300s"
+      },
+      "object_px": [
+        718,
+        1123
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1918.471",
+        "title": "Vase with Inlaid Lotus, Plum, and Bamboo Design",
+        "culture": "Korea, Goryeo dynasty (918\u20131392)",
+        "date": "1300s",
+        "url": "https://clevelandart.org/art/1918.471"
+      }
     }
   ],
   "excluded": [
@@ -1291,6 +2155,106 @@
         417
       ],
       "excluded_reason": "object height < 500px (low resolution)"
+    },
+    {
+      "id": "vase_67",
+      "image": "images/vase_67.jpg",
+      "cutout": "images/cut/vase_67.png",
+      "tags": {
+        "category": "vase",
+        "type": "Glass",
+        "material": null,
+        "era": "1840\u20131860"
+      },
+      "object_px": [
+        990,
+        1083
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1975.205",
+        "title": "Vases",
+        "culture": "Bohemia (?), 19th century",
+        "date": "1840\u20131860",
+        "url": "https://clevelandart.org/art/1975.205"
+      },
+      "excluded_reason": "a pair of vases, not one object"
+    },
+    {
+      "id": "vase_72",
+      "image": "images/vase_72.jpg",
+      "cutout": "images/cut/vase_72.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "mid-1700s"
+      },
+      "object_px": [
+        676,
+        941
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1969.257.b",
+        "title": "Cover for a Vase",
+        "culture": "Netherlands",
+        "date": "mid-1700s",
+        "url": "https://clevelandart.org/art/1969.257.b"
+      },
+      "excluded_reason": "a lid only"
+    },
+    {
+      "id": "vase_75",
+      "image": "images/vase_75.jpg",
+      "cutout": "images/cut/vase_75.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "600s BCE"
+      },
+      "object_px": [
+        846,
+        846
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1924.875.b",
+        "title": "Corinthian Vase (lid)",
+        "culture": "Greece",
+        "date": "600s BCE",
+        "url": "https://clevelandart.org/art/1924.875.b"
+      },
+      "excluded_reason": "a lid only"
+    },
+    {
+      "id": "vase_76",
+      "image": "images/vase_76.jpg",
+      "cutout": "images/cut/vase_76.png",
+      "tags": {
+        "category": "vase",
+        "type": "Ceramic",
+        "material": null,
+        "era": "c. 520\u2013430 BCE"
+      },
+      "object_px": [
+        1105,
+        896
+      ],
+      "source": {
+        "museum": "Cleveland Museum of Art",
+        "license": "CC0",
+        "accession": "1915.533",
+        "title": "Five Fragments from Four Painted Vases",
+        "culture": "Greek, Attic",
+        "date": "c. 520\u2013430 BCE",
+        "url": "https://clevelandart.org/art/1915.533"
+      },
+      "excluded_reason": "fragments, not a vase"
     }
   ]
 }
