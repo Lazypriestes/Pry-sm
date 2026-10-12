@@ -206,7 +206,11 @@ createServer(async (req, res) => {
   if (!file.startsWith(ROOT) || /\/\.|^\/tools\//.test(path)) { res.writeHead(404); return res.end("not found"); }
   try {
     if (!(await stat(file)).isFile()) throw new Error();
-    res.writeHead(200, { "Content-Type": TYPES[extname(file).toLowerCase()] || "application/octet-stream" });
+    const ext = extname(file).toLowerCase();
+    // Pages, scripts and data must always be re-checked, so edits show up on a normal reload.
+    const fresh = [".html", ".js", ".mjs", ".json", ".css"].includes(ext);
+    res.writeHead(200, { "Content-Type": TYPES[ext] || "application/octet-stream",
+                         "Cache-Control": fresh ? "no-cache" : "max-age=3600" });
     res.end(await readFile(file));
   } catch (e) { res.writeHead(404); res.end("not found"); }
 }).listen(PORT, () => {
