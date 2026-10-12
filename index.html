@@ -31,6 +31,7 @@ const DEFAULTS = {
   exploreCount: 5,        // skipped objects explored in stage 2
   exploreMode: "match",   // "match" = real photos with the same shape · "imagine" = AI-generated scene
   matchLibrary: "both",   // where real matches come from: "both", "unsplash" or "arena"
+  contextWeight: 0.3,     // real matches: 0 = shape only … 1 = the vase's era/material/origin and whole look count a lot
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true,            // "next" button bottom-left; turn off for participants
   testSkipField: false,   // test: skip both field rounds, go straight to exploring
@@ -156,6 +157,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Fully visible at once (min) <input type="number" id="s-minClear" min="1" max="4" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
   <label>Explore with <select id="s-exploreMode"><option value="match">real matches</option><option value="imagine">imagined (AI)</option></select></label>
+  <label>Context weight (0–1) <input type="number" id="s-contextWeight" min="0" max="1" step="0.1"></label>
   <label>Match from <select id="s-matchLibrary"><option value="both">Unsplash + Are.na</option><option value="unsplash">Unsplash</option><option value="arena">Are.na</option></select></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
@@ -241,7 +243,7 @@ const data = {
 /* ============================================================
    SETTINGS (start screen only)
    ============================================================ */
-const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength"];
+const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength", "contextWeight"];
 function applySettings() {
   $("debug-next").style.display = settings.debug ? "block" : "none";
   try { localStorage.setItem("objview_settings", JSON.stringify({ ...settings, _v: SETTINGS_VERSION })); } catch (e) {}
@@ -690,11 +692,14 @@ function exploreItem(item, n, total) {
       try {
         const t = performance.now();
         const r = await fetch("api/match", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: partSquare(source, q), k: 6, library: settings.matchLibrary }), signal: AbortSignal.timeout(20000) });
+          body: JSON.stringify({ image: partSquare(source, q), k: 6, library: settings.matchLibrary,
+                                 context: vaseContext(item, c, img) }), signal: AbortSignal.timeout(20000) });
         const j = await r.json();
         if (!r.ok || !j.matches || !j.matches.length) throw new Error(j.error || "no matches");
         if (my !== token) return;
+        circ.context = { text: vaseContextText(item), weight: settings.contextWeight };
         circ.matches = j.matches.map(m => ({ id: m.id, library: m.library, score: m.score, coarse: m.coarse, layout: m.layout, box: m.box,
+                                             shape_score: m.shape_score, context_sim: m.context_sim,
                                              desc: m.desc, by: m.by, url: m.url }));
         circ.match_ms = Math.round(performance.now() - t);
         circ.viewed = []; circ.active = 0;
@@ -815,6 +820,26 @@ function exploreItem(item, n, total) {
     $("ex-next").onclick = e => { e.currentTarget.blur(); next(); };
     dbgNext = next;
   });
+}
+
+// The vase's context for real matches: its description, and the whole cut-out on neutral grey.
+function vaseContextText(item) {
+  const c = item.context || {}, src = item.source || {};
+  // Era, origin and style suggest a world (landscapes, architecture, painting); material and technique
+  // would pull matches towards other ceramics, so they're left out here.
+  return [c.style, c.origin || src.culture, c.era || src.date].filter(Boolean).join(", ");
+}
+const wholeCache = {};
+function vaseContext(item, c, el) {
+  if (!(settings.contextWeight > 0)) return { weight: 0 };
+  if (!wholeCache[item.id]) {
+    const cv = document.createElement("canvas"); cv.width = cv.height = 448;
+    const g = cv.getContext("2d"); g.fillStyle = "#808080"; g.fillRect(0, 0, 448, 448);
+    const k = Math.min(400 / c.w, 400 / c.h);                       // el: the cut-out already on screen
+    try { g.drawImage(el, (448 - c.w * k) / 2, (448 - c.h * k) / 2, c.w * k, c.h * k); } catch (e) {}
+    wholeCache[item.id] = cv.toDataURL("image/jpeg", 0.85);
+  }
+  return { text: vaseContextText(item), whole: wholeCache[item.id], weight: settings.contextWeight };
 }
 
 // The part as a plain square crop around the circle (for the reading). The circle's own outline

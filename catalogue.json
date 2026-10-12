@@ -26,7 +26,21 @@
       "object_px": [
         615,
         1198
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "Blown Glass",
+        "origin": "Likely European (German or French)",
+        "production": "Mold-blown, with applied iridescent glass elements, likely using a pate de verre technique.",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_02",
@@ -53,7 +67,21 @@
       "object_px": [
         400,
         1061
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "Blown glass",
+        "origin": "Likely European (possibly German or French)",
+        "production": "Mold-blown, with applied decoration and a textured surface effect achieved through a technique possibly involving a dampened tool or surface manipulation during the glassblowing process.",
+        "style": "Art Deco - influenced by Art Nouveau, with a stylized naturalistic depiction",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_03",
@@ -80,7 +108,21 @@
       "object_px": [
         251,
         609
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "Blown glass",
+        "origin": "Likely European (German or Czech)",
+        "production": "Mold-blown, with applied metal accents (likely cast iron or bronze).  The intense blue color suggests a specific glassmaking process, possibly using cobalt oxide.",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_06",
@@ -107,7 +149,21 @@
       "object_px": [
         279,
         569
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "glazed porcelain",
+        "origin": "Iran (Persia)",
+        "production": "Wheel-thrown, hand-painted, celadon glaze technique",
+        "style": "Art Nouveau/Islamic Revival",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_07",
@@ -134,7 +190,21 @@
       "object_px": [
         262,
         576
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "Blown glass",
+        "origin": "Likely European (German or British)",
+        "production": "Wheel-thrown, applied decoration, iridescent glaze",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_09",
@@ -161,7 +231,21 @@
       "object_px": [
         237,
         505
-      ]
+      ],
+      "context": {
+        "era": "c. 17th-18th Century",
+        "material": "Celadon Stoneware",
+        "origin": "Korea (Joseon Dynasty)",
+        "production": "Wheel-thrown, carved relief decoration, celadon glaze",
+        "style": "Buncheong Ware",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_11",
@@ -188,7 +272,21 @@
       "object_px": [
         845,
         1172
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "glazed stoneware",
+        "origin": "Likely European (German or French)",
+        "production": "Wheel-thrown, likely hand-burnished, with a subtle celadon glaze achieved through reduction firing.",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_12",
@@ -215,7 +313,21 @@
       "object_px": [
         546,
         986
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1920",
+        "material": "Porcelain",
+        "origin": "China (likely Jingdezhen)",
+        "production": "Slip-cast, hand-painted, impressed decoration",
+        "style": "Meissen-influenced, decorative porcelain",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_13",
@@ -242,7 +354,21 @@
       "object_px": [
         489,
         1013
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "stoneware",
+        "origin": "Japan",
+        "production": "Wheel-thrown, marbling technique (urushi), slip trailing",
+        "style": "Meisen",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_14",
@@ -269,7 +395,21 @@
       "object_px": [
         521,
         547
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "Porcelain",
+        "origin": "Japan",
+        "production": "Wheel-thrown, sprayed glaze (sprigging technique)",
+        "style": "Arts & Crafts / Japonisme",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_15",
@@ -296,7 +436,21 @@
       "object_px": [
         548,
         1281
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "Porcelain",
+        "origin": "Japan",
+        "production": "Wheel-thrown, slip-trailing decoration, celadon glaze",
+        "style": "Utagawa School (Ukiyo-e influenced)",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_16",
@@ -323,7 +477,21 @@
       "object_px": [
         479,
         1138
-      ]
+      ],
+      "context": {
+        "era": "c. 1780-1820",
+        "material": "Porcelain",
+        "origin": "Meissen, Germany",
+        "production": "Slip-decorated, hand-painted, likely wheel-thrown and fired",
+        "style": "Rococo Revival/Herrero Style",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_17",
@@ -350,7 +518,21 @@
       "object_px": [
         408,
         954
-      ]
+      ],
+      "context": {
+        "era": "c. 1930-1960",
+        "material": "Stoneware",
+        "origin": "Japan",
+        "production": "Wheel-thrown, slip-cast, celadon glaze",
+        "style": "Mid-Century Modern",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_21",
@@ -370,7 +552,21 @@
       "object_px": [
         328,
         663
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "glazed earthenware",
+        "origin": "Likely European (German or Czech)",
+        "production": "Wheel-thrown, hand-molded, applied glaze",
+        "style": "Arts & Crafts movement",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_23",
@@ -390,7 +586,21 @@
       "object_px": [
         300,
         664
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "glazed stoneware",
+        "origin": "Likely British (possibly Staffordshire)",
+        "production": "Wheel-thrown, hand-carved, iridescent celadon glaze (likely achieved through layering and firing techniques)",
+        "style": "Arts & Crafts Movement",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_24",
@@ -410,7 +620,21 @@
       "object_px": [
         466,
         967
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1920",
+        "material": "Earthenware",
+        "origin": "Japan",
+        "production": "Wheel-thrown, impressed decoration, crackle glaze",
+        "style": "Meisen",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_26",
@@ -430,7 +654,21 @@
       "object_px": [
         270,
         508
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "Blown Glass",
+        "origin": "Likely Central Europe (Czech Republic or Germany)",
+        "production": "Wheel-thrown, surface decoration achieved through sandblasting or similar abrasive technique.",
+        "style": "Art Deco - Streamlined, simplified form",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_27",
@@ -450,7 +688,21 @@
       "object_px": [
         168,
         513
-      ]
+      ],
+      "context": {
+        "era": "c. 1920-1940",
+        "material": "blown glass",
+        "origin": "Likely European (possibly French or German)",
+        "production": "Mold-blown, with subtle variations in color suggesting hand-application of the gradient effect.",
+        "style": "Art Deco",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_35",
@@ -470,7 +722,21 @@
       "object_px": [
         306,
         559
-      ]
+      ],
+      "context": {
+        "era": "c. 1960-1980",
+        "material": "blown glass",
+        "origin": "Likely Eastern European, possibly Czech Republic",
+        "production": "Hand-blown, likely with a simple mold, surface treatment appears to be a mottled, possibly chemical, finish.",
+        "style": "Abstract Expressionist - influenced by color field painting",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_37",
@@ -490,7 +756,21 @@
       "object_px": [
         233,
         597
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "blown glass",
+        "origin": "Venetian, Italy",
+        "production": "Free-blown, intricate mold-blown, applied decoration, trailed elements",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_38",
@@ -510,7 +790,21 @@
       "object_px": [
         279,
         645
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "Blown glass",
+        "origin": "Likely Eastern European (e.g., Bohemia or Poland)",
+        "production": "Mold-blown, likely with a simple, hand-applied finish, resulting in the uneven surface texture.",
+        "style": "Art Nouveau influence - organic forms, flowing lines",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_39",
@@ -530,7 +824,21 @@
       "object_px": [
         311,
         626
-      ]
+      ],
+      "context": {
+        "era": "c. 1780-1840",
+        "material": "Porcelain",
+        "origin": "China (likely Jingdezhen)",
+        "production": "Wheel-thrown, underglaze blue porcelain, brush painting",
+        "style": "Blue and White (Jun style)",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_40",
@@ -550,7 +858,21 @@
       "object_px": [
         413,
         773
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1920",
+        "material": "Blown Glass",
+        "origin": "Likely European (German or French)",
+        "production": "Mold-blown, with hand-painted decoration, possibly using a stencil technique.",
+        "style": "Art Nouveau",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_41",
@@ -570,7 +892,21 @@
       "object_px": [
         396,
         627
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1910",
+        "material": "Bronze",
+        "origin": "European (likely French or German)",
+        "production": "Wheel-thrown, lost wax casting, chased and possibly patinated",
+        "style": "Arts and Crafts Movement",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_42",
@@ -590,7 +926,21 @@
       "object_px": [
         217,
         554
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1920",
+        "material": "Porcelain",
+        "origin": "Japanese",
+        "production": "Wheel-thrown, hand-painted decoration",
+        "style": "Meissen-influenced Aesthetic Movement",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_43",
@@ -610,7 +960,21 @@
       "object_px": [
         284,
         524
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "glazed porcelain",
+        "origin": "Japan",
+        "production": "Wheel-thrown, slip trailed decoration, celadon glaze",
+        "style": "Shigaraki-influenced",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_44",
@@ -630,7 +994,21 @@
       "object_px": [
         261,
         535
-      ]
+      ],
+      "context": {
+        "era": "c. 1920-1940",
+        "material": "Glass",
+        "origin": "Likely European (possibly German or Czech)",
+        "production": "Mold-blown, with a free-form, uneven surface and a mottled, applied glaze. The glaze appears to be a 'sprig' application, creating a textured effect.",
+        "style": "Art Deco / Modernist - reflecting the stylistic trends of the period with its simplified form and expressive glaze.",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_45",
@@ -650,7 +1028,21 @@
       "object_px": [
         261,
         576
-      ]
+      ],
+      "context": {
+        "era": "c. 1960-1980",
+        "material": "blown glass",
+        "origin": "Likely European (German or Italian)",
+        "production": "Mold-blown, possibly with some hand-finishing, smooth surface",
+        "style": "Mid-Century Modern",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_47",
@@ -670,7 +1062,21 @@
       "object_px": [
         288,
         507
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1920",
+        "material": "Porcelain",
+        "origin": "China (Likely Jingdezhen)",
+        "production": "Wheel-thrown, Slip-decorated, Celadon Glaze",
+        "style": "Late Qing Dynasty, Transitional Style",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_50",
@@ -690,7 +1096,21 @@
       "object_px": [
         266,
         707
-      ]
+      ],
+      "context": {
+        "era": "c. 1880-1920",
+        "material": "glazed stoneware",
+        "origin": "Likely European (German or British)",
+        "production": "Wheel-thrown, carved decoration, celadon glaze",
+        "style": "Arts & Crafts Movement",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_54",
@@ -710,7 +1130,21 @@
       "object_px": [
         800,
         1094
-      ]
+      ],
+      "context": {
+        "era": "c. 1960-1980",
+        "material": "stoneware",
+        "origin": "Southeast Asia (likely Vietnam or Thailand)",
+        "production": "Wheel-thrown, likely hand-finished, matte glaze",
+        "style": "Minimalist, Organic Form",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_55",
@@ -730,7 +1164,21 @@
       "object_px": [
         458,
         666
-      ]
+      ],
+      "context": {
+        "era": "c. 1900-1930",
+        "material": "Earthenware",
+        "origin": "Southern France (likely Provence)",
+        "production": "Wheel-thrown, slip-decorated, cobalt blue glaze",
+        "style": "Proven\u00e7al Pottery",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_56",
@@ -750,7 +1198,21 @@
       "object_px": [
         603,
         700
-      ]
+      ],
+      "context": {
+        "era": "c. 1960-1980",
+        "material": "glazed stoneware",
+        "origin": "Southeast Asia (likely Vietnam or Thailand)",
+        "production": "Wheel-thrown, slip-molded, celadon glaze (likely a modern interpretation)",
+        "style": "Minimalist, contemporary ceramic",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_57",
@@ -770,7 +1232,21 @@
       "object_px": [
         535,
         584
-      ]
+      ],
+      "context": {
+        "era": "c. 1910-1930",
+        "material": "Stoneware",
+        "origin": "Japan",
+        "production": "Wheel-thrown, slip-trailing decoration, celadon glaze",
+        "style": "Japanese Modernist",
+        "estimated": [
+          "era",
+          "material",
+          "origin",
+          "production",
+          "style"
+        ]
+      }
     },
     {
       "id": "vase_58",
@@ -794,6 +1270,19 @@
         "culture": "China, Jiangxi province, Jingdezhen kilns, Qing dynasty (1644-1911), Kangxi reign (1662-1722)",
         "date": "1662\u20131722",
         "url": "https://clevelandart.org/art/1975.184"
+      },
+      "context": {
+        "era": "1662\u20131722",
+        "material": "porcelain",
+        "origin": "China, Jiangxi province, Jingdezhen kilns, Qing dynasty (1644-1911), Kangxi reign (1662-1722)",
+        "production": "Wheel-thrown, carved, celadon glaze",
+        "style": "Kangxi",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -818,6 +1307,19 @@
         "culture": "Japan, Meiji period (1868\u20131912)",
         "date": "1912\u201314",
         "url": "https://clevelandart.org/art/2022.233"
+      },
+      "context": {
+        "era": "1912\u201314",
+        "material": "Porcelain",
+        "origin": "Japan, Meiji period (1868\u20131912)",
+        "production": "Wheel-thrown, Celadon Glaze",
+        "style": "Meiji Period",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Flower Vase"
       }
     },
     {
@@ -842,6 +1344,19 @@
         "culture": "France, Saint Cloud, 18th century",
         "date": "c. 1740\u201360",
         "url": "https://clevelandart.org/art/1962.360.1"
+      },
+      "context": {
+        "era": "c. 1740\u201360",
+        "material": "Porcelain",
+        "origin": "France, Saint Cloud, 18th century",
+        "production": "Slip cast, hand-painted, Boucher style",
+        "style": "Rococo",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Potpourri Vase with Cover"
       }
     },
     {
@@ -866,6 +1381,19 @@
         "culture": "Korea, Goryeo dynasty (918\u20131392)",
         "date": "1300s",
         "url": "https://clevelandart.org/art/1918.472"
+      },
+      "context": {
+        "era": "1300s",
+        "material": "porcelain",
+        "origin": "Korea, Goryeo dynasty (918\u20131392)",
+        "production": "Wheel-thrown, carved, celadon glaze",
+        "style": "Goryeo Celadon",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Prunus Vase with Inlaid Lotus and Reed Design"
       }
     },
     {
@@ -890,6 +1418,19 @@
         "culture": "England, Staffordshire",
         "date": "c. 1850",
         "url": "https://clevelandart.org/art/1951.300.a"
+      },
+      "context": {
+        "era": "c. 1850",
+        "material": "jasperware",
+        "origin": "England, Staffordshire",
+        "production": "slip-cast, hand-painted, transfer decoration",
+        "style": "Wedgwood Neoclassical",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -914,6 +1455,19 @@
         "culture": "America, Louisiana, New Orleans, 20th century",
         "date": "1900s",
         "url": "https://clevelandart.org/art/1972.1062"
+      },
+      "context": {
+        "era": "1900s",
+        "material": "glazed earthenware",
+        "origin": "America, Louisiana, New Orleans, 20th century",
+        "production": "Wheel-thrown, slip-trailing decoration, celadon glaze",
+        "style": "Arts & Crafts Revival",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -938,6 +1492,19 @@
         "culture": "Germany, Meissen, 18th century",
         "date": "c. 1710\u20131715",
         "url": "https://clevelandart.org/art/1947.285"
+      },
+      "context": {
+        "era": "c. 1710\u20131715",
+        "material": "Porcelain",
+        "origin": "Germany, Meissen, 18th century",
+        "production": "Wheel-thrown, hand-painted, overglaze enamel decoration",
+        "style": "Meissen Baroque",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -962,6 +1529,19 @@
         "culture": "Northeast China, Liao dynasty (916-1125)",
         "date": "916\u20131125",
         "url": "https://clevelandart.org/art/1919.34"
+      },
+      "context": {
+        "era": "916\u20131125",
+        "material": "Enameled Bronze",
+        "origin": "Northeast China, Liao dynasty (916-1125)",
+        "production": "Wheel-thrown, incised decoration",
+        "style": "Liao Dynasty",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -986,6 +1566,19 @@
         "culture": "Peru, South Coast, Nasca",
         "date": "c. 1000",
         "url": "https://clevelandart.org/art/1919.649"
+      },
+      "context": {
+        "era": "c. 1000",
+        "material": "Ceramic",
+        "origin": "Peru, South Coast, Nasca",
+        "production": "Hand-built, incised decoration",
+        "style": "Nasca",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1010,6 +1603,19 @@
         "culture": "Britain",
         "date": "1889",
         "url": "https://clevelandart.org/art/2017.208"
+      },
+      "context": {
+        "era": "1889",
+        "material": "Porcelain",
+        "origin": "Britain",
+        "production": "Wheel-thrown, hand-painted decoration with slip trailing and overglaze enamel",
+        "style": "Arts & Crafts Movement",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1034,6 +1640,19 @@
         "culture": "Eastern Mediterranean, Roman",
         "date": "c. 200\u2013500 CE",
         "url": "https://clevelandart.org/art/1915.542"
+      },
+      "context": {
+        "era": "c. 200\u2013500 CE",
+        "material": "Terracotta",
+        "origin": "Eastern Mediterranean, Roman",
+        "production": "Wheel-thrown, incised decoration",
+        "style": "Roman Provincial",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1058,6 +1677,19 @@
         "culture": "Colombia",
         "date": "500\u20131500",
         "url": "https://clevelandart.org/art/1971.27"
+      },
+      "context": {
+        "era": "500\u20131500",
+        "material": "Ceramic",
+        "origin": "Colombia",
+        "production": "Hand-built, incised decoration",
+        "style": "Muisca",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Anthropomorphic Vase"
       }
     },
     {
@@ -1082,6 +1714,19 @@
         "culture": "Parthian Empire (247 BCE\u2013224 CE)",
         "date": "1\u2013200 CE",
         "url": "https://clevelandart.org/art/1933.188"
+      },
+      "context": {
+        "era": "1\u2013200 CE",
+        "material": "Earthenware",
+        "origin": "Parthian Empire (247 BCE\u2013224 CE)",
+        "production": "Wheel-thrown, unglazed",
+        "style": "Parthian",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1106,6 +1751,19 @@
         "culture": "Guatemala, Northern Peten or Mexico, Southern Campeche, Maya, late Classic",
         "date": "600\u2013900",
         "url": "https://clevelandart.org/art/1990.181"
+      },
+      "context": {
+        "era": "600\u2013900",
+        "material": "Terracotta",
+        "origin": "Guatemala, Northern Peten or Mexico, Southern Campeche, Maya, late Classic",
+        "production": "Wheel-thrown, incised and painted decoration",
+        "style": "Maya, Late Classic",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Painted Vase with Ruler and Scribe"
       }
     },
     {
@@ -1130,6 +1788,19 @@
         "culture": "Mexico, Maya, Campeche",
         "date": "250\u2013900 CE",
         "url": "https://clevelandart.org/art/1972.93"
+      },
+      "context": {
+        "era": "250\u2013900 CE",
+        "material": "Ceramic",
+        "origin": "Mexico, Maya, Campeche",
+        "production": "Wheel-thrown, incised decoration, slip-trailed",
+        "style": "Early Classic Maya",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1154,6 +1825,19 @@
         "culture": "Finland",
         "date": "1950s",
         "url": "https://clevelandart.org/art/1993.169"
+      },
+      "context": {
+        "era": "1950s",
+        "material": "blown glass",
+        "origin": "Finland",
+        "production": "Mold-blown, speckled surface",
+        "style": "Modernist",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1178,6 +1862,19 @@
         "culture": "Costa Rica, Filadelphia",
         "date": "1000\u20131550",
         "url": "https://clevelandart.org/art/1946.231"
+      },
+      "context": {
+        "era": "1000\u20131550",
+        "material": "Ceramic",
+        "origin": "Costa Rica, Filadelphia",
+        "production": "Wheel-thrown, painted decoration",
+        "style": "Pre-Columbian",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1202,6 +1899,19 @@
         "culture": "Cambodia",
         "date": "1100s",
         "url": "https://clevelandart.org/art/1989.366"
+      },
+      "context": {
+        "era": "1100s",
+        "material": "Earthenware",
+        "origin": "Cambodia",
+        "production": "Wheel-thrown, incised and burnished decoration",
+        "style": "Khmer",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Khmer Vase"
       }
     },
     {
@@ -1226,6 +1936,19 @@
         "culture": "Bohemia",
         "date": "1800s",
         "url": "https://clevelandart.org/art/1949.168"
+      },
+      "context": {
+        "era": "1800s",
+        "material": "blown glass",
+        "origin": "Bohemia",
+        "production": "Wheel-thrown, etched with applied white glass relief decoration",
+        "style": "Art Glass/Secession",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Ruby Vase"
       }
     },
     {
@@ -1250,6 +1973,19 @@
         "culture": "Northern China, Jin dynasty (1115-1234) - Yuan dynasty (1271-1368)",
         "date": "1200s-1300s",
         "url": "https://clevelandart.org/art/1930.310"
+      },
+      "context": {
+        "era": "1200s-1300s",
+        "material": "stoneware",
+        "origin": "Northern China, Jin dynasty (1115-1234) - Yuan dynasty (1271-1368)",
+        "production": "Wheel-thrown, incised decoration, overglaze sgraffito",
+        "style": "Jin Dynasty",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Bottle Vase:  Black Ware"
       }
     },
     {
@@ -1274,6 +2010,19 @@
         "culture": "Iran, Sasanian Empire (224\u2013651 CE)",
         "date": "c. 224\u2013650 CE",
         "url": "https://clevelandart.org/art/1915.540"
+      },
+      "context": {
+        "era": "c. 224\u2013650 CE",
+        "material": "Terracotta",
+        "origin": "Iran, Sasanian Empire (224\u2013651 CE)",
+        "production": "Wheel-thrown, incised decoration, impressed banding",
+        "style": "Sasanian",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1298,6 +2047,19 @@
         "culture": "East Greek, probably Milesian",
         "date": "c. 580 BCE",
         "url": "https://clevelandart.org/art/1988.65"
+      },
+      "context": {
+        "era": "c. 580 BCE",
+        "material": "Terracotta",
+        "origin": "East Greek, probably Milesian",
+        "production": "Hand-built, incised decoration, slip-based painting",
+        "style": "Early Geometric",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Heron-Shaped Figure Vase (Oil Vessel)"
       }
     },
     {
@@ -1322,6 +2084,19 @@
         "culture": "Italy, Roman",
         "date": "100\u2013300 CE",
         "url": "https://clevelandart.org/art/1923.960"
+      },
+      "context": {
+        "era": "100\u2013300 CE",
+        "material": "blown glass",
+        "origin": "Italy, Roman",
+        "production": "Wheel-thrown, trailed decoration, celadon glaze",
+        "style": "Roman",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1346,6 +2121,19 @@
         "culture": "Russian",
         "date": "c. 1890\u201399",
         "url": "https://clevelandart.org/art/2022.107"
+      },
+      "context": {
+        "era": "c. 1890\u201399",
+        "material": "Jadeite",
+        "origin": "Russian",
+        "production": "Hand-molded, chased silver mounts, applied enamel decoration",
+        "style": "Art Nouveau",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1370,6 +2158,19 @@
         "culture": "Honduras, Maya",
         "date": "250\u2013900 CE",
         "url": "https://clevelandart.org/art/1945.375"
+      },
+      "context": {
+        "era": "250\u2013900 CE",
+        "material": "Terracotta",
+        "origin": "Honduras, Maya",
+        "production": "Hand-built, incised relief decoration",
+        "style": "Classic Maya",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1394,6 +2195,19 @@
         "culture": "Czech Republic, Turn-Teplitz, early 20th Century",
         "date": "c. 1900",
         "url": "https://clevelandart.org/art/1995.102"
+      },
+      "context": {
+        "era": "c. 1900",
+        "material": "Overglaze enamel on porcelain",
+        "origin": "Czech Republic, Turn-Teplitz, early 20th Century",
+        "production": "Wheel-thrown, hand-painted, overglaze enamelling",
+        "style": "Art Nouveau",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1418,6 +2232,19 @@
         "culture": "Rhenish (Cologne), Gallo-Roman, mid-2nd Century",
         "date": "mid-100s CE",
         "url": "https://clevelandart.org/art/1992.126"
+      },
+      "context": {
+        "era": "mid-100s CE",
+        "material": "Terracotta",
+        "origin": "Rhenish (Cologne), Gallo-Roman, mid-2nd Century",
+        "production": "Wheel-thrown, relief carving, incised detailing",
+        "style": "Gallo-Roman, Roman provincial",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "\"Caster Ware\" Vase with Hunt Scene"
       }
     },
     {
@@ -1442,6 +2269,19 @@
         "culture": "Early Islamic, Eastern Mediterranean",
         "date": "600s\u2013800s",
         "url": "https://clevelandart.org/art/1915.546"
+      },
+      "context": {
+        "era": "600s\u2013800s",
+        "material": "Glass",
+        "origin": "Early Islamic, Eastern Mediterranean",
+        "production": "Mold-blown, incised decoration",
+        "style": "Early Islamic",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1466,6 +2306,19 @@
         "culture": "South China, Yuan dynasty (1279\u20131368)",
         "date": "1300s",
         "url": "https://clevelandart.org/art/2020.189"
+      },
+      "context": {
+        "era": "1300s",
+        "material": "porcelain",
+        "origin": "South China, Yuan dynasty (1279\u20131368)",
+        "production": "Wheel-thrown, celadon glaze",
+        "style": "Yuan Dynasty",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Meiping Vase with carved Dragon Motif"
       }
     },
     {
@@ -1490,6 +2343,19 @@
         "culture": "Russia, St. Petersburg",
         "date": "c. 1820\u20131830",
         "url": "https://clevelandart.org/art/1963.671"
+      },
+      "context": {
+        "era": "c. 1820\u20131830",
+        "material": "Porcelain",
+        "origin": "Russia, St. Petersburg",
+        "production": "Slip-cast, hand-painted, gilding",
+        "style": "Neoclassical",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1514,6 +2380,19 @@
         "culture": "Denmark",
         "date": "1885",
         "url": "https://clevelandart.org/art/1973.225"
+      },
+      "context": {
+        "era": "1885",
+        "material": "glazed earthenware",
+        "origin": "Denmark",
+        "production": "Wheel-thrown, slip-decorated, glossy glaze",
+        "style": "Danish Decorative Arts",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1538,6 +2417,19 @@
         "culture": "Hungary",
         "date": "c. 1900",
         "url": "https://clevelandart.org/art/1997.272"
+      },
+      "context": {
+        "era": "c. 1900",
+        "material": "blown glass",
+        "origin": "Hungary",
+        "production": "Murrine technique, hand-blown, intricate pattern application",
+        "style": "Art Nouveau",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Miniature Vase"
       }
     },
     {
@@ -1562,6 +2454,19 @@
         "culture": "China, Jiangxi Province, Ming dynasty (1368\u20131644)",
         "date": "late 1400s",
         "url": "https://clevelandart.org/art/1920.405"
+      },
+      "context": {
+        "era": "late 1400s",
+        "material": "Porcelain",
+        "origin": "China, Jiangxi Province, Ming dynasty (1368\u20131644)",
+        "production": "Wheel-thrown, underglaze monochrome painting, slip trailing",
+        "style": "Ming Dynasty, Wuhen style",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase"
       }
     },
     {
@@ -1586,6 +2491,19 @@
         "culture": "Japan, Meiji period (1868\u20131912)",
         "date": "1900\u20131914",
         "url": "https://clevelandart.org/art/2022.198"
+      },
+      "context": {
+        "era": "1900\u20131914",
+        "material": "Porcelain",
+        "origin": "Japan, Meiji period (1868\u20131912)",
+        "production": "Wheel-thrown, carved, celadon glaze",
+        "style": "Meiji Period",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase with Peonies"
       }
     },
     {
@@ -1610,6 +2528,19 @@
         "culture": "France, Rouen",
         "date": "c. 1700",
         "url": "https://clevelandart.org/art/1964.537"
+      },
+      "context": {
+        "era": "c. 1700",
+        "material": "Porcelain",
+        "origin": "France, Rouen",
+        "production": "Wheel-thrown, transfer-printed decoration",
+        "style": "Rouen Bloempot",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Bottle-Shaped Vase"
       }
     },
     {
@@ -1634,6 +2565,19 @@
         "culture": "Korea, Goryeo dynasty (918\u20131392)",
         "date": "1300s",
         "url": "https://clevelandart.org/art/1918.471"
+      },
+      "context": {
+        "era": "1300s",
+        "material": "porcelain",
+        "origin": "Korea, Goryeo dynasty (918\u20131392)",
+        "production": "Wheel-thrown, carved, celadon glaze",
+        "style": "Goryeo",
+        "estimated": [
+          "material",
+          "production",
+          "style"
+        ],
+        "title": "Vase with Inlaid Lotus, Plum, and Bamboo Design"
       }
     }
   ],
