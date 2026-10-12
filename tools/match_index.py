@@ -19,7 +19,13 @@ from PIL import Image, ImageOps, ImageFilter
 from transformers import AutoModel
 
 ROOT = os.path.expanduser("~/.local/share/objview-match")
-IMG_DIR, OUT = os.path.join(ROOT, "images"), os.path.join(ROOT, "index")
+# Libraries: images folder, metadata TSV (Unsplash Lite columns), index folder.
+LIBRARIES = {
+    "unsplash": (os.path.join(ROOT, "images"), os.path.join(ROOT, "lite/photos.tsv000"), os.path.join(ROOT, "index")),
+    "arena":    (os.path.join(ROOT, "arena/images"), os.path.join(ROOT, "arena/photos.tsv"), os.path.join(ROOT, "arena/index")),
+}
+LIBRARY = os.environ.get("LIBRARY", "unsplash")
+IMG_DIR, META_TSV, OUT = LIBRARIES[LIBRARY]
 MODEL = "facebook/dinov2-small"
 SHORT = 224                      # short side in pixels → 16 patches of 14 px
 WINDOWS = [(5, 3), (9, 4)]       # (size in patches, stride)
@@ -99,7 +105,7 @@ def windows(gh, gw):
 def main():
     os.makedirs(OUT, exist_ok=True)
     csv.field_size_limit(10**9)
-    meta = {r["photo_id"]: r for r in csv.DictReader(open(os.path.join(ROOT, "lite/photos.tsv000"), newline=""), delimiter="\t")}
+    meta = {r["photo_id"]: r for r in csv.DictReader(open(META_TSV, newline=""), delimiter="\t")}
     files = sorted(f for f in os.listdir(IMG_DIR) if f.endswith(".jpg"))
     model = AutoModel.from_pretrained(MODEL, torch_dtype=torch.float16).to(DEVICE).eval()
 
@@ -119,7 +125,7 @@ def main():
                        "desc": (m.get("photo_description") or m.get("ai_description") or "").strip(),
                        "ai": (m.get("ai_description") or "").strip(),
                        "by": " ".join(x for x in [m.get("photographer_first_name", ""), m.get("photographer_last_name", "")] if x).strip(),
-                       "url": m.get("photo_url", "")})
+                       "url": m.get("photo_url", ""), **({"channel": m["channel"]} if m.get("channel") else {})})
         for x, y, s in windows(gh, gw):
             v = feats[y:y + s, x:x + s].reshape(-1, feats.shape[-1]).mean(0)
             win_vecs.append(v / (np.linalg.norm(v) + 1e-8))

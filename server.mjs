@@ -144,7 +144,7 @@ async function matchProxy(req, res) {
   if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
   try {
     const r = await fetch(`${MATCH_LOCAL}/match`, { method: "POST", signal: AbortSignal.timeout(20000),
-      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image, k: b.k || 6 }) });
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image, k: b.k || 6, library: b.library }) });
     const j = await r.json().catch(() => ({}));
     send(res, r.status, j);
   } catch (e) { send(res, 502, { error: String(e.message || e) }); }

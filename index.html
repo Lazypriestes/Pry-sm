@@ -30,6 +30,7 @@ const DEFAULTS = {
   minClear: 2,            // at least this many objects fully visible at any moment (often one more)
   exploreCount: 5,        // skipped objects explored in stage 2
   exploreMode: "match",   // "match" = real photos with the same shape · "imagine" = AI-generated scene
+  matchLibrary: "both",   // where real matches come from: "both", "unsplash" or "arena"
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
   debug: true             // "next" button bottom-left; turn off for participants
 };
@@ -153,6 +154,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Fully visible at once (min) <input type="number" id="s-minClear" min="1" max="4" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
   <label>Explore with <select id="s-exploreMode"><option value="match">real matches</option><option value="imagine">imagined (AI)</option></select></label>
+  <label>Match from <select id="s-matchLibrary"><option value="both">Unsplash + Are.na</option><option value="unsplash">Unsplash</option><option value="arena">Are.na</option></select></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
   <div class="small" id="s-note"></div>
@@ -246,6 +248,8 @@ SETTING_KEYS.forEach(k => {
 });
 $("s-exploreMode").value = settings.exploreMode;
 $("s-exploreMode").onchange = e => { settings.exploreMode = e.target.value; applySettings(); };
+$("s-matchLibrary").value = settings.matchLibrary;
+$("s-matchLibrary").onchange = e => { settings.matchLibrary = e.target.value; applySettings(); };
 $("s-debug").checked = settings.debug;
 $("s-debug").onchange = e => { settings.debug = e.target.checked; applySettings(); };
 $("settings-btn").onclick = () => { $("settings").hidden = !$("settings").hidden; };
@@ -675,11 +679,11 @@ function exploreItem(item, n, total) {
       try {
         const t = performance.now();
         const r = await fetch("api/match", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: partSquare(source, q), k: 6 }), signal: AbortSignal.timeout(20000) });
+          body: JSON.stringify({ image: partSquare(source, q), k: 6, library: settings.matchLibrary }), signal: AbortSignal.timeout(20000) });
         const j = await r.json();
         if (!r.ok || !j.matches || !j.matches.length) throw new Error(j.error || "no matches");
         if (my !== token) return;
-        circ.matches = j.matches.map(m => ({ id: m.id, score: m.score, coarse: m.coarse, layout: m.layout, box: m.box,
+        circ.matches = j.matches.map(m => ({ id: m.id, library: m.library, score: m.score, coarse: m.coarse, layout: m.layout, box: m.box,
                                              desc: m.desc, by: m.by, url: m.url }));
         circ.match_ms = Math.round(performance.now() - t);
         circ.viewed = []; circ.active = 0;
@@ -722,7 +726,8 @@ function exploreItem(item, n, total) {
       layer.classList.add("on"); circ.shownOnce = true;
       wrap.classList.add("imagined"); $("explore").classList.add("imagined");
       $("ex-status").classList.remove("pulse"); $("ex-status").textContent = "";
-      $("ex-words").textContent = (m.desc || "").toLowerCase().slice(0, 90) + (m.by ? `   ·   photo: ${m.by}, Unsplash` : "");
+      const credit = m.library === "arena" ? "via Are.na" : "Unsplash";
+      $("ex-words").textContent = (m.desc || "").toLowerCase().slice(0, 90) + `   ·   ${m.by ? m.by + ", " : ""}${credit}`;
       circ.shownAt = performance.now();
       setTimeout(() => { if (my === token) wrap.classList.add("dissolve"); }, 500);
     }

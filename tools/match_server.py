@@ -10,7 +10,7 @@ Uses the index built by tools/match_index.py (same greyscale + DINOv2 features).
 forwards /api/match and /api/photo/... here. Run with the image-model venv:
   ~/.local/share/objview-gen/.venv/bin/python tools/match_server.py
 """
-import base64, io, json, os, sys, threading, time
+import base64, io, json, os, re, sys, threading, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
 import torch
@@ -18,30 +18,35 @@ from PIL import Image
 from transformers import AutoModel
 
 sys.path.insert(0, os.path.dirname(__file__))
-from match_index import shape_image, hog_cells, patch_features, MODEL, DEVICE, ROOT, IMG_DIR  # noqa: E402
+from match_index import shape_image, hog_cells, patch_features, MODEL, DEVICE, ROOT, LIBRARIES  # noqa: E402
 
 PORT = 8003
-IDX = os.path.join(ROOT, "index")
 COARSE_K = 400                    # candidates from the fast search, re-checked for layout
 GRID = 4                          # layout check on a 4x4 grid of cells
+# A vase should turn into something *else*: skip matches that are themselves vessels.
+VESSEL = re.compile(r"\b(vases?|vessels?|pots?|pottery|ceramics?|stoneware|porcelain|bottles?|jars?|cups?|urns?|amphora|jugs?|pitchers?)\b", re.I)
 state = {"ready": False, "error": None}
 LOCK = threading.Lock()
 
 
 def load():
+    """Load every library that has been indexed (Unsplash, Are.na, ...)."""
     try:
         t = time.time()
-        meta = json.load(open(os.path.join(IDX, "photos.json")))
-        state["photos"] = meta["photos"]
-        state["win"] = torch.from_numpy(np.load(os.path.join(IDX, "win_vecs.npy"))).to(DEVICE)
-        state["win_meta"] = np.load(os.path.join(IDX, "win_meta.npy"))
-        state["hog"] = np.load(os.path.join(IDX, "hog.npy"), mmap_mode="r")
-        state["offsets"] = np.load(os.path.join(IDX, "tok_offsets.npy"))
-        state["mu"] = np.load(os.path.join(IDX, "pca_mu.npy"))
-        state["basis"] = np.load(os.path.join(IDX, "pca_basis.npy"))
+        state["libs"] = {}
+        for name, (img_dir, _, idx) in LIBRARIES.items():
+            if not os.path.exists(os.path.join(idx, "photos.json")): continue
+            state["libs"][name] = {
+                "img_dir": img_dir,
+                "photos": json.load(open(os.path.join(idx, "photos.json")))["photos"],
+                "win": torch.from_numpy(np.load(os.path.join(idx, "win_vecs.npy"))).to(DEVICE),
+                "win_meta": np.load(os.path.join(idx, "win_meta.npy")),
+                "hog": np.load(os.path.join(idx, "hog.npy"), mmap_mode="r"),
+                "offsets": np.load(os.path.join(idx, "tok_offsets.npy")),
+            }
         state["model"] = AutoModel.from_pretrained(MODEL, torch_dtype=torch.float16).to(DEVICE).eval()
         state["ready"] = True
-        print(f"ready: {len(state['photos'])} photos, {len(state['win_meta'])} regions in {time.time() - t:.0f}s", flush=True)
+        print("ready: " + ", ".join(f"{n} {len(L['photos'])} photos" for n, L in state["libs"].items()) + f" in {time.time() - t:.0f}s", flush=True)
     except Exception as e:  # noqa: BLE001
         state["error"] = repr(e)
         print("load failed:", e, flush=True)
@@ -59,35 +64,77 @@ def grid_cells(feats, n=GRID):
     return np.stack(cells)
 
 
-def match(img, k=6):
+def edge_layout(cells_raw, n=GRID):
+    """Where the edges are: total edge strength in each of n x n cells, normalised (n*n,)."""
+    h, w, _ = cells_raw.shape
+    ys = np.linspace(0, h, n + 1).round().astype(int); xs = np.linspace(0, w, n + 1).round().astype(int)
+    m = np.array([cells_raw[ys[i]:max(ys[i + 1], ys[i] + 1), xs[j]:max(xs[j + 1], xs[j] + 1)].sum()
+                  for i in range(n) for j in range(n)], np.float32)
+    return m / (np.linalg.norm(m) + 1e-8), float(cells_raw.sum(-1).mean())
+
+
+def search(L, name, qv, q_grid, q_where, q_energy):
+    sims = L["win"] @ torch.from_numpy(qv.astype(np.float16)).to(DEVICE)
+    top = torch.topk(sims.float(), min(COARSE_K, sims.shape[0])).indices.cpu().numpy()
+    coarse = sims.float().cpu().numpy()
+    scored = []
+    for i in top:
+        p, x, y, s = L["win_meta"][i]
+        ph = L["photos"][p]
+        o = L["offsets"][p]
+        hog = np.asarray(L["hog"][o:o + ph["gh"] * ph["gw"]], dtype=np.float32).reshape(ph["gh"], ph["gw"], -1)
+        block = hog[y:y + s, x:x + s]
+        direction = float((grid_cells(block) * q_grid).sum(1).mean())      # which way the lines run
+        where, energy = edge_layout(block)
+        location = float(where @ q_where)                                     # where the edges are
+        layout = 0.6 * direction + 0.4 * location
+        # Penalise regions with far less (or far more) going on than the circled part.
+        ratio = min(energy, q_energy) / (max(energy, q_energy) + 1e-6)
+        score = (0.5 * float(coarse[i]) + 0.5 * layout) * (0.75 + 0.25 * ratio)
+        scored.append((score, float(coarse[i]), layout, name, p, x, y, s))
+    return scored
+
+
+def match(img, k=6, library="both"):
     img = img.convert("RGB").resize((224, 224))
     feats = patch_features(state["model"], shape_image(img, short=224))       # 16, 16, 384
     qv = feats.reshape(-1, feats.shape[-1]).mean(0); qv /= np.linalg.norm(qv) + 1e-8
-    q_grid = grid_cells(hog_cells(img, short=224))                             # 16 cells x 9 directions
-    # 1. fast: cosine against every region descriptor, on the GPU
-    sims = state["win"] @ torch.from_numpy(qv.astype(np.float16)).to(DEVICE)
-    top = torch.topk(sims.float(), min(COARSE_K, sims.shape[0])).indices.cpu().numpy()
-    coarse = sims.float().cpu().numpy()
-    # 2. careful: does the arrangement inside the region match too?
-    scored = []
-    for i in top:
-        p, x, y, s = state["win_meta"][i]
-        ph = state["photos"][p]
-        o = state["offsets"][p]
-        hog = np.asarray(state["hog"][o:o + ph["gh"] * ph["gw"]], dtype=np.float32).reshape(ph["gh"], ph["gw"], -1)
-        layout = float((grid_cells(hog[y:y + s, x:x + s]) * q_grid).sum(1).mean())
-        scored.append((0.5 * float(coarse[i]) + 0.5 * layout, float(coarse[i]), layout, p, x, y, s))
-    scored.sort(reverse=True)
+    q_hog = hog_cells(img, short=224)
+    q_grid = grid_cells(q_hog)                                                 # 16 cells x 9 directions
+    q_where, q_energy = edge_layout(q_hog)
+    names = [n for n in state["libs"] if library in ("both", n)] or list(state["libs"])
+    scored = sorted((r for n in names for r in search(state["libs"][n], n, qv, q_grid, q_where, q_energy)), reverse=True)
     out, seen = [], set()
-    for score, c, lay, p, x, y, s in scored:                                     # one region per photo
-        if p in seen: continue
-        seen.add(p)
-        ph = state["photos"][p]
-        out.append({"id": ph["id"], "score": round(score, 4), "coarse": round(c, 4), "layout": round(lay, 4),
+    for score, c, lay, name, p, x, y, s in scored:                               # one region per photo
+        if (name, p) in seen: continue
+        seen.add((name, p))
+        ph = state["libs"][name]["photos"][p]
+        if VESSEL.search(" ".join([ph.get("desc", ""), ph.get("ai", ""), ph.get("channel", "")])): continue
+        desc = ph["desc"]
+        if name == "arena" and (not desc or re.search(r"\.(jpe?g|png|gif|webp)|^[\w-]{0,40}\d{4,}", desc, re.I)):
+            desc = f"from “{ph.get('channel', '').replace('-', ' ').rsplit(' ', 1)[0]}”" if ph.get("channel") else ""
+        out.append({"id": ph["id"], "library": name, "score": round(score, 4), "coarse": round(c, 4), "layout": round(lay, 4),
                     "box": [x / ph["gw"], y / ph["gh"], s / ph["gw"], s / ph["gh"]],
-                    "w": ph["w"], "h": ph["h"], "desc": ph["desc"], "by": ph["by"], "url": ph["url"]})
+                    "w": ph["w"], "h": ph["h"], "desc": desc, "by": ph["by"], "url": ph["url"]})
         if len(out) >= k: break
     return out
+
+
+_remote = {}
+
+
+def remote_url(lib, pid):
+    """Where the photo lives online (Unsplash CDN, or the Are.na image URL saved by import_arena.py)."""
+    if lib not in _remote:
+        import csv
+        csv.field_size_limit(10**9)
+        tsv = LIBRARIES[lib][1]
+        rows = csv.DictReader(open(tsv, newline=""), delimiter="\t") if os.path.exists(tsv) else []
+        if lib == "unsplash":
+            _remote[lib] = {r["photo_id"]: r["photo_image_url"] + "?w=1280&q=80&fm=jpg" for r in rows if r.get("photo_image_url")}
+        else:
+            _remote[lib] = {r["photo_id"]: r["image_url"] for r in rows if r.get("image_url")}
+    return _remote[lib].get(pid)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -98,11 +145,17 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/status":
+            libs = state.get("libs", {})
             return self._send(200, {"ready": state["ready"], "error": state["error"],
-                                    "photos": len(state.get("photos", [])), "regions": len(state.get("win_meta", []))})
+                                    "photos": sum(len(L["photos"]) for L in libs.values()),
+                                    "libraries": {n: len(L["photos"]) for n, L in libs.items()}})
         if self.path.startswith("/photo/") and self.path.endswith(".jpg"):
             pid = os.path.basename(self.path)[:-4]
-            f = os.path.join(IMG_DIR, pid + ".jpg")
+            lib = "arena" if pid.startswith("arena_") else "unsplash"
+            f = os.path.join(LIBRARIES[lib][0], pid + ".jpg")
+            if "/" not in pid and not os.path.exists(f) and remote_url(lib, pid):
+                # Not kept locally: send the browser to the image on Are.na's / Unsplash's own servers.
+                self.send_response(302); self.send_header("Location", remote_url(lib, pid)); self.end_headers(); return
             if "/" not in pid and os.path.exists(f):
                 data = open(f, "rb").read()
                 self.send_response(200); self.send_header("Content-Type", "image/jpeg")
@@ -118,7 +171,7 @@ class Handler(BaseHTTPRequestHandler):
             img = Image.open(io.BytesIO(base64.b64decode(b["image"].split(",", 1)[1])))
             t = time.time()
             with LOCK:
-                res = match(img, int(b.get("k") or 6))
+                res = match(img, int(b.get("k") or 6), str(b.get("library") or "both"))
             self._send(200, {"matches": res, "ms": round((time.time() - t) * 1000)})
         except Exception as e:  # noqa: BLE001
             self._send(500, {"error": repr(e)})
