@@ -132,13 +132,13 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #ex-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; pointer-events: none; transition: opacity 1.2s; }
   #explore.imagined #ex-top { opacity: 0; }
   #ex-top .q { font-size: 17px; }
-  #ex-words { position: absolute; left: 24px; bottom: 24px; font-size: 12px; color: rgba(255,255,255,.75);
+  #ex-words { position: absolute; right: 24px; bottom: 28px; max-width: 46vw; text-align: right; font-size: 12px; color: rgba(255,255,255,.75);
               letter-spacing: .04em; text-shadow: 0 1px 6px rgba(0,0,0,.7); }
   #ex-status { position: absolute; left: 0; right: 0; bottom: 64px; text-align: center; font-size: 12px;
                color: rgba(255,255,255,.7); letter-spacing: .08em; }
   #ex-status.pulse { animation: pulse 1.6s ease-in-out infinite; }
   @keyframes pulse { 50% { opacity: .35; } }
-  #ex-controls { position: absolute; right: 24px; bottom: 20px; display: flex; gap: 10px; }
+  #ex-controls { position: absolute; left: 24px; bottom: 20px; display: flex; flex-direction: row-reverse; gap: 10px; }
   #ex-controls .btn { backdrop-filter: blur(8px); background: rgba(38,40,43,.7); }
   #ex-controls .btn.primary { background: var(--ink); }
   #ex-count { position: absolute; right: 20px; top: 42px; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
