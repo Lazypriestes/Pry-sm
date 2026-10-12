@@ -32,7 +32,9 @@ const DEFAULTS = {
   exploreMode: "match",   // "match" = real photos with the same shape · "imagine" = AI-generated scene
   matchLibrary: "both",   // where real matches come from: "both", "unsplash" or "arena"
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
-  debug: true             // "next" button bottom-left; turn off for participants
+  debug: true,            // "next" button bottom-left; turn off for participants
+  testSkipField: false,   // test: skip both field rounds, go straight to exploring
+  testExploreAll: false   // test: explore every vase in the catalogue, not just the skipped ones
 };
 // Outpainting resolution and steps (local SDXL-Turbo on an M4 Pro): 768 px/4 steps ≈ 3 s but too blurry
 // to recognise; 1280 px/6 steps ≈ 10 s and sharp.
@@ -157,6 +159,8 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Match from <select id="s-matchLibrary"><option value="both">Unsplash + Are.na</option><option value="unsplash">Unsplash</option><option value="arena">Are.na</option></select></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
+  <label class="check"><input type="checkbox" id="s-testSkipField"> Test: skip the field rounds</label>
+  <label class="check"><input type="checkbox" id="s-testExploreAll"> Test: explore all vases</label>
   <div class="small" id="s-note"></div>
 </div>
 <button class="btn" id="debug-next">next ⏭</button>
@@ -251,6 +255,10 @@ $("s-exploreMode").onchange = e => { settings.exploreMode = e.target.value; appl
 $("s-matchLibrary").value = settings.matchLibrary;
 $("s-matchLibrary").onchange = e => { settings.matchLibrary = e.target.value; applySettings(); };
 $("s-debug").checked = settings.debug;
+["testSkipField", "testExploreAll"].forEach(k => {
+  $("s-" + k).checked = !!settings[k];
+  $("s-" + k).onchange = e => { settings[k] = e.target.checked; applySettings(); };
+});
 $("s-debug").onchange = e => { settings.debug = e.target.checked; applySettings(); };
 $("settings-btn").onclick = () => { $("settings").hidden = !$("settings").hidden; };
 applySettings();
@@ -318,10 +326,11 @@ $("start-btn").onclick = async () => {
   const all = shuffle(catalogue.items);
   roundItems = settings.itemCount > 0 ? all.slice(0, settings.itemCount) : all;
   prepareImagination();                         // load CLIP + check generation while stage 1 runs
-  await runField(1);
+  data.test = settings.testSkipField || settings.testExploreAll
+    ? { skip_field: !!settings.testSkipField, explore_all: !!settings.testExploreAll } : undefined;
+  if (!settings.testSkipField) await runField(1);
   await runExplore();
-  await pauseScreen(TEXT.field2);
-  await runField(2);
+  if (!settings.testSkipField) { await pauseScreen(TEXT.field2); await runField(2); }
   finish();
 };
 
@@ -503,8 +512,10 @@ async function warmUp() {
 }
 
 async function runExplore() {
-  const skipped = data.rounds[0].items.filter(i => !i.selected).map(i => itemsById[i.item_id]);
-  const list = shuffle(skipped).slice(0, settings.exploreCount);
+  // Normally: skipped objects from round 1. Test options: every vase in the catalogue.
+  const skipped = data.rounds[0] ? data.rounds[0].items.filter(i => !i.selected).map(i => itemsById[i.item_id]) : [];
+  const list = settings.testExploreAll || !data.rounds[0] ? shuffle(catalogue.items)
+             : shuffle(skipped).slice(0, settings.exploreCount);
   if (!list.length) return;
   await pauseScreen(TEXT.explore, "");
   phase = "explore";
