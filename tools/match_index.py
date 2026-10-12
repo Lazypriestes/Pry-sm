@@ -6,7 +6,7 @@ project and never redistributed):
   2. DINOv2-small patch features of its *line drawing* (edges), so shape counts, not objects;
   3. region descriptors: mean of the patch features in sliding windows of 5x5 and 9x9 patches;
   4. an edge-direction histogram (HOG) per patch, used to re-check the *layout* of the best
-     candidates: which way the lines run, cell by cell (plus a compact PCA copy of the features).
+     candidates: which way the lines run and where the edges are, cell by cell.
 
 Run with the image-model venv (outside iCloud):
   ~/.local/share/objview-gen/.venv/bin/python tools/match_index.py
@@ -130,27 +130,15 @@ def main():
             v = feats[y:y + s, x:x + s].reshape(-1, feats.shape[-1]).mean(0)
             win_vecs.append(v / (np.linalg.norm(v) + 1e-8))
             win_meta.append((idx, x, y, s))
-        tok_chunks.append(feats.reshape(-1, feats.shape[-1]).astype(np.float16))
         hog_chunks.append(hog_cells(img).reshape(-1, 9).astype(np.float16))
         tok_offsets.append(offset); offset += gh * gw
         if (n + 1) % 1000 == 0:
             print(f"{n + 1}/{len(files)} photos · {len(win_vecs)} regions · {time.time() - t0:.0f}s", flush=True)
 
-    tokens = np.concatenate(tok_chunks).astype(np.float32)
-    # PCA basis for the compact layout features (fit on a sample of patches).
-    sample = tokens[np.random.default_rng(0).choice(len(tokens), min(200000, len(tokens)), replace=False)]
-    mu = sample.mean(0)
-    _, _, vt = np.linalg.svd(sample - mu, full_matrices=False)
-    basis = vt[:PCA_DIMS].T.astype(np.float32)                 # 384 x 64
-    small = ((tokens - mu) @ basis).astype(np.float16)
-
     np.save(os.path.join(OUT, "win_vecs.npy"), np.stack(win_vecs).astype(np.float16))
     np.save(os.path.join(OUT, "win_meta.npy"), np.array(win_meta, dtype=np.int32))
-    np.save(os.path.join(OUT, "tokens_pca.npy"), small)
     np.save(os.path.join(OUT, "hog.npy"), np.concatenate(hog_chunks))
     np.save(os.path.join(OUT, "tok_offsets.npy"), np.array(tok_offsets, dtype=np.int64))
-    np.save(os.path.join(OUT, "pca_mu.npy"), mu.astype(np.float32))
-    np.save(os.path.join(OUT, "pca_basis.npy"), basis)
     json.dump({"model": MODEL, "short": SHORT, "windows": WINDOWS, "photos": photos,
                "source": "Unsplash Lite Dataset 1.4.0 (research use; images not redistributed)"},
               open(os.path.join(OUT, "photos.json"), "w"))
