@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Object Viewer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
 /* ============================================================
    EDITABLE TEXT & DEFAULTS
@@ -20,6 +18,7 @@ const TEXT = {
   field2: "Once more. Click the ones you'd want to look at more.",
   explore: "Circle any part of the object that catches your eye.",
   exploreHint: "Draw around it with your mouse",
+  wand: "Move over the object. Rest on any part that catches your eye.",
   thanks: "Thank you — that's everything."
 };
 const DEFAULTS = {
@@ -29,7 +28,11 @@ const DEFAULTS = {
   fadeOutMs: 1800,        // fade out (slow, so objects dissolve rather than vanish)
   minClear: 2,            // at least this many objects fully visible at any moment (often one more)
   exploreCount: 5,        // skipped objects explored in stage 2
-  exploreMode: "match",   // "match" = real photos with the same shape · "imagine" = AI-generated scene
+  exploreMode: "wand",    // "wand" = hover selects a part (magic wand), references pile up in windows
+                          // "wandAI" = same selection, AI-imagined scenes grown from the part · "wandBoth" = both
+                          // "match" = circle a part, real photo with the same shape · "imagine" = AI-generated scene
+  wandTolerance: 34,
+  lens: true,             // selection modes: also ask Google (Cloud Vision web detection) what the part looks like      // magic wand: how different a colour may be and still join the selection (0-255)
   matchLibrary: "both",   // where real matches come from: "both", "unsplash" or "arena"
   contextWeight: 0.3,     // real matches: 0 = shape only … 1 = the vase's era/material/origin and whole look count a lot
   genStrength: 0.75,      // 0.6 = stays close to the circled part … 0.92 = mostly imagined
@@ -107,7 +110,7 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #field-hint { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; }
 
   /* Stage 2: explore */
-  #explore { overflow: hidden; }
+  #explore { overflow: hidden; background: #111213; color: #e8eaed; }   /* the older circle / imagine modes stay dark */
   #gen-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;
             transition: opacity 1.4s ease; }
   #gen-bg.on { opacity: .95; }
@@ -144,6 +147,61 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   #ex-controls { position: absolute; right: 24px; bottom: 20px; display: flex; gap: 10px; }
   #ex-controls .btn { backdrop-filter: blur(8px); background: rgba(38,40,43,.7); }
   #ex-controls .btn.primary { background: var(--ink); }
+  /* Stage 2, "wand" mode: plain white page, selection by hovering, references pile up in windows (as room.html) */
+  #wand { background: #fff; color: #000; font: 11px/1.35 Menlo, Monaco, "Courier New", monospace; overflow: hidden; }
+  #wand-obj { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(70vh, 56vw); height: min(70vh, 56vw); z-index: 30; }
+  #wand-obj img, #wand-obj canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+  #wand-ants { image-rendering: pixelated; pointer-events: none; }
+  #wand-obj { cursor: crosshair; }
+  #wand-q { position: absolute; left: 8px; top: 6px; z-index: 40; }
+  #wand-hud { position: absolute; left: 8px; bottom: 6px; z-index: 40; color: #777; white-space: pre; pointer-events: none; }
+  #wand-next { position: absolute; right: 8px; bottom: 6px; z-index: 40; font: inherit; background: #fff; border: 1px solid #000; padding: 2px 10px; cursor: pointer; }
+  #wand-count { position: absolute; right: 8px; top: 6px; z-index: 40; color: #777; }
+  #wand-wins { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+  #wand .win { position: absolute; background: #fff; border: 1px solid #000; pointer-events: auto; }
+  #wand .win .bar { display: flex; height: 15px; line-height: 15px; padding: 0 3px 0 5px; background: #e4e4e4; border-bottom: 1px solid #000; white-space: nowrap; overflow: hidden; font-size: 10px; }
+  #wand .win .bar span { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+  #wand .win .bar b { font-weight: normal; padding: 0 3px; cursor: pointer; }
+  #wand .win .pic { background: #eee center/cover no-repeat; position: relative; }
+  #wand .win .pic .inset { position: absolute; left: 4px; bottom: 4px; width: 34%; aspect-ratio: 1; background: #fff center/contain no-repeat; border: 1px solid #000; }
+  #wand .win .foot { padding: 2px 5px; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-top: 1px solid #000; }
+  #wand .win .txt { padding: 4px 6px; white-space: pre-wrap; }
+  #wand .win .sw { display: flex; height: 24px; }
+  #wand .win .sw div { flex: 1; }
+  body:has(#wand.active) #timer { color: #777; font: 11px Menlo, Monaco, monospace; top: 22px; right: 8px; }
+  body:has(#wand.active) #debug-next { left: auto; right: 80px; bottom: 6px; height: auto; padding: 2px 10px; border-radius: 0;
+    background: #fff; border: 1px dashed #000; color: #000; font: 11px Menlo, Monaco, monospace; }
+  /* ---- Plain look for the whole study (as room.html): white page, small monospace, boxes not pills ---- */
+  body { background: #fff; color: #000; font: 12px/1.45 Menlo, Monaco, "Courier New", monospace; }
+  .lede { font-size: 13px; line-height: 1.5; color: #000; max-width: 460px; text-align: left; }
+  .small { font-size: 11px; color: #777; letter-spacing: 0; }
+  .btn, .btn.primary, .btn:hover, .btn.primary:hover { font: 12px Menlo, Monaco, monospace; height: auto; padding: 3px 12px; border-radius: 0;
+         border: 1px solid #000; background: #fff; color: #000; }
+  .btn:hover, .btn.primary:hover { background: #000; color: #fff; }
+  .btn:disabled, .btn:disabled:hover { background: #fff; color: #777; border-color: #aaa; }
+  .btn:focus-visible { outline: 1px dashed #000; outline-offset: 2px; }
+  input[type=text], input[type=number] { font: 12px Menlo, Monaco, monospace; height: 24px; padding: 0 6px; border-radius: 0;
+         border: 1px solid #000; background: #fff; color: #000; }
+  input:focus { border-color: #000; outline: 1px dashed #000; outline-offset: 2px; }
+  #settings-btn { top: 8px; left: 8px; }
+  #settings { top: 36px; left: 8px; padding: 0; border-radius: 0; border: 1px solid #000; background: #fff; color: #000; font-size: 11px; width: 320px; }
+  #settings::before { content: "settings"; display: block; height: 15px; line-height: 15px; padding: 0 5px; background: #e4e4e4;
+                      border-bottom: 1px solid #000; font-size: 10px; margin-bottom: 8px; }
+  #settings label, #settings .small { margin: 0 8px 6px; }
+  #settings input[type=number], #settings select { height: 20px; padding: 0 4px; border-radius: 0; border: 1px solid #000; background: #fff; color: #000;
+                      font: 11px Menlo, Monaco, monospace; }
+  #debug-next { bottom: 8px; left: 8px; height: auto; padding: 2px 10px; border-radius: 0; background: #fff; border: 1px dashed #000; color: #000;
+                font: 11px Menlo, Monaco, monospace; }
+  #timer { top: 8px; right: 8px; font: 11px Menlo, Monaco, monospace; color: #777; }
+  #start .center, #pause .center, #end .center { align-items: center; }
+  #pid { width: 240px; }
+  /* field: chosen objects get a dashed marquee, like a selection */
+  .drift { filter: none; }
+  .drift.in { filter: none; }
+  .drift.out { filter: none; }
+  .drift.picked, .drift.picked.out { filter: none; outline: 1px dashed #000; outline-offset: 6px; }
+  .tick { width: auto; height: auto; padding: 0 4px; border-radius: 0; background: #000; color: #fff; font: 11px Menlo, Monaco, monospace; }
+  #field-hint { bottom: 8px; color: #777; }
   #ex-count { position: absolute; right: 20px; top: 42px; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 </style>
 </head>
@@ -156,10 +214,12 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   <label>Fade out (ms) <input type="number" id="s-fadeOutMs" min="200" step="100"></label>
   <label>Fully visible at once (min) <input type="number" id="s-minClear" min="1" max="4" step="1"></label>
   <label>Explored objects <input type="number" id="s-exploreCount" min="0" step="1"></label>
-  <label>Explore with <select id="s-exploreMode"><option value="match">real matches</option><option value="imagine">imagined (AI)</option></select></label>
+  <label>Explore with <select id="s-exploreMode"><option value="wand">select → references</option><option value="wandAI">select → imagined (AI)</option><option value="wandBoth">select → both</option><option value="match">circle → real match</option><option value="imagine">imagined (AI)</option></select></label>
+  <label>Wand tolerance (0–255) <input type="number" id="s-wandTolerance" min="4" max="160" step="2"></label>
   <label>Context weight (0–1) <input type="number" id="s-contextWeight" min="0" max="1" step="0.1"></label>
   <label>Match from <select id="s-matchLibrary"><option value="both">Unsplash + Are.na</option><option value="unsplash">Unsplash</option><option value="arena">Are.na</option></select></label>
   <label>Imagination (0.6–0.92) <input type="number" id="s-genStrength" min="0.6" max="0.92" step="0.02"></label>
+  <label class="check"><input type="checkbox" id="s-lens"> Google Lens windows (needs GOOGLE_VISION_KEY in .env)</label>
   <label class="check"><input type="checkbox" id="s-debug"> Debug "next" button</label>
   <label class="check"><input type="checkbox" id="s-testSkipField"> Test: skip the field rounds</label>
   <label class="check"><input type="checkbox" id="s-testExploreAll"> Test: explore all vases</label>
@@ -203,6 +263,15 @@ const GEN_STYLE = "abstract composition, natural light, sharp focus, crisp detai
   </div>
 </section>
 
+<!-- STAGE 2, wand mode -->
+<section class="screen" id="wand">
+  <div id="wand-q"></div><div id="wand-count"></div>
+  <div id="wand-wins"></div>
+  <div id="wand-obj"><img id="wand-img" alt="" draggable="false"><canvas id="wand-ants"></canvas></div>
+  <div id="wand-hud"></div>
+  <button id="wand-next">next →</button>
+</section>
+
 <!-- END -->
 <section class="screen" id="end">
   <div class="center"><p class="lede" id="thanks"></p><button class="btn primary" id="download">Download data</button>
@@ -228,7 +297,7 @@ function show(id) { document.querySelectorAll(".screen").forEach(s => s.classLis
 let catalogue = null, itemsById = {}, phase = "start", T0 = 0;
 let settings = { ...DEFAULTS };
 // Saved settings are kept only if they were saved with the current defaults' version.
-const SETTINGS_VERSION = 2;
+const SETTINGS_VERSION = 3;
 try {
   const saved = JSON.parse(localStorage.getItem("objview_settings") || "{}");
   if (saved._v === SETTINGS_VERSION) Object.assign(settings, saved);
@@ -243,7 +312,7 @@ const data = {
 /* ============================================================
    SETTINGS (start screen only)
    ============================================================ */
-const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength", "contextWeight"];
+const SETTING_KEYS = ["itemCount", "visibleMs", "fadeOutMs", "minClear", "exploreCount", "genStrength", "contextWeight", "wandTolerance"];
 function applySettings() {
   $("debug-next").style.display = settings.debug ? "block" : "none";
   try { localStorage.setItem("objview_settings", JSON.stringify({ ...settings, _v: SETTINGS_VERSION })); } catch (e) {}
@@ -257,7 +326,7 @@ $("s-exploreMode").onchange = e => { settings.exploreMode = e.target.value; appl
 $("s-matchLibrary").value = settings.matchLibrary;
 $("s-matchLibrary").onchange = e => { settings.matchLibrary = e.target.value; applySettings(); };
 $("s-debug").checked = settings.debug;
-["testSkipField", "testExploreAll"].forEach(k => {
+["testSkipField", "testExploreAll", "lens"].forEach(k => {
   $("s-" + k).checked = !!settings[k];
   $("s-" + k).onchange = e => { settings[k] = e.target.checked; applySettings(); };
 });
@@ -442,7 +511,7 @@ async function runField(round) {
    the part itself (soft-edged) is the shape → server.mjs → fal.ai.
    ============================================================ */
 let refsLib = null, genAvailable = false;
-let matchAvailable = false;
+let matchAvailable = false, lensAvailable = false;
 
 /* ---------- per-vase steering for "imagined" mode (imagine.json, edited in imagine.html) ----------
    Each vase can have its own words and reference images, each with a weight. Every generation
@@ -482,9 +551,10 @@ async function refDataURL(path) {
 function prepareImagination() {
   fetch("api/status").then(r => r.json()).then(s => {
     genAvailable = !!s.generation; data.generation_model = s.model; data.backend = s.backend;
+    lensAvailable = !!s.lens;
     matchAvailable = !!s.matching; data.match_library = { photos: s.match_photos, source: "Unsplash Lite Dataset 1.4.0" };
     data.explore_mode = settings.exploreMode;
-    if (settings.exploreMode === "imagine") warmUp();
+    if (["imagine", "wandAI", "wandBoth"].includes(settings.exploreMode)) warmUp();
   }).catch(() => {});
   import("./references.js").then(lib => { refsLib = lib; return lib.loadReferences(); })
     .then(info => { data.clip = info; }).catch(e => { data.clip_error = String(e.message || e); });
@@ -519,10 +589,11 @@ async function runExplore() {
   const list = settings.testExploreAll || !data.rounds[0] ? shuffle(catalogue.items)
              : shuffle(skipped).slice(0, settings.exploreCount);
   if (!list.length) return;
-  await pauseScreen(TEXT.explore, "");
+  const wand = settings.exploreMode.startsWith("wand");
+  await pauseScreen(wand ? TEXT.wand : TEXT.explore, "");
   phase = "explore";
-  show("explore");
-  for (let n = 0; n < list.length; n++) await exploreItem(list[n], n, list.length);
+  show(wand ? "wand" : "explore");
+  for (let n = 0; n < list.length; n++) await (wand ? exploreWand : exploreItem)(list[n], n, list.length);
 }
 
 function exploreItem(item, n, total) {
@@ -818,6 +889,337 @@ function exploreItem(item, n, total) {
       resolve();
     };
     $("ex-next").onclick = e => { e.currentTarget.blur(); next(); };
+    dbgNext = next;
+  });
+}
+
+/* ============================================================
+   STAGE 2, "wand" mode
+   Hovering selects a part of the object the way Photoshop's magic wand does: every connected pixel of
+   a similar colour to the one under the cursor. Rest on a selection and references pile up around the
+   object in plain windows: photos shaped like the part, photos in its colours, photos that feel like it.
+   ============================================================ */
+const WAND_AI = { images: 3, size: 768 };   // imagined windows per selection, generated one after another
+const WAND = { size: 220, dwell: 450, leave: 600, firstGap: 450, minGap: 120, maxWins: 40 };
+// A few named colours, so CLIP can be asked for "a photo dominated by olive green and dark brown".
+const COLOUR_NAMES = [["black",[20,20,20]],["charcoal",[54,57,60]],["grey",[128,128,128]],["silver",[192,192,192]],["white",[245,245,240]],
+  ["ivory",[240,234,214]],["beige",[215,196,160]],["sand",[194,172,128]],["brown",[110,70,40]],["dark brown",[60,38,24]],["rust",[170,80,40]],
+  ["terracotta",[200,105,75]],["red",[200,30,30]],["burgundy",[110,20,40]],["pink",[235,160,180]],["orange",[240,140,30]],["ochre",[200,150,40]],
+  ["yellow",[240,220,60]],["olive green",[110,115,50]],["moss green",[80,100,50]],["green",[50,150,60]],["emerald",[20,110,80]],["sage",[150,170,140]],
+  ["teal",[30,120,120]],["turquoise",[60,190,190]],["sky blue",[130,180,230]],["blue",[40,80,190]],["navy",[25,35,80]],["purple",[110,50,140]],
+  ["lavender",[180,160,210]],["gold",[200,160,60]],["copper",[180,110,60]],["bronze",[140,100,50]]];
+const colourName = c => COLOUR_NAMES.reduce((b, n) => { const d = (n[1][0] - c[0]) ** 2 + (n[1][1] - c[1]) ** 2 + (n[1][2] - c[2]) ** 2; return d < b[1] ? [n[0], d] : b; }, ["", 1e9])[0];
+
+function exploreWand(item, n, total) {
+  return new Promise(async resolve => {
+    const c = cut[item.id], box = $("wand-obj"), img = $("wand-img"), ants = $("wand-ants"), wins = $("wand-wins");
+    img.src = c.url;
+    // decode can stall in a hidden or throttled tab; never wait on it for long
+    await Promise.race([img.decode().catch(() => {}), sleep(1500)]);
+    if (!img.naturalWidth) await new Promise(r => { img.onload = r; setTimeout(r, 3000); });
+    $("wand-q").textContent = TEXT.wand; $("wand-count").textContent = `${n + 1} / ${total}`; $("wand-hud").textContent = "";
+    wins.replaceChildren();
+    const useRefs = settings.exploreMode !== "wandAI", useAI = settings.exploreMode !== "wand";
+    const rec = { item_id: item.id, order: n, mode: settings.exploreMode, tolerance: settings.wandTolerance, t_start_ms: Math.round(performance.now() - T0), selections: [] };
+    data.explore.push(rec);
+    const t0 = performance.now();
+
+    // Analysis copy of the cut-out: long side WAND.size px.
+    const k = WAND.size / Math.max(c.w, c.h), AW = Math.max(1, Math.round(c.w * k)), AH = Math.max(1, Math.round(c.h * k));
+    const an = document.createElement("canvas"); an.width = AW; an.height = AH;
+    const ag = an.getContext("2d", { willReadFrequently: true }); ag.drawImage(img, 0, 0, AW, AH);
+    const px = ag.getImageData(0, 0, AW, AH).data;
+    ants.width = AW; ants.height = AH;
+    const antsCtx = ants.getContext("2d");
+
+    // Where the cut-out sits inside the square box (object-fit: contain).
+    const fit = () => { const b = box.getBoundingClientRect(), s = Math.min(b.width / AW, b.height / AH);
+      return { x: b.left + (b.width - AW * s) / 2, y: b.top + (b.height - AH * s) / 2, s, w: AW * s, h: AH * s }; };
+    const toPx = (x, y) => { const f = fit(); return [Math.floor((x - f.x) / f.s), Math.floor((y - f.y) / f.s)]; };
+
+    // Magic wand: flood fill from the seed over connected, opaque pixels within the tolerance of the seed colour.
+    function wandAt(sx, sy) {
+      if (sx < 0 || sy < 0 || sx >= AW || sy >= AH || px[(sy * AW + sx) * 4 + 3] < 128) return null;
+      const i0 = (sy * AW + sx) * 4, r0 = px[i0], g0 = px[i0 + 1], b0 = px[i0 + 2], T = settings.wandTolerance;
+      const mask = new Uint8Array(AW * AH), stack = [sy * AW + sx];
+      let count = 0, x0 = sx, y0 = sy, x1 = sx, y1 = sy, sr = 0, sg = 0, sb = 0;
+      mask[sy * AW + sx] = 1;
+      while (stack.length) {
+        const p = stack.pop(), x = p % AW, y = (p - x) / AW, i = p * 4;
+        count++; sr += px[i]; sg += px[i + 1]; sb += px[i + 2];
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+        for (const q of [x > 0 ? p - 1 : -1, x < AW - 1 ? p + 1 : -1, y > 0 ? p - AW : -1, y < AH - 1 ? p + AW : -1]) {
+          if (q < 0 || mask[q]) continue;
+          const j = q * 4;
+          if (px[j + 3] < 128) continue;
+          if (Math.max(Math.abs(px[j] - r0), Math.abs(px[j + 1] - g0), Math.abs(px[j + 2] - b0)) > T) continue;
+          mask[q] = 1; stack.push(q);
+        }
+      }
+      return { mask, count, bbox: [x0, y0, x1 - x0 + 1, y1 - y0 + 1], seed: [sx, sy], mean: [sr / count, sg / count, sb / count].map(Math.round) };
+    }
+    // Marching ants: the selection's edge pixels, alternating black and white, shifting over time.
+    let sel = null, antsT = 0;
+    function drawAnts() {
+      antsCtx.clearRect(0, 0, AW, AH);
+      if (!sel) return;
+      const im = antsCtx.createImageData(AW, AH), m = sel.mask, d = im.data;
+      const [bx, by, bw, bh] = sel.bbox;
+      for (let y = by; y < by + bh; y++) for (let x = bx; x < bx + bw; x++) {
+        const p = y * AW + x; if (!m[p]) continue;
+        if (x > 0 && m[p - 1] && x < AW - 1 && m[p + 1] && y > 0 && m[p - AW] && y < AH - 1 && m[p + AW]) continue;
+        const on = ((x + y + antsT) >> 2) & 1, v = on ? 0 : 255;
+        d[p * 4] = d[p * 4 + 1] = d[p * 4 + 2] = v; d[p * 4 + 3] = 255;
+      }
+      antsCtx.putImageData(im, 0, 0);
+    }
+    const antsTimer = setInterval(() => { antsT++; drawAnts(); }, 120);
+
+    // The selected part, cut out along the selection, on white, as a square (for the matcher / CLIP).
+    function partImage(s, size = 256) {
+      const [bx, by, bw, bh] = s.bbox, side = Math.max(bw, bh) * 1.08, cx = bx + bw / 2, cy = by + bh / 2;
+      const mk = document.createElement("canvas"); mk.width = AW; mk.height = AH;
+      const mg = mk.getContext("2d"), mi = mg.createImageData(AW, AH);
+      for (let p = 0; p < s.mask.length; p++) if (s.mask[p]) mi.data[p * 4 + 3] = 255;
+      mg.putImageData(mi, 0, 0);
+      const out = document.createElement("canvas"); out.width = out.height = size;
+      const og = out.getContext("2d"), sk = size / side;
+      const part = document.createElement("canvas"); part.width = out.width; part.height = out.height;
+      const pg = part.getContext("2d");
+      pg.drawImage(img, (cx - side / 2) / k, (cy - side / 2) / k, side / k, side / k, 0, 0, size, size);   // full-res pixels
+      pg.globalCompositeOperation = "destination-in";
+      pg.drawImage(mk, cx - side / 2, cy - side / 2, side, side, 0, 0, size, size);
+      og.fillStyle = "#fff"; og.fillRect(0, 0, size, size); og.drawImage(part, 0, 0);
+      return out.toDataURL("image/jpeg", 0.9);
+    }
+    function regionPalette(s) {
+      const cols = [];
+      for (let p = 0; p < s.mask.length; p += 3) if (s.mask[p]) cols.push([px[p * 4], px[p * 4 + 1], px[p * 4 + 2]]);
+      let cs = [0, 1, 2].map(i => cols[Math.floor((i + .5) * cols.length / 3)].slice());
+      const lab = new Array(cols.length).fill(0);
+      for (let it = 0; it < 6; it++) {
+        cols.forEach((q, i) => { let b = 0, bd = 1e9; cs.forEach((cc, j) => { const dd = (q[0] - cc[0]) ** 2 + (q[1] - cc[1]) ** 2 + (q[2] - cc[2]) ** 2; if (dd < bd) { bd = dd; b = j; } }); lab[i] = b; });
+        cs = cs.map((cc, j) => { const m = cols.filter((_, i) => lab[i] === j); return m.length ? [0, 1, 2].map(z => Math.round(m.reduce((a, q) => a + q[z], 0) / m.length)) : cc; });
+      }
+      return cs.map((cc, j) => ({ c: cc, share: lab.filter(l => l === j).length / cols.length })).filter(x => x.share > 0.04).sort((a, b) => b.share - a.share);
+    }
+
+    // ---- windows ----
+    let z = 10, open = null;
+    const esc = t => String(t ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    function spot(w, h, i) {
+      const r = box.getBoundingClientRect(), f = fit(), [bx, by, bw, bh] = open.sel.bbox;
+      const cx = f.x + (bx + bw / 2) * f.s, cy = f.y + (by + bh / 2) * f.s, spread = 140 + i * 16;
+      // try to keep clear of the object; if the screen is too small, take the spot that covers it least
+      let best = null, bestCover = Infinity;
+      for (let t = 0; t < 30; t++) {
+        const a = rnd(0, Math.PI * 2), d = rnd(0.5, 1) * (Math.max(f.w, f.h) / 2 + spread);
+        const x = Math.max(4, Math.min(innerWidth - w - 4, cx + Math.cos(a) * d - w / 2));
+        const y = Math.max(22, Math.min(innerHeight - h - 26, cy + Math.sin(a) * d * 0.8 - h / 2));
+        const cover = Math.max(0, Math.min(x + w, f.x + f.w) - Math.max(x, f.x)) * Math.max(0, Math.min(y + h, f.y + f.h) - Math.max(y, f.y));
+        if (cover === 0) return { x, y };
+        if (cover < bestCover) { bestCover = cover; best = { x, y }; }
+      }
+      return best;
+    }
+    function addWin(o) {
+      if (!open || open.closed) return;
+      const el = document.createElement("div"); el.className = "win";
+      const w = o.w || (Math.random() < 0.25 ? rnd(210, 280) : rnd(130, 200));
+      let body = o.body;
+      if (o.photo) {
+        const m = o.photo, ph = Math.round(w * rnd(0.62, 0.9)), full = m.box[2] >= 1;
+        const pos = full ? "center" : `${m.box[0] / Math.max(1e-6, 1 - m.box[2]) * 100}% ${m.box[1] / Math.max(1e-6, 1 - m.box[3]) * 100}%`;
+        body = `<div class="pic" style="height:${ph}px;background-image:url('api/photo/${esc(m.id)}.jpg');background-size:${full ? "cover" : 100 / Math.max(m.box[2], .05) + "% auto"};background-position:${pos}">` +
+               (o.inset ? `<div class="inset" style="background-image:url('${open.partURL}')"></div>` : "") +
+               `</div><div class="foot">${esc(o.label)}${m.desc ? ": " + esc(m.desc) : ""}</div>`;
+      }
+      el.innerHTML = `<div class="bar"><span>${esc(o.title)}</span><b>×</b></div>${body}`;
+      Object.assign(el.style, { width: w + "px", zIndex: ++z, visibility: "hidden" });
+      el.querySelector(".bar b").onclick = e => { e.stopPropagation(); el.remove(); };
+      el.onmousedown = () => { el.style.zIndex = ++z; open.rec.clicked.push(o.title); };
+      wins.appendChild(el);
+      const p = spot(w, el.offsetHeight, open.rec.windows.length);
+      Object.assign(el.style, { left: p.x + "px", top: p.y + "px", visibility: "visible" });
+      open.rec.windows.push(o.title);
+      const all = wins.querySelectorAll(".win"); if (all.length > WAND.maxWins) all[0].remove();
+    }
+    // Results arrive at different times; they join one queue that shows a window at a time, faster and faster.
+    function pump() {
+      if (!open || open.closed) return;
+      const o = open.queue.shift();
+      if (o) addWin(o);
+      open.timer = setTimeout(pump, Math.max(WAND.minGap, WAND.firstGap * Math.pow(0.9, open.rec.windows.length)));
+    }
+    const post = (url, body) => fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(20000) })
+      .then(r => r.json()).catch(() => ({}));
+    const mix = (o, list) => { list.forEach((x, i) => o.queue.splice(Math.min(o.queue.length, 1 + i * 2 + Math.floor(Math.random() * 2)), 0, x)); };
+
+    function openSel(s) {
+      const pal = regionPalette(s), names = [...new Set(pal.map(p => colourName(p.c)))];
+      const share = s.count / (px.length / 4);
+      const sr = { t_ms: Math.round(performance.now() - t0), seed: [+(s.seed[0] / AW).toFixed(4), +(s.seed[1] / AH).toFixed(4)],
+                   bbox: [s.bbox[0] / AW, s.bbox[1] / AH, s.bbox[2] / AW, s.bbox[3] / AH].map(v => +v.toFixed(4)),
+                   pixels: s.count, colours: names, windows: [], clicked: [] };
+      rec.selections.push(sr);
+      open = { sel: s, rec: sr, queue: [], closed: false, partURL: partImage(s), openedAt: performance.now() };
+      const slug = names.join("_").replace(/\W+/g, "_");
+      open.queue.push({ title: `selection_${rec.selections.length}.png`, w: 150,
+        body: `<div class="pic" style="height:120px;background:#fff url('${open.partURL}') center/contain no-repeat"></div><div class="foot">${s.count} px · ${(share * 100).toFixed(1)}% of the object</div>` });
+      open.queue.push({ title: `${slug}.colours`, w: 200,
+        body: `<div class="sw">${pal.map(p => `<div style="flex:${p.share};background:rgb(${p.c})"></div>`).join("")}</div><div class="foot">${esc(names.join(", "))}</div>` });
+      pump();
+      const me = open;
+      const lib = settings.matchLibrary;
+      if (useAI) imagineSel(me, names);
+      if (settings.lens) lensSel(me);
+      if (!useRefs) return;
+      post("api/match", { image: me.partURL, k: 8, library: lib, context: vaseContext(item, c, img) }).then(j => {
+        const ms = j.matches || []; me.rec.shape = ms.map(m => m.id);
+        mix(me, ms.map(m => ({ title: `shape_${m.id.replace(/^arena_/, "")}.jpg`, photo: m, label: "same shape", inset: true })));
+      });
+      post("api/similar", { text: `a photo dominated by ${names.join(" and ")}`, library: "arena", k: 6 }).then(j => {
+        const ms = j.matches || []; me.rec.colour = ms.map(m => m.id);
+        mix(me, ms.map(m => ({ title: `colour_${m.id.replace(/^arena_/, "")}.jpg`, photo: m, label: names.join(" + ") })));
+      });
+      post("api/similar", { image: me.partURL, minus: "a photo of a vase", library: "both", k: 6 }).then(j => {
+        const ms = j.matches || []; me.rec.feels = ms.map(m => m.id);
+        mix(me, ms.map(m => ({ title: `feels_${m.id.replace(/^arena_/, "")}.jpg`, photo: m, label: "feels like" })));
+      });
+    }
+    // The selected part as a plain square crop (no mask), for the reading: a cut-out edge reads as "leaf"/"eye".
+    function partPlain(s, size = 384) {
+      const [bx, by, bw, bh] = s.bbox, side = Math.max(bw, bh) * 1.08, cx = bx + bw / 2, cy = by + bh / 2;
+      const cv = document.createElement("canvas"); cv.width = cv.height = size;
+      const g = cv.getContext("2d"); g.fillStyle = "#808080"; g.fillRect(0, 0, size, size);
+      g.drawImage(img, (cx - side / 2) / k, (cy - side / 2) / k, side / k, side / k, 0, 0, size, size);
+      return cv.toDataURL("image/jpeg", 0.9);
+    }
+    // Outpainting input: the selected pixels in the middle of a square frame, a mask saying "keep exactly
+    // these pixels, invent everything else" (edges softened so the part grows into the scene).
+    function outpaintSel(s) {
+      const S2 = WAND_AI.size, [bx, by, bw, bh] = s.bbox, sc = S2 * 0.4 / Math.max(bw, bh);
+      const ox = S2 / 2 - (bx + bw / 2) * sc, oy = S2 / 2 - (by + bh / 2) * sc;
+      const mk = document.createElement("canvas"); mk.width = AW; mk.height = AH;
+      const mg = mk.getContext("2d"), mi = mg.createImageData(AW, AH);
+      for (let p = 0; p < s.mask.length; p++) if (s.mask[p]) mi.data[p * 4 + 3] = 255;
+      mg.putImageData(mi, 0, 0);
+      const part = document.createElement("canvas"); part.width = part.height = S2;
+      const pg = part.getContext("2d");
+      pg.drawImage(img, ox, oy, AW * sc, AH * sc);
+      pg.globalCompositeOperation = "destination-in"; pg.drawImage(mk, ox, oy, AW * sc, AH * sc);
+      const frame = document.createElement("canvas"); frame.width = frame.height = S2;
+      const fg = frame.getContext("2d"); fg.fillStyle = "#6e6e6e"; fg.fillRect(0, 0, S2, S2); fg.drawImage(part, 0, 0);
+      const mask = document.createElement("canvas"); mask.width = mask.height = S2;
+      const kg = mask.getContext("2d"); kg.fillStyle = "#fff"; kg.fillRect(0, 0, S2, S2);
+      const keep = document.createElement("canvas"); keep.width = keep.height = S2;
+      const kk = keep.getContext("2d"); kk.drawImage(part, 0, 0); kk.globalCompositeOperation = "source-in"; kk.fillStyle = "#000"; kk.fillRect(0, 0, S2, S2);
+      kg.filter = "blur(4px)"; kg.drawImage(keep, 0, 0); kg.filter = "none";
+      return { image: frame.toDataURL("image/jpeg", 0.92), mask: mask.toDataURL("image/png") };
+    }
+    async function imagineSel(me, names) {
+      me.rec.imagined = [];
+      if (!genAvailable) {
+        me.queue.unshift({ title: "imagine.txt", w: 220, body: `<div class="txt">imagining is off: the image generator (tools/gen_server.py) is not running</div>` });
+        return;
+      }
+      $("wand-hud").textContent += " · reading";
+      // Reading: what could this part be a small piece of? (local vision model, three words)
+      const rd = await post("api/interpret", { image: partPlain(me.sel) });
+      // the part should grow into something else, so readings that are just "a vase" are dropped
+      const VESSELISH = /\b(vases?|vessels?|pots?|pottery|ceramics?|porcelain|jars?|urns?|bottles?|jugs?|bowls?)\b/i;
+      let words = (rd.words || []).filter(w => !VESSELISH.test(w));
+      if (!words.length) words = ["landscape", "architecture", "rock formation"];
+      words = words.slice(0, WAND_AI.images);
+      me.rec.reading = { words, model: rd.model, ms: rd.ms };
+      if (me.closed) return;
+      me.queue.unshift({ title: "reads_like.txt", w: 200, body: `<div class="txt">${words.map(w => esc(w)).join("\n")}</div>` });
+      const inp = outpaintSel(me.sel);
+      for (let i = 0; i < WAND_AI.images && !me.closed; i++) {
+        const word = words[i % words.length], steer = steering(item.id, word), seed = Math.floor(Math.random() * 1e9);
+        const subject = steer.subject.text || word;
+        const prompt = `an extreme close-up photograph of a vast ${subject} filling the entire frame` + (names.length ? `, ${names.join(" and ")} tones` : "") +
+          (steer.echo ? `, echoing ${steer.echo}` : "") + ", seamless, one continuous surface, natural light, everything in sharp focus, deep focus, no depth of field, no blur, rich detail";
+        const ref = steer.ref ? { image: await refDataURL(steer.ref.image), weight: steer.ref.weight ?? 0.5 } : null;
+        const t = performance.now();
+        $("wand-hud").textContent = `${me.sel.count} px · imagining ${subject}…`;
+        let j = {};
+        try {
+          const r = await fetch("api/generate", { method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: inp.image, mask: inp.mask, prompt, seed, size: WAND_AI.size, steps: GEN_STEPS, ref }),
+            signal: AbortSignal.timeout(i === 0 ? GEN_TIMEOUT_MS * 2 : GEN_TIMEOUT_MS) });            // the first one may be cold
+          j = await r.json(); if (!r.ok) throw new Error(j.error || r.status);
+        } catch (e) { me.rec.imagined.push({ word, subject, error: String(e.message || e) }); continue; }
+        me.rec.imagined.push({ word, subject, from: steer.subject.from, prompt, seed, ms: Math.round(performance.now() - t),
+                               reference: steer.ref ? steer.ref.image : null });
+        if (me.closed) return;
+        // imagined windows jump the queue: they are the slowest and the point of this mode
+        me.queue.unshift({ title: `imagined_${slugify(subject)}_${i + 1}.jpg`, w: rnd(240, 320),
+          body: `<div class="pic" style="aspect-ratio:1;background-image:url('${j.url}')"></div><div class="foot">imagined: ${esc(subject)}</div>` });
+      }
+      if (!me.closed) $("wand-hud").textContent = `${me.sel.count} px`;
+    }
+    // Google Lens-style: what Google sees in the part, similar images from the web, pages that show it.
+    async function lensSel(me) {
+      if (!lensAvailable) {
+        me.queue.push({ title: "lens.txt", w: 220, body: `<div class="txt">google lens is off: add GOOGLE_VISION_KEY to .env and restart server.mjs</div>` });
+        return;
+      }
+      const j = await post("api/lens", { image: partPlain(me.sel, 512) });
+      if (me.closed) return;
+      if (j.error) { me.rec.lens = { error: j.error }; return; }
+      me.rec.lens = { guess: j.guess, entities: (j.entities || []).slice(0, 8).map(e => e.name), similar: (j.similar || []).length, ms: j.ms, cached: !!j.cached };
+      const words = [...(j.guess || []), ...(j.entities || []).slice(0, 6).map(e => e.name)];
+      me.queue.unshift({ title: "google_lens.txt", w: 210, body: `<div class="txt">${esc(words.length ? words.join("\n") : "nothing recognised")}</div>` });
+      const webPic = (url, title, foot, link) => ({ title, body: `<a href="${esc(link || url)}" target="_blank" rel="noopener"><div class="pic" style="height:${Math.round(rnd(100, 170))}px;background-image:url('${esc(url)}')"></div><div class="foot">${esc(foot)}</div></a>` });
+      const pics = [
+        ...(j.similar || []).slice(0, 10).map((u, i) => webPic(u, `web_similar_${i + 1}.jpg`, `google: looks like ${j.guess?.[0] || ""}`.trim())),
+        ...(j.pages || []).filter(p => p.image).slice(0, 4).map((p, i) => webPic(p.image, `web_page_${i + 1}.htm`, p.title || p.url, p.url)),
+      ];
+      mix(me, pics);
+    }
+    const slugify = t => String(t || "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 30);
+    function closeSel() {
+      if (!open) return;
+      open.closed = true; clearTimeout(open.timer);
+      open.rec.ms = Math.round(performance.now() - open.openedAt);
+      wins.replaceChildren(); open = null;
+    }
+
+    // ---- hover: preview the wand selection under the cursor; resting on it opens the windows ----
+    let mouse = null, since = 0, leftAt = 0;
+    const onMove = e => { mouse = { x: e.clientX, y: e.clientY }; };
+    addEventListener("mousemove", onMove);
+    const overWin = (x, y) => [...wins.querySelectorAll(".win")].some(w => { const r = w.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; });
+    const hoverTimer = setInterval(() => {
+      if (!mouse) return;
+      const now = performance.now(), [sx, sy] = toPx(mouse.x, mouse.y);
+      const inside = sel && sx >= 0 && sy >= 0 && sx < AW && sy < AH && sel.mask[sy * AW + sx];
+      if (open) {
+        if (inside || overWin(mouse.x, mouse.y)) { leftAt = 0; return; }
+        if (!leftAt) { leftAt = now; return; }
+        if (now - leftAt < WAND.leave) return;
+        closeSel(); leftAt = 0;
+      }
+      if (!inside) {
+        const s = wandAt(sx, sy);
+        sel = s; since = now; drawAnts();
+        $("wand-hud").textContent = s ? `${s.count} px · ${colourName(s.mean)}` : "";
+        if (s && !rec.first_hover_ms) rec.first_hover_ms = Math.round(now - t0);
+        return;
+      }
+      if (!open && now - since > WAND.dwell) openSel(sel);
+    }, 60);
+
+    const next = () => {
+      closeSel(); clearInterval(antsTimer); clearInterval(hoverTimer);
+      removeEventListener("mousemove", onMove);
+      sel = null; drawAnts();
+      rec.time_ms = Math.round(performance.now() - t0);
+      backup(); resolve();
+    };
+    $("wand-next").onclick = e => { e.currentTarget.blur(); next(); };
     dbgNext = next;
   });
 }

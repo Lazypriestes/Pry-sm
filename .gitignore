@@ -2,3 +2,4 @@
 tools/node_modules/
 .env
 imagine_refs/
+rooms/*.jpg

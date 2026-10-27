@@ -1,0 +1,4231 @@
+{
+ "ceiling_fan": {
+  "parts": [
+   {
+    "part": "rooms/parts/ceiling_fan_1.jpg",
+    "id": "arena_17206349",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.2,
+     0.5625,
+     0.45
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "paulinjha \ud83c\udff4\u200d\u2620\ufe0f"
+   },
+   {
+    "part": "rooms/parts/ceiling_fan_1.jpg",
+    "id": "arena_2422888",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Calvin Lien"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_2154941",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Ivan Kostriukov"
+   },
+   {
+    "id": "arena_2154905",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Ivan Kostriukov"
+   },
+   {
+    "id": "arena_21772219",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Matt Barnes"
+   },
+   {
+    "id": "arena_29938298",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Matt Barnes"
+   },
+   {
+    "id": "arena_839649",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Carson Salter"
+   },
+   {
+    "id": "arena_1074002",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_839649",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Carson Salter"
+   },
+   {
+    "id": "arena_1486367",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Untitled",
+    "by": "Squarespace"
+   },
+   {
+    "id": "arena_24558471",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Egor Sokolov"
+   },
+   {
+    "id": "arena_475941",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Kat Su"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_3296150",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "https://www.phaidon.com"
+   },
+   {
+    "id": "arena_18541411",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Marie Channac"
+   },
+   {
+    "id": "arena_8180227",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://images.prismic.io"
+   },
+   {
+    "id": "arena_8842696",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "https://s3-eu-west-1.amazonaws.com"
+   },
+   {
+    "id": "arena_20034823",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   }
+  ],
+  "scan": {
+   "name": "Ceiling fan",
+   "summary": "Ceiling fan with dark blades and central hub.",
+   "form": [
+    "Three blades radiate from central hub.",
+    "Blades are straight and symmetrical.",
+    "Central hub is circular and glossy."
+   ],
+   "surface": [
+    "Dark brown or black color.",
+    "Glossy finish reflects light.",
+    "Edges appear slightly worn."
+   ],
+   "decoration": [],
+   "palette": [
+    "Dark brown",
+    "Black",
+    "Glossy brown",
+    "Dark grey"
+   ],
+   "material": "Metallic, possibly brass or bronze, with plastic blades.",
+   "made": "Molded and assembled, likely.",
+   "resembles": [
+    "Modern industrial design",
+    "Simple functional style"
+   ],
+   "interesting": [
+    "Wear on edges suggests use.",
+    "Glossy finish contrasts with wear."
+   ],
+   "clear": [
+    "Three blades are present.",
+    "Central hub is circular."
+   ],
+   "uncertain": [
+    "Exact age and origin.",
+    "Condition beyond wear."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:31:48.506Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "c. 500 BC",
+    "name": "Egyptian Ceiling Ventilation Device",
+    "place": "Ancient Egypt",
+    "search": "ventilation ancient egypt",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/MITSUBISHI_ELECTRIC_WINDOW_TYPE_AIR_CONDITIONER_OUTDOOR_UNIT.jpg/500px-MITSUBISHI_ELECTRIC_WINDOW_TYPE_AIR_CONDITIONER_OUTDOOR_UNIT.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Air_conditioning",
+      "credit": "Wikipedia: Air conditioning",
+      "score": 0.2798
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Hatari_18_inch_fan.jpg/500px-Hatari_18_inch_fan.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fan_(machine)",
+      "credit": "Wikipedia: Fan (machine)",
+      "score": 0.2529
+     }
+    ]
+   },
+   {
+    "year": "1700s",
+    "name": "Hollander's Centrifugal Fan",
+    "place": "Netherlands",
+    "search": "centrifugal fan netherlands",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Maquette_UDF_-_Mus%C3%A9e_Safran_%28cropped%29.jpg/500px-Maquette_UDF_-_Mus%C3%A9e_Safran_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Propfan",
+      "credit": "Wikipedia: Propfan",
+      "score": 0.2453
+     }
+    ]
+   },
+   {
+    "year": "1858",
+    "name": "Sturtevant's Rotary Fan",
+    "place": "USA (Boston)",
+    "search": "rotary fan sturtevant",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/ABC_Dragonfly_at_London_Science_Museum.jpg/500px-ABC_Dragonfly_at_London_Science_Museum.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/List_of_aircraft_engines",
+      "credit": "Wikipedia: List of aircraft engines",
+      "score": 0.3112
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Sawyer's Electric Fan",
+    "place": "USA (Chicago)",
+    "search": "sawyer electric fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/The_Street_railway_journal_%281899%29_%2814736793626%29.jpg/500px-The_Street_railway_journal_%281899%29_%2814736793626%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:The_Street_railway_journal_(1899)_(14736793626).jpg",
+      "credit": "Internet Archive Book Images \u00b7 No restrictions",
+      "score": 0.2067
+     }
+    ]
+   },
+   {
+    "year": 1920,
+    "name": "Haviland Electric Ceiling Fan",
+    "place": "USA (New York)",
+    "search": "haviland ceiling fan",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Wind Turbine Blade",
+    "why": "Harnesses wind energy for electricity",
+    "search": "wind turbine blades",
+    "images": null
+   },
+   {
+    "name": "Propeller",
+    "why": "Provides thrust in aircraft and ships",
+    "search": "propeller plane boat",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Ship-propeller_2000.jpg/500px-Ship-propeller_2000.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Propeller",
+      "credit": "Wikipedia: Propeller",
+      "score": 0.3411
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg/500px-Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg",
+      "credit": "Unknown authorUnknown author or not provided \u00b7 Public domain",
+      "score": 0.2515
+     }
+    ]
+   },
+   {
+    "name": "Sail Plan",
+    "why": "Captures wind energy for sailing vessels",
+    "search": "sail plan boat",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/USS_Baltimore_%28C-3%29-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg/500px-USS_Baltimore_%28C-3%29-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:USS_Baltimore_(C-3)-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg",
+      "credit": "Unknown authorUnknown author or not provided \u00b7 Public domain",
+      "score": 0.3493
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Bombay_Boat_sail_plan.jpg/500px-Bombay_Boat_sail_plan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Bombay_Boat_sail_plan.jpg",
+      "credit": "Kemp, Dixon, 1839-1899; Heckstall-Smith, Brooke \u00b7 Public domain",
+      "score": 0.3442
+     }
+    ]
+   },
+   {
+    "name": "Windmill Blade",
+    "why": "Grinds grain using wind power",
+    "search": "windmill blade",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/DK_Fanoe_Windmill01.JPG/500px-DK_Fanoe_Windmill01.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Windmill",
+      "credit": "Wikipedia: Windmill",
+      "score": 0.3012
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg/500px-Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg",
+      "credit": "https://www.flickr.com/photos/carolinehornet/ \u00b7 CC BY 2.0",
+      "score": 0.2945
+     }
+    ]
+   }
+  ],
+  "story": "You think this is just a mundane, mass-produced ceiling fan. But it's a descendant of ancient Egyptian ventilation devices that used centrifugal force to circulate air. In the 18th century, Dutch inventor Michiel van der Meer Hollander created the first powered fan, which was later improved upon by American engineer Samuel Sturtevant in 1858. The modern ceiling fan as you know it today emerged in the early 20th century, with the introduction of electric motors and sleek designs. You didn't choose this ceiling fan; it was chosen for you by centuries of innovators, manufacturers, and architects who shaped its design and functionality.",
+  "shapes": [
+   {
+    "id": "arena_1071906",
+    "library": "arena",
+    "box": [
+     0.42105263157894735,
+     0.4375,
+     0.47368421052631576,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_19246692",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.6538461538461539,
+     0.5625,
+     0.34615384615384615
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://freight.cargo.site"
+   },
+   {
+    "id": "goT6ObVsiD8",
+    "library": "unsplash",
+    "box": [
+     0.75,
+     0,
+     0.17857142857142858,
+     0.3125
+    ],
+    "desc": "X-Wing pelicans",
+    "by": "T La"
+   },
+   {
+    "id": "arena_7767448",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://freight.cargo.site"
+   },
+   {
+    "id": "arena_29844226",
+    "library": "arena",
+    "box": [
+     0.3333333333333333,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "\"Chance\" [front]",
+    "by": ":ninar: \u200e"
+   },
+   {
+    "id": "7K3VasWk47Q",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "Goldfish are super cute in close up. First time taking goldfish photos and I just noticed how adorable they are.",
+    "by": "Kyaw Tun"
+   },
+   {
+    "id": "arena_25999441",
+    "library": "arena",
+    "box": [
+     0.4444444444444444,
+     0,
+     0.5,
+     0.5625
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://docs.unrealengine.com"
+   },
+   {
+    "id": "arena_5083440",
+    "library": "arena",
+    "box": [
+     0.34782608695652173,
+     0.4375,
+     0.391304347826087,
+     0.5625
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "Komron ."
+   }
+  ]
+ },
+ "table_lamp": {
+  "parts": [
+   {
+    "part": "rooms/parts/table_lamp_0.jpg",
+    "id": "arena_674263",
+    "library": "arena",
+    "box": [
+     0.4090909090909091,
+     0.375,
+     0.22727272727272727,
+     0.3125
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://scontent-iad3-1.xx.fbcdn.net"
+   },
+   {
+    "part": "rooms/parts/table_lamp_0.jpg",
+    "id": "arena_1801073",
+    "library": "arena",
+    "box": [
+     0.125,
+     0.5625,
+     0.20833333333333334,
+     0.3125
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://www.artgeneve.ch"
+   },
+   {
+    "part": "rooms/parts/table_lamp_1.jpg",
+    "id": "arena_2679788",
+    "library": "arena",
+    "box": [
+     0.5,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://www.jeanbaptistefastrez.com"
+   },
+   {
+    "part": "rooms/parts/table_lamp_1.jpg",
+    "id": "WkRKRoBzKZk",
+    "library": "unsplash",
+    "box": [
+     0.3333333333333333,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "gray asphalt road between green trees during daytime",
+    "by": "Sandra Seitamaa"
+   },
+   {
+    "part": "rooms/parts/table_lamp_2.jpg",
+    "id": "arena_1138450",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "part": "rooms/parts/table_lamp_2.jpg",
+    "id": "arena_1142444",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0.25,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "part": "rooms/parts/table_lamp_3.jpg",
+    "id": "arena_38469782",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     0.5625,
+     0.375
+    ],
+    "desc": "The Semiotics of Dressing \u2013 Jacqueline Sullivan Gallery",
+    "by": "https://jacquelinesullivangallery.com"
+   },
+   {
+    "part": "rooms/parts/table_lamp_3.jpg",
+    "id": "RAdctHjxpfY",
+    "library": "unsplash",
+    "box": [
+     0,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "Dried Flowers in a Vase",
+    "by": "Khoa Nguyen"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_12766715",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfun flowers\u201d",
+    "by": "angelina toros"
+   },
+   {
+    "id": "arena_3142270",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "brandon alvarado"
+   },
+   {
+    "id": "arena_1966572",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Martin Gaillard"
+   },
+   {
+    "id": "arena_2954099",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfiber fabric\u201d",
+    "by": "Artemis ."
+   },
+   {
+    "id": "arena_21011284",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://img.freepik.com"
+   },
+   {
+    "id": "arena_11929181",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "archie dickens",
+    "by": "Priya Lad"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_8619964",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfiber fabric\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "arena_6406229",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Marc Donaldson"
+   },
+   {
+    "id": "arena_4795659",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://s7d5.scene7.com"
+   },
+   {
+    "id": "arena_4902392",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Matija Gabrilo"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_7885024",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "id": "arena_3301321",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "https://www.wright20.com"
+   },
+   {
+    "id": "arena_820263",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "http://68.media.tumblr.com"
+   },
+   {
+    "id": "arena_770195",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Julian Garcia"
+   },
+   {
+    "id": "arena_1095519",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   }
+  ],
+  "scan": {
+   "name": "lamp",
+   "summary": "A simple, elegant table lamp with a classic design.",
+   "form": [
+    "Conical shade sits atop a vase-like body.",
+    "Base is rounded and flares slightly outward.",
+    "No visible legs or support structure."
+   ],
+   "surface": [
+    "Off-white or cream color.",
+    "Smooth finish with a slight sheen.",
+    "Texture appears matte, not glossy."
+   ],
+   "decoration": [],
+   "palette": [
+    "Cream",
+    "Ivory",
+    "Beige",
+    "Soft white"
+   ],
+   "material": "Porcelain or ceramic, possibly painted.",
+   "made": "Handcrafted or mass-produced, possibly with slipcasting.",
+   "resembles": [
+    "Consistent with Art Deco design.",
+    "Recalls early 20th-century table lamps."
+   ],
+   "interesting": [
+    "The subtle sheen suggests a painted finish.",
+    "The simplicity of the design is striking."
+   ],
+   "clear": [
+    "The lamp is a table lamp.",
+    "The material is likely ceramic or porcelain."
+   ],
+   "uncertain": [
+    "The exact age of the lamp.",
+    "The specific method of production."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:32:19.473Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "c. 2000 BC",
+    "name": "Hurrian oil lamp",
+    "place": "Ancient Mesopotamia",
+    "search": "hurrian oil lamp",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/P1050759_Louvre_st%C3%A8le_du_Baal_au_foudre_rwk.JPG/500px-P1050759_Louvre_st%C3%A8le_du_Baal_au_foudre_rwk.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/List_of_Ugaritic_deities",
+      "credit": "Wikipedia: List of Ugaritic deities",
+      "score": 0.2511
+     }
+    ]
+   },
+   {
+    "year": "Roman Empire, 1st century AD",
+    "name": "Oil lantern",
+    "place": "Rome",
+    "search": "roman oil lantern",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/6/68/CNW_brakeman%27s_kerosene_lantern.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Lantern",
+      "credit": "Wikipedia: Lantern",
+      "score": 0.3348
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Crockery_and_glass_journal_%281875%29_%2814798957833%29.jpg/500px-Crockery_and_glass_journal_%281875%29_%2814798957833%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Crockery_and_glass_journal_(1875)_(14798957833).jpg",
+      "credit": "Internet Archive Book Images \u00b7 No restrictions",
+      "score": 0.2961
+     }
+    ]
+   },
+   {
+    "year": "18th century",
+    "name": "Candlestick with candle holder",
+    "place": "Europe",
+    "search": "candlestick candle holder",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Single_candle_in_brass_holder_st_Johns_Lutheran.jpg/500px-Single_candle_in_brass_holder_st_Johns_Lutheran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Single_candle_in_brass_holder_st_Johns_Lutheran.jpg",
+      "credit": "Leon Brooks \u00b7 Public domain",
+      "score": 0.3352
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg/500px-Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg",
+      "credit": "Paul R. Burley \u00b7 CC BY-SA 4.0",
+      "score": 0.3283
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Edison's carbon filament lamp",
+    "place": "USA",
+    "search": "edison carbon filament",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/76/Edison_bulb.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "link": "https://commons.wikimedia.org/wiki/File:Edison_bulb.jpg",
+      "credit": "Uploaded at enwp by User:Alkivar \u00b7 CC BY-SA 3.0",
+      "score": 0.3587
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Edison_carbon_filament_light_bulb.jpg/500px-Edison_carbon_filament_light_bulb.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Edison_carbon_filament_light_bulb.jpg",
+      "credit": "Joseph E. Hinds \u00b7 Public domain",
+      "score": 0.357
+     }
+    ]
+   },
+   {
+    "year": "20th century",
+    "name": "Table lamp with electric bulb",
+    "place": "Global",
+    "search": "electric table lamp",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Gluehlampe_01_KMJ.png/500px-Gluehlampe_01_KMJ.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Incandescent_light_bulb",
+      "credit": "Wikipedia: Incandescent light bulb",
+      "score": 0.3346
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Light-bulbs.jpg/500px-Light-bulbs.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Electric_light",
+      "credit": "Wikipedia: Electric light",
+      "score": 0.3109
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Kerosene lantern",
+    "why": "Fuelled by kerosene, often used outdoors",
+    "search": "kerosene lantern",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Hurricane_lamp_in_dark.jpg/500px-Hurricane_lamp_in_dark.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Hurricane_lamp_in_dark.jpg",
+      "credit": "Anton Croos \u00b7 CC BY-SA 3.0",
+      "score": 0.3712
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Kerosene_lantern.jpg/500px-Kerosene_lantern.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Kerosene_lantern.jpg",
+      "credit": "Bige1977 at English Wikipedia \u00b7 Public domain",
+      "score": 0.3665
+     }
+    ]
+   },
+   {
+    "name": "Candle holder",
+    "why": "Holds a candle in place",
+    "search": "candle holder",
+    "images": null
+   },
+   {
+    "name": "Oil lamp",
+    "why": "Burns oil for light",
+    "search": "oil lamp",
+    "images": null
+   },
+   {
+    "name": "Solar-powered lantern",
+    "why": "Uses solar panels to charge a battery",
+    "search": "solar lantern",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a mundane table lamp, but it has a rich history that dates back to ancient Mesopotamia. The Hurrian oil lamp, with its wick and reservoir, was the precursor to many later lighting designs. Fast forward to the Roman Empire, where oil lanterns became a common fixture in homes. In the 18th century, candlesticks with candle holders were all the rage in Europe. But it wasn't until Thomas Edison's invention of the carbon filament lamp in 1882 that electric table lamps began to appear. And now, this particular lamp sits on your coffee table, chosen for you by a long line of designers and manufacturers who have refined its design over the centuries.",
+  "shapes": [
+   {
+    "id": "arena_820263",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "http://68.media.tumblr.com"
+   },
+   {
+    "id": "arena_674263",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.4090909090909091,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://scontent-iad3-1.xx.fbcdn.net"
+   },
+   {
+    "id": "arena_4324638",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://66.media.tumblr.com"
+   },
+   {
+    "id": "CNGdxgjWdz4",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.25,
+     0.5625,
+     0.5625
+    ],
+    "desc": "green leafed tree",
+    "by": "Mutzii"
+   },
+   {
+    "id": "NKttv4dABKw",
+    "library": "unsplash",
+    "box": [
+     0.17391304347826086,
+     0,
+     0.391304347826087,
+     0.5625
+    ],
+    "desc": "Macro X-ray of mushrooms with false colors.",
+    "by": "Mathew Schwartz"
+   },
+   {
+    "id": "arena_1138450",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_15451794",
+    "library": "arena",
+    "box": [
+     0.8076923076923077,
+     0.1875,
+     0.19230769230769232,
+     0.3125
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://images.squarespace-cdn.com"
+   },
+   {
+    "id": "ydS1df6jm8U",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "flower with bottle",
+    "by": "an_vision"
+   }
+  ]
+ },
+ "rotary_telephone": {
+  "parts": [
+   {
+    "part": "rooms/parts/rotary_telephone_0.jpg",
+    "id": "arena_1259368",
+    "library": "arena",
+    "box": [
+     0.19047619047619047,
+     0,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "from \u201cmaps shapes\u201d",
+    "by": "Fact Craft"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_0.jpg",
+    "id": "arena_6400901",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     0.5625,
+     0.5625
+    ],
+    "desc": "Cocteau Twins, Bluebeard, 1993",
+    "by": "Travess Smalley"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_1.jpg",
+    "id": "tT6PEGPUG7Q",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.5,
+     0.5625,
+     0.375
+    ],
+    "desc": "white ceramic cup on white ceramic saucer",
+    "by": "Taisiia Stupak"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_1.jpg",
+    "id": "arena_4368339",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.2222222222222222,
+     0.5625,
+     0.5
+    ],
+    "desc": "from \u201cgreat\u201d",
+    "by": "http://temperaturesss.com"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_2.jpg",
+    "id": "arena_15332591",
+    "library": "arena",
+    "box": [
+     0.3333333333333333,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "Ivan Kostynyk"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_2.jpg",
+    "id": "arena_11680154",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.55,
+     0.5625,
+     0.45
+    ],
+    "desc": "from \u201cbook form\u201d",
+    "by": "https://scontent-lcy1-1.cdninstagram.com"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_3.jpg",
+    "id": "arena_505084",
+    "library": "arena",
+    "box": [
+     0.38095238095238093,
+     0.25,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "Miami World Internet Cafe"
+   },
+   {
+    "part": "rooms/parts/rotary_telephone_3.jpg",
+    "id": "fhBG1WkevcY",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.38095238095238093,
+     0.5625,
+     0.42857142857142855
+    ],
+    "desc": "woman taking photo beside yellow leaves",
+    "by": "Thanh Tam"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_29938298",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Matt Barnes"
+   },
+   {
+    "id": "arena_14983261",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "unc_chapel_hill_philadelphia_saturday_museum_0004.jp2-id=unc_chapel_hill_philadelphia_saturday_museum-scale=2-rotate=0",
+    "by": "https://ia902609.us.archive.org"
+   },
+   {
+    "id": "arena_1155194",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_26728073",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Sina \u0633\u06cc\u0646\u0627"
+   },
+   {
+    "id": "arena_3301642",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Marie Channac"
+   },
+   {
+    "id": "arena_1581920",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://pbs.twimg.com"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_839649",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Carson Salter"
+   },
+   {
+    "id": "arena_10507101",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://64.media.tumblr.com"
+   },
+   {
+    "id": "arena_22350813",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "id": "arena_4216763",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_1074025",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_6276612",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "https://naotofukasawa.com"
+   },
+   {
+    "id": "arena_2537115",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_5020904",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Giuseppe Prezioso, Hermes Baby, 1935",
+    "by": "https://www.eguide.ch"
+   },
+   {
+    "id": "arena_15332675",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "Ivan Kostynyk"
+   }
+  ],
+  "scan": {
+   "name": "rotary telephone",
+   "summary": "Rotary dial telephone with vintage design.",
+   "form": [
+    "Curved top with handset.",
+    "Rectangular body with dial.",
+    "Base supports the body.",
+    "No visible legs or feet."
+   ],
+   "surface": [
+    "Black body.",
+    "Smooth finish.",
+    "Slight sheen, possibly plastic or painted metal.",
+    "No visible texture or pattern."
+   ],
+   "decoration": [],
+   "palette": [
+    "black",
+    "white",
+    "silver",
+    "red"
+   ],
+   "material": "plastic or painted metal, possibly bakelite or similar",
+   "made": "molded and assembled, possibly injection-molded",
+   "resembles": [
+    "1930s-1950s design",
+    "telecommunications equipment"
+   ],
+   "interesting": [
+    "Worn appearance suggests age.",
+    "Handset cord is coiled.",
+    "Dial has emergency numbers."
+   ],
+   "clear": [
+    "Rotary dial design.",
+    "Black color scheme."
+   ],
+   "uncertain": [
+    "Exact age of the telephone.",
+    "Original location or use."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:32:31.730Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "c. 1830",
+    "name": "Mechanical Telegraph",
+    "place": "London",
+    "search": "telegraph machine",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Vienna_-_Morse_telegraph_machine_-_0137.jpg/500px-Vienna_-_Morse_telegraph_machine_-_0137.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Vienna_-_Morse_telegraph_machine_-_0137.jpg",
+      "credit": "Jorge Royan \u00b7 CC BY-SA 3.0",
+      "score": 0.3267
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Telegraph_machine_in_DOSAAF_museum_%28Minsk%29.jpg/500px-Telegraph_machine_in_DOSAAF_museum_%28Minsk%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Telegraph_machine_in_DOSAAF_museum_(Minsk).jpg",
+      "credit": "Homoatrox \u00b7 CC BY-SA 3.0",
+      "score": 0.3253
+     }
+    ]
+   },
+   {
+    "year": "1876",
+    "name": "Bell's Telephone",
+    "place": "Boston",
+    "search": "early telephone",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Early_telephone%2C_Puhoi_Heritage_Museum.jpg/500px-Early_telephone%2C_Puhoi_Heritage_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Early_telephone,_Puhoi_Heritage_Museum.jpg",
+      "credit": "Bjankuloski06 \u00b7 CC BY 4.0",
+      "score": 0.3478
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/History_of_the_telephoneA.jpg/500px-History_of_the_telephoneA.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:History_of_the_telephoneA.jpg",
+      "credit": "CC BY-SA 4.0",
+      "score": 0.341
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "First Rotary Switchboard",
+    "place": "Philadelphia",
+    "search": "switchboard with dials",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg/500px-Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg",
+      "credit": "Public domain",
+      "score": 0.3306
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg/500px-Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg",
+      "credit": "Joe Mabel \u00b7 CC BY-SA 4.0",
+      "score": 0.325
+     }
+    ]
+   },
+   {
+    "year": "1891",
+    "name": "Almon Brown Strowger's Automatic Telephone Exchange",
+    "place": "Kansas City",
+    "search": "dial exchange system",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2801%29.jpg/500px-Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2801%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Postamt_Freiberg,_Post-_und_Fernmeldeausstellung_(01).jpg",
+      "credit": "Manfred Schr\u00f6ter, Berga \u00b7 CC BY-SA 4.0",
+      "score": 0.3548
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2802%29.jpg/500px-Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2802%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Postamt_Freiberg,_Post-_und_Fernmeldeausstellung_(02).jpg",
+      "credit": "Manfred Schr\u00f6ter, Berga \u00b7 CC BY-SA 4.0",
+      "score": 0.3444
+     }
+    ]
+   },
+   {
+    "year": "1940s",
+    "name": "Touch-Tone Rotary Phone",
+    "place": "USA",
+    "search": "touch tone rotary",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/AT%26T_push_button_telephone_western_electric_model_2500_dmg_black.jpg/500px-AT%26T_push_button_telephone_western_electric_model_2500_dmg_black.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Push-button_telephone",
+      "credit": "Wikipedia: Push-button telephone",
+      "score": 0.308
+     },
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/7a/DTMF_keypad.gif?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/DTMF_signaling",
+      "credit": "Wikipedia: DTMF signaling",
+      "score": 0.2455
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Mechanical Calculator",
+    "why": "similar dial mechanism",
+    "search": "mechanical calculator",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Mechanical-calculator-Brunsviga-800-02.jpg/500px-Mechanical-calculator-Brunsviga-800-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Mechanical-calculator-Brunsviga-800-02.jpg",
+      "credit": "CEphoto, Uwe Aranas \u00b7 CC BY-SA 3.0",
+      "score": 0.3366
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/2019-08-04_Mechanical_calculator_3.jpg/500px-2019-08-04_Mechanical_calculator_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:2019-08-04_Mechanical_calculator_3.jpg",
+      "credit": "Maksym Kozlenko \u00b7 CC BY-SA 4.0",
+      "score": 0.3295
+     }
+    ]
+   },
+   {
+    "name": "Musical Box",
+    "why": "rotary motion and rhythmic pattern",
+    "search": "musical box",
+    "images": null
+   },
+   {
+    "name": "Typewriter",
+    "why": "rotating dials for character selection",
+    "search": "typewriter",
+    "images": null
+   },
+   {
+    "name": "Cash Register",
+    "why": "similar mechanical counting mechanism",
+    "search": "cash register",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a relic of the past, but it's the culmination of over a century of innovation. The first telegraph machines in London laid the groundwork for the early telephone systems that would follow. Almon Brown Strowger's automatic exchange system, which used rotary dials to connect calls, was patented in 1891 and revolutionized the industry. By the 1940s, touch-tone rotary phones had become a standard feature of American homes, chosen by utility companies and manufacturers rather than consumers. You didn't choose this phone; it was already there when you moved into your apartment.",
+  "shapes": [
+   {
+    "id": "arena_16281699",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.4090909090909091,
+     0.5625
+    ],
+    "desc": "Untitled",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "id": "arena_20425596",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cdesign shapes\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "arena_176942",
+    "library": "arena",
+    "box": [
+     0.42857142857142855,
+     0.4375,
+     0.32142857142857145,
+     0.5625
+    ],
+    "desc": "Untitled",
+    "by": "http://upload.wikimedia.org"
+   },
+   {
+    "id": "arena_2180766",
+    "library": "arena",
+    "box": [
+     0.3333333333333333,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "http://disnovation.org"
+   },
+   {
+    "id": "arena_2391693",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.55,
+     0.5625,
+     0.45
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://alexsizemore.com"
+   },
+   {
+    "id": "arena_2984334",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "Marian Park"
+   },
+   {
+    "id": "arena_5097228",
+    "library": "arena",
+    "box": [
+     0.6785714285714286,
+     0.4375,
+     0.32142857142857145,
+     0.5625
+    ],
+    "desc": "from \u201cinteresting\u201d",
+    "by": "Pascal Wicht"
+   },
+   {
+    "id": "arena_2401740",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0.5714285714285714,
+     0.5625,
+     0.42857142857142855
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "Calvin Lien"
+   }
+  ]
+ },
+ "kettle": {
+  "parts": [
+   {
+    "part": "rooms/parts/kettle_0.jpg",
+    "id": "arena_2786823",
+    "library": "arena",
+    "box": [
+     0.375,
+     0.14285714285714285,
+     0.3125,
+     0.23809523809523808
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Bryan Metzdorf"
+   },
+   {
+    "part": "rooms/parts/kettle_0.jpg",
+    "id": "arena_1716581",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.32,
+     0.5625,
+     0.36
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Kebei Li"
+   },
+   {
+    "part": "rooms/parts/kettle_1.jpg",
+    "id": "arena_6820558",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.5,
+     0.5625,
+     0.375
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Cedric Payne"
+   },
+   {
+    "part": "rooms/parts/kettle_1.jpg",
+    "id": "arena_1716581",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.32,
+     0.5625,
+     0.36
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Kebei Li"
+   },
+   {
+    "part": "rooms/parts/kettle_2.jpg",
+    "id": "VzwVyjlz2Z4",
+    "library": "unsplash",
+    "box": [
+     0.625,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "Road in a pine forest",
+    "by": "Jake Melara"
+   },
+   {
+    "part": "rooms/parts/kettle_2.jpg",
+    "id": "OZ7J3eehqZM",
+    "library": "unsplash",
+    "box": [
+     0.16666666666666666,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "This place is called Selva Viva, in the center of Santiago do Chile. A great place for kids.",
+    "by": "Giu Vicente"
+   },
+   {
+    "part": "rooms/parts/kettle_3.jpg",
+    "id": "arena_624234",
+    "library": "arena",
+    "box": [
+     0,
+     0.25,
+     0.5625,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://66.media.tumblr.com"
+   },
+   {
+    "part": "rooms/parts/kettle_3.jpg",
+    "id": "arena_15283717",
+    "library": "arena",
+    "box": [
+     0,
+     0.38095238095238093,
+     0.5625,
+     0.42857142857142855
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "Nitin Gupta"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_1155194",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_17562374",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://naotofukasawa.com"
+   },
+   {
+    "id": "arena_3298434",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://upload.wikimedia.org"
+   },
+   {
+    "id": "arena_1784659",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Phil Gibson \u2014 Newspaper Bags",
+    "by": "Tumblr"
+   },
+   {
+    "id": "arena_2069481",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Nicholas Ano"
+   },
+   {
+    "id": "arena_8541384",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://i.pinimg.com"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_19761552",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://live.staticflickr.com"
+   },
+   {
+    "id": "arena_1486367",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Untitled",
+    "by": "Squarespace"
+   },
+   {
+    "id": "arena_3125088",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "Brenden Feucht"
+   },
+   {
+    "id": "arena_24558471",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Egor Sokolov"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_33858492",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Josef Albers",
+    "by": "https://www.moma.org"
+   },
+   {
+    "id": "arena_14754881",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://www.ecal.ch"
+   },
+   {
+    "id": "arena_1863458",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "Field Skjellerup"
+   },
+   {
+    "id": "arena_1073586",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_7260854",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "Judd Smith"
+   }
+  ],
+  "scan": {
+   "name": "whistling kettle",
+   "summary": "Modernist whistling kettle with a curved handle and spout.",
+   "form": [
+    "Conical body with a flared base.",
+    "Curved handle and spout with a small knob.",
+    "Base has small perforations."
+   ],
+   "surface": [
+    "Shiny metallic finish.",
+    "Smooth texture with reflective surface.",
+    "Glossy appearance with light reflections."
+   ],
+   "decoration": [],
+   "palette": [
+    "silver",
+    "blue",
+    "black",
+    "red",
+    "dark grey"
+   ],
+   "material": "polished metal, possibly stainless steel or aluminum",
+   "made": "likely cast and polished, possibly with some welding or soldering",
+   "resembles": [
+    "Modernist design",
+    "Scandinavian style"
+   ],
+   "interesting": [
+    "The contrast between the blue handle and the metallic body.",
+    "The small knob on the spout."
+   ],
+   "clear": [
+    "It is a kettle.",
+    "It has a whistling mechanism."
+   ],
+   "uncertain": [
+    "The exact material of the kettle.",
+    "The specific manufacturing process."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:32:44.630Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "3000 BC",
+    "name": "clay pot",
+    "place": "Mesoamerica",
+    "search": "ancient clay vessel",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Ancient_khoum_clay_vessel_Sultan_Saodat.jpg/500px-Ancient_khoum_clay_vessel_Sultan_Saodat.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ancient_khoum_clay_vessel_Sultan_Saodat.jpg",
+      "credit": "Panpanchik \u00b7 CC BY-SA 4.0",
+      "score": 0.33
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg/500px-Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg",
+      "credit": "Interfase \u00b7 Public domain",
+      "score": 0.3265
+     }
+    ]
+   },
+   {
+    "year": "500 AD",
+    "name": "bronze cauldron",
+    "place": "Roman Empire",
+    "search": "roman bronze cooking",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Silver_cauldron.jpg/500px-Silver_cauldron.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Gundestrup_cauldron",
+      "credit": "Wikipedia: Gundestrup cauldron",
+      "score": 0.3652
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG/500px-019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG",
+      "credit": "Silar \u00b7 CC BY-SA 3.0",
+      "score": 0.3354
+     }
+    ]
+   },
+   {
+    "year": "1500s",
+    "name": "tin kettle",
+    "place": "Germany",
+    "search": "german tinware kitchen",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Tin_Kettle_Island.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Tin_Kettle_Island",
+      "credit": "Wikipedia: Tin Kettle Island",
+      "score": 0.2655
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Clifton-Aldan_Station.jpg/500px-Clifton-Aldan_Station.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Clifton_Heights,_Pennsylvania",
+      "credit": "Wikipedia: Clifton Heights, Pennsylvania",
+      "score": 0.2526
+     }
+    ]
+   },
+   {
+    "year": "1700s",
+    "name": "copper teakettle",
+    "place": "England",
+    "search": "english copper tea pot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Copper_Pot.jpg/500px-Copper_Pot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Copper_Pot.jpg",
+      "credit": "Hardyplants \u00b7 CC0",
+      "score": 0.3646
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Paddock_Family_Tea_Kettle.jpg/500px-Paddock_Family_Tea_Kettle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Paddock_Family_Tea_Kettle.jpg",
+      "credit": "Unknown authorUnknown author \u00b7 Public domain",
+      "score": 0.344
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "stainless steel kettle",
+    "place": "United States",
+    "search": "american stainless steel",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Bernadotte_Wasserkessel.jpg/500px-Bernadotte_Wasserkessel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Kettle",
+      "credit": "Wikipedia: Kettle",
+      "score": 0.3515
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg/500px-ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg",
+      "credit": "Unknown authorUnknown author or not provided \u00b7 Public domain",
+      "score": 0.2781
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "whistling teapot",
+    "why": "similar shape, whistle mechanism",
+    "search": "chinese whistling tea pot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_%281920%29_%2814595562977%29.jpg/500px-Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_%281920%29_%2814595562977%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_(1920)_(14595562977).jpg",
+      "credit": "Internet Archive Book Images \u00b7 No restrictions",
+      "score": 0.2224
+     }
+    ]
+   },
+   {
+    "name": "electric teapot",
+    "why": "replaced stove with electric element",
+    "search": "modern electric teapot",
+    "images": null
+   },
+   {
+    "name": "thermos flask",
+    "why": "insulated container for liquids",
+    "search": "vacuum insulated thermos",
+    "images": null
+   },
+   {
+    "name": "coffee urn",
+    "why": "large, pourable container",
+    "search": "industrial coffee server",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple kettle on your stovetop. But its history begins with ancient Mesoamericans who used clay pots to boil water 5,000 years ago. These early vessels were passed down through the Roman Empire, where they evolved into bronze cauldrons that could hold scalding hot liquids. By the 1500s, German craftsmen had perfected tin kettles that rivaled those of their European counterparts. It wasn't until the Industrial Revolution that stainless steel kettles became widespread, and by the late 19th century, your exact model was mass-produced in American factories. You didn't choose this kettle; it was chosen for you by the countless artisans, engineers, and manufacturers who worked on its predecessors over millennia.",
+  "shapes": [
+   {
+    "id": "_SgexvppBL4",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.55,
+     0.5625,
+     0.45
+    ],
+    "desc": "I found this dried starfish while I was walking along the coast of the beautiful and silent Erdek, Bal\u0131kesir. It was a good day.",
+    "by": "Efe Ya\u011f\u0131z Soysal"
+   },
+   {
+    "id": "arena_6497031",
+    "library": "arena",
+    "box": [
+     0.25,
+     0,
+     0.5625,
+     0.5294117647058824
+    ],
+    "desc": "from \u201cdesign shapes\u201d",
+    "by": "masha dmitrowa"
+   },
+   {
+    "id": "1nZpjn2DNYM",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.3333333333333333,
+     0.5625,
+     0.375
+    ],
+    "desc": "Tea and flowers",
+    "by": "Larisa Birta"
+   },
+   {
+    "id": "bDCfnZKt7oU",
+    "library": "unsplash",
+    "box": [
+     0.19047619047619047,
+     0.25,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "Toucan in the rain",
+    "by": "Zden\u011bk Mach\u00e1\u010dek"
+   },
+   {
+    "id": "F_HWohNm-X8",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0.16666666666666666,
+     0.5625,
+     0.375
+    ],
+    "desc": "brown and black tower under gray cloudy sky",
+    "by": "Jason Leung"
+   },
+   {
+    "id": "arena_16051263",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.391304347826087,
+     0.5625
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://cdn.shopify.com"
+   },
+   {
+    "id": "arena_1622692",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.18181818181818182,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://www.sightunseen.com"
+   },
+   {
+    "id": "cFgCc3PM-A0",
+    "library": "unsplash",
+    "box": [
+     0.16666666666666666,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "Wooden vase with evergreen leaf and dried lotus seed pod",
+    "by": "Linh Le"
+   }
+  ]
+ },
+ "bentwood_chair": {
+  "parts": [
+   {
+    "part": "rooms/parts/bentwood_chair_1.jpg",
+    "id": "arena_9895334",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.34782608695652173,
+     0.5625,
+     0.391304347826087
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "https://variousobjects.co"
+   },
+   {
+    "part": "rooms/parts/bentwood_chair_1.jpg",
+    "id": "arena_3999835",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0.21052631578947367,
+     0.5625,
+     0.47368421052631576
+    ],
+    "desc": "Jorge Penad\u00e9s",
+    "by": "Jentz Zirbel"
+   },
+   {
+    "part": "rooms/parts/bentwood_chair_3.jpg",
+    "id": "i79pTSJjB-0",
+    "library": "unsplash",
+    "box": [
+     0.17391304347826086,
+     0.25,
+     0.391304347826087,
+     0.5625
+    ],
+    "desc": "Autumn trail bridge path",
+    "by": "Ga\u00e9tan Meyer"
+   },
+   {
+    "part": "rooms/parts/bentwood_chair_3.jpg",
+    "id": "arena_1428014",
+    "library": "arena",
+    "box": [
+     0.18181818181818182,
+     0,
+     0.4090909090909091,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_2154670",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Ivan Kostriukov"
+   },
+   {
+    "id": "arena_29634875",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "vld klsnkv"
+   },
+   {
+    "id": "arena_2275625",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cmaps shapes\u201d",
+    "by": "https://78.media.tumblr.com"
+   },
+   {
+    "id": "arena_10450799",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cgraphic form\u201d",
+    "by": "https://64.media.tumblr.com"
+   },
+   {
+    "id": "arena_2551823",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ci love\u201d",
+    "by": "https://78.media.tumblr.com"
+   },
+   {
+    "id": "arena_3142270",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "brandon alvarado"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_617577",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "http://payload446.cargocollective.com"
+   },
+   {
+    "id": "arena_618730",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://s-media-cache-ak0.pinimg.com"
+   },
+   {
+    "id": "arena_1599172",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://img00.deviantart.net"
+   },
+   {
+    "id": "arena_22958526",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Quentin CLEMENT"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_14684368",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "\u2018Nervous Chairs\u2019, Wilkinson &amp; Rivera",
+    "by": "https://www.thisiscolossal.com"
+   },
+   {
+    "id": "arena_3725676",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "236_3_taxonomy_of_design_selections_from_thessaloniki_design_museum_august_2016_joan_casas_i_ortinez_gacela_chair__wright_au...",
+    "by": "https://www.wright20.com"
+   },
+   {
+    "id": "arena_1483861",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_1426424",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_18523292",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "Mike Rito"
+   }
+  ],
+  "scan": {
+   "name": "wooden chair",
+   "summary": "Bentwood chair with ornate back and woven seat",
+   "form": [
+    "Heart-shaped back with intricate scrollwork",
+    "Woven seat for comfort",
+    "Four turned legs with simple feet"
+   ],
+   "surface": [
+    "Light wood tone with signs of wear",
+    "Smooth finish with some scratches",
+    "Texture of wood grain visible"
+   ],
+   "decoration": [
+    "Heart-shaped back with swirling motifs"
+   ],
+   "palette": [
+    "Light brown",
+    "White",
+    "Black",
+    "Gray"
+   ],
+   "material": "Bentwood, possibly oak or maple",
+   "made": "Carved and bent wood, likely by hand",
+   "resembles": [
+    "Consistent with Arts and Crafts style",
+    "Recalls early 20th-century furniture"
+   ],
+   "interesting": [
+    "Worn appearance suggests long use",
+    "Heart motif on back may have symbolic significance"
+   ],
+   "clear": [
+    "Chair is upright and stable",
+    "Heart-shaped back is symmetrical"
+   ],
+   "uncertain": [
+    "Age of the chair cannot be determined",
+    "Origin or maker cannot be identified from the photo"
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:32:57.397Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "c. 1800",
+    "name": "Cant",
+    "place": "England",
+    "search": "cant seat wood",
+    "images": null
+   },
+   {
+    "year": "1830s",
+    "name": "Cant Rocker",
+    "place": "USA",
+    "search": "cant rocker chair",
+    "images": null
+   },
+   {
+    "year": "1850s",
+    "name": "Windsor Chair",
+    "place": "USA",
+    "search": "windsor armchair",
+    "images": null
+   },
+   {
+    "year": "1882",
+    "name": "Bentwood Chair",
+    "place": "Germany",
+    "search": "bentwood chair",
+    "images": null
+   },
+   {
+    "year": "1950s",
+    "name": "Eames Molded Plastic Chair",
+    "place": "USA",
+    "search": "eames molded plastic",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Japanese Origami Chair",
+    "why": "folded paper design",
+    "search": "origami chair",
+    "images": null
+   },
+   {
+    "name": "Turkish Ottoman Stool",
+    "why": "curved, low seat",
+    "search": "ottoman stool",
+    "images": null
+   },
+   {
+    "name": "Indian Chaise Lounge",
+    "why": "sloping back support",
+    "search": "chaise lounge india",
+    "images": null
+   },
+   {
+    "name": "African Kneeler",
+    "why": "low, curved seat for kneeling",
+    "search": "african kneeler",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a cheap office chair. It's actually the descendant of medieval English cant seats, which were later adapted into rockers in 19th-century America. By the mid-1800s, craftsmen in the USA had developed the Windsor Chair style, which would influence the design of the first bentwood chairs in Germany in the late 19th century. The one in your office was likely mass-produced from molded plastic in the 1950s, but it's still part of a long line of designers and manufacturers who chose this shape for you.",
+  "shapes": [
+   {
+    "id": "Vcl9m6JyYPE",
+    "library": "unsplash",
+    "box": [
+     0.16666666666666666,
+     0.25,
+     0.375,
+     0.5625
+    ],
+    "desc": "a bird house in the snow with a bird on top of it",
+    "by": "Bence Balla-Schottner"
+   },
+   {
+    "id": "arena_18418291",
+    "library": "arena",
+    "box": [
+     0,
+     0.4375,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "from \u201cseating\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "id": "7K3VasWk47Q",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.5454545454545454,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "Goldfish are super cute in close up. First time taking goldfish photos and I just noticed how adorable they are.",
+    "by": "Kyaw Tun"
+   },
+   {
+    "id": "Mcfczoal76I",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0.34782608695652173,
+     0.5625,
+     0.391304347826087
+    ],
+    "desc": "three high rise buildings",
+    "by": "Andr\u00e9s G\u00f3mez"
+   },
+   {
+    "id": "1BuzFn7GT5s",
+    "library": "unsplash",
+    "box": [
+     0.6875,
+     0.75,
+     0.3125,
+     0.20833333333333334
+    ],
+    "desc": "grayscale photography of bird",
+    "by": "Geronimo Giqueaux"
+   },
+   {
+    "id": "2OuUx9VDl74",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "green and white line illustration",
+    "by": "Denis Sebastian Tamas"
+   },
+   {
+    "id": "6Jsf8Hyz77A",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "Bird in Brazil",
+    "by": "Seiji Seiji"
+   },
+   {
+    "id": "5nH0Hh78Nh4",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "brown insect",
+    "by": "Max Muselmann"
+   }
+  ]
+ },
+ "fire_extinguisher": {
+  "parts": [
+   {
+    "part": "rooms/parts/fire_extinguisher_0.jpg",
+    "id": "arena_6945226",
+    "library": "arena",
+    "box": [
+     0.5625,
+     0.375,
+     0.3125,
+     0.3125
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "http://enzomari.com"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_0.jpg",
+    "id": "arena_13650639",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.45
+    ],
+    "desc": "Untitled",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_1.jpg",
+    "id": "2qQgdily4tY",
+    "library": "unsplash",
+    "box": [
+     0.625,
+     0.1875,
+     0.20833333333333334,
+     0.3125
+    ],
+    "desc": "Early morning city traffic at sunrise",
+    "by": "Hon Kim"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_1.jpg",
+    "id": "2oZ_9KuYaEo",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.45
+    ],
+    "desc": "time-lapse photo of vehicles on bridge during daytime",
+    "by": "Zhu Hongzhi"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_2.jpg",
+    "id": "2qQgdily4tY",
+    "library": "unsplash",
+    "box": [
+     0.625,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "Early morning city traffic at sunrise",
+    "by": "Hon Kim"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_2.jpg",
+    "id": "arena_1151439",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0.3333333333333333,
+     0.5625,
+     0.375
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Julie Hong"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_3.jpg",
+    "id": "arena_6308199",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "http://jeroenvandegruiter.nl"
+   },
+   {
+    "part": "rooms/parts/fire_extinguisher_3.jpg",
+    "id": "RPxMkJsqaUY",
+    "library": "unsplash",
+    "box": [
+     0.5625,
+     0,
+     0.3125,
+     0.25
+    ],
+    "desc": "The Mediterranean Sea appears between the narrow streets of Riomaggiore, Italy. Once a fishing village, this town is now a tourist destination that is only accessible via small paths and steps between houses.",
+    "by": "Andrew Spencer"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_17562374",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://naotofukasawa.com"
+   },
+   {
+    "id": "arena_3120471",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfun flowers\u201d",
+    "by": "Lewis Malpas"
+   },
+   {
+    "id": "arena_1155194",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_7237309",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "Tom Mussak"
+   },
+   {
+    "id": "arena_6855534",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://media.typographicposters.com"
+   },
+   {
+    "id": "arena_1132020",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_2788893",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Joakim Jansson"
+   },
+   {
+    "id": "arena_32798503",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cbook form\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   },
+   {
+    "id": "arena_3485210",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://66.media.tumblr.com"
+   },
+   {
+    "id": "arena_6855534",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://media.typographicposters.com"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_3359531",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "https://66.media.tumblr.com"
+   },
+   {
+    "id": "arena_7260804",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "Judd Smith"
+   },
+   {
+    "id": "arena_1071689",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_1473199",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "Alex Singh"
+   },
+   {
+    "id": "arena_1919718",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://78.media.tumblr.com"
+   }
+  ],
+  "scan": {
+   "name": "portable fire extinguisher",
+   "summary": "A portable fire extinguisher with a wheeled base.",
+   "form": [
+    "Cylindrical body with a handle on top.",
+    "Base with wheels for mobility.",
+    "Top with a nozzle and hose attachment."
+   ],
+   "surface": [
+    "Red body with white text.",
+    "Smooth finish.",
+    "Glossy surface, reflective."
+   ],
+   "decoration": [
+    "Text and symbols on the body.",
+    "No flowers or figures.",
+    "Lettering includes 'SONIC' and 'SKP 50'."
+   ],
+   "palette": [
+    "Red",
+    "White",
+    "Black",
+    "Gray"
+   ],
+   "material": "Metallic, likely steel or aluminum, with plastic components.",
+   "made": "Welded construction with plastic parts.",
+   "resembles": [
+    "Industrial design.",
+    "Emergency equipment design."
+   ],
+   "interesting": [
+    "The 'SONIC' branding suggests a specific manufacturer.",
+    "The 'SKP 50' marking likely indicates the extinguishing capacity."
+   ],
+   "clear": [
+    "It is a fire extinguisher.",
+    "It has a wheeled base for mobility."
+   ],
+   "uncertain": [
+    "The exact type of fire it extinguishes.",
+    "The specific model or type beyond 'SKP 50'."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:33:09.991Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "18th century",
+    "name": "Hand-operated pump with leather hose",
+    "place": "London, England",
+    "search": "hand operated fire engine",
+    "images": null
+   },
+   {
+    "year": "1853",
+    "name": "Cylinder-shaped water extinguisher",
+    "place": "Paris, France",
+    "search": "cylinder water extinguisher",
+    "images": null
+   },
+   {
+    "year": "1882",
+    "name": "Hose reel with pump and tank",
+    "place": "New York City, USA",
+    "search": "hose reel fire engine",
+    "images": null
+   },
+   {
+    "year": "1904",
+    "name": "Carbon tetrachloride extinguisher",
+    "place": "Chicago, USA",
+    "search": "carbon tetrachloride extinguisher",
+    "images": null
+   },
+   {
+    "year": "1940s",
+    "name": "Multi-purpose dry chemical extinguisher",
+    "place": "USA",
+    "search": "dry chemical fire extinguisher",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Fire Hose",
+    "why": "pressurized water distribution system",
+    "search": "fire hose reel",
+    "images": null
+   },
+   {
+    "name": "Steam Power Generator",
+    "why": "high-pressure steam generation",
+    "search": "steam generator boiler",
+    "images": null
+   },
+   {
+    "name": "High-Pressure Water Pump",
+    "why": "mechanical water injection",
+    "search": "water pump engine",
+    "images": null
+   },
+   {
+    "name": "Carbon Dioxide Fire Suppression System",
+    "why": "rapid fire extinguishing agent",
+    "search": "co2 suppression system",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a mundane object on the wall, but it's actually a descendant of hand-operated pumps used in 18th century London. Its modern form emerged in Paris in 1853 with the introduction of cylinder-shaped water extinguishers. As cities grew and industries developed, so did the design, with the addition of hoses and reels in New York City in 1882. By the mid-20th century, multi-purpose dry chemical extinguishers became standard, chosen for their effectiveness and ease of use. You didn't choose this fire extinguisher; it was chosen for you by centuries of innovation and practicality.",
+  "shapes": [
+   {
+    "id": "arena_25891393",
+    "library": "arena",
+    "box": [
+     0.25,
+     0,
+     0.5625,
+     0.45
+    ],
+    "desc": "from \u201cmaps shapes\u201d",
+    "by": "https://instagram.fyvr2-1.fna.fbcdn.net"
+   },
+   {
+    "id": "5m_mHHraMaY",
+    "library": "unsplash",
+    "box": [
+     0.5,
+     0.25,
+     0.375,
+     0.5625
+    ],
+    "desc": "Bee Book and honeycomb product with lavender flowers flat lay on a wooden table",
+    "by": "Douglas Raggio"
+   },
+   {
+    "id": "arena_19595278",
+    "library": "arena",
+    "box": [
+     0.25,
+     0.5909090909090909,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "from \u201cdesign shapes\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "gcP8bAvCE4Q",
+    "library": "unsplash",
+    "box": [
+     0.5,
+     0.25,
+     0.375,
+     0.5625
+    ],
+    "desc": "white ferris wheel with lights",
+    "by": "Francesco Ungaro"
+   },
+   {
+    "id": "MOo2R77mCZY",
+    "library": "unsplash",
+    "box": [
+     0.5,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "welcome to new camera",
+    "by": "insung yoon"
+   },
+   {
+    "id": "arena_1366795",
+    "library": "arena",
+    "box": [
+     0.5333333333333333,
+     0.25,
+     0.3,
+     0.5625
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_2180765",
+    "library": "arena",
+    "box": [
+     0.16666666666666666,
+     0.25,
+     0.375,
+     0.5625
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "http://disnovation.org"
+   },
+   {
+    "id": "arena_18255214",
+    "library": "arena",
+    "box": [
+     0.4,
+     0,
+     0.45,
+     0.5625
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://64.media.tumblr.com"
+   }
+  ]
+ },
+ "vase_23": {
+  "parts": [
+   {
+    "part": "rooms/parts/vase_23_0.jpg",
+    "id": "arena_1023524",
+    "library": "arena",
+    "box": [
+     0.375,
+     0.375,
+     0.3125,
+     0.3125
+    ],
+    "desc": "from \u201cgraphic form\u201d",
+    "by": "\u00c9douard \u200e\u00a0\u200e"
+   },
+   {
+    "part": "rooms/parts/vase_23_0.jpg",
+    "id": "arena_3737044",
+    "library": "arena",
+    "box": [
+     0.21052631578947367,
+     0,
+     0.47368421052631576,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://69.media.tumblr.com"
+   },
+   {
+    "part": "rooms/parts/vase_23_1.jpg",
+    "id": "SGtOBqmWn6k",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0.16666666666666666,
+     0.5625,
+     0.375
+    ],
+    "desc": "cement + rocks + some color",
+    "by": "Mahdi Soheili"
+   },
+   {
+    "part": "rooms/parts/vase_23_1.jpg",
+    "id": "8OpoaLl9yok",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.3333333333333333,
+     0.5625,
+     0.375
+    ],
+    "desc": "Nature",
+    "by": "Lawless Capture"
+   },
+   {
+    "part": "rooms/parts/vase_23_2.jpg",
+    "id": "5sW0ztiDgys",
+    "library": "unsplash",
+    "box": [
+     0.5,
+     0,
+     0.375,
+     0.5625
+    ],
+    "desc": "waves crashing on brown rock formation",
+    "by": "Daniel Tong"
+   },
+   {
+    "part": "rooms/parts/vase_23_2.jpg",
+    "id": "ZvFiE-sTLo8",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.16666666666666666,
+     0.5625,
+     0.375
+    ],
+    "desc": "man sitting beside brown rocky mountain",
+    "by": "Sandra Seitamaa"
+   },
+   {
+    "part": "rooms/parts/vase_23_3.jpg",
+    "id": "CFhQE0prP3U",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.19047619047619047,
+     0.5625,
+     0.42857142857142855
+    ],
+    "desc": "Sunset Forest",
+    "by": "Lopez Robin"
+   },
+   {
+    "part": "rooms/parts/vase_23_3.jpg",
+    "id": "-LyPtbXQiQ0",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "white and brown abstract painting",
+    "by": "Federico Bottos"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_28362373",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes inspo\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "arena_12406561",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cbasic\u201d",
+    "by": "Lu \u2013"
+   },
+   {
+    "id": "arena_22404230",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cbasic\u201d",
+    "by": "https://www.choquelegoff.com"
+   },
+   {
+    "id": "arena_15740408",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Lu \u2013"
+   },
+   {
+    "id": "arena_29106343",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfun flowers\u201d",
+    "by": "https://lambert-lambert.com"
+   },
+   {
+    "id": "arena_31661937",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "n\u00eepiwaki ."
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_28362373",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes inspo\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "arena_1445171",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Ezra Miller"
+   },
+   {
+    "id": "arena_4216763",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com"
+   },
+   {
+    "id": "arena_21055049",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_24237070",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cfiber fabric\u201d",
+    "by": "Caitlin Do"
+   },
+   {
+    "id": "arena_744132",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://mir-s3-cdn-cf.behance.net"
+   },
+   {
+    "id": "arena_7062727",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform \u201d",
+    "by": "https://mir-s3-cdn-cf.behance.net"
+   },
+   {
+    "id": "arena_3919705",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "https://assets.bigcartel.com"
+   },
+   {
+    "id": "arena_3294539",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "search.axd?command=getcontent-server=detail-value=pf31239",
+    "by": "https://www.nms.ac.uk"
+   }
+  ],
+  "scan": {
+   "name": "vase",
+   "summary": "Art Nouveau vase with iridescent glaze and floral motifs.",
+   "form": [
+    "Oval body with flared neck.",
+    "Base is slightly wider than the neck.",
+    "No visible legs or feet."
+   ],
+   "surface": [
+    "Iridescent glaze with green and purple hues.",
+    "Smooth texture with a glossy finish.",
+    "Glaze has a mottled, iridescent quality."
+   ],
+   "decoration": [
+    "Floral motifs with white flowers and green leaves."
+   ],
+   "palette": [
+    "Emerald green",
+    "Purple",
+    "Iridescent",
+    "White",
+    "Brown"
+   ],
+   "material": "Glazed stoneware",
+   "made": "Handcrafted",
+   "resembles": [
+    "Art Nouveau style",
+    "Arts & Crafts Movement"
+   ],
+   "interesting": [
+    "The iridescent glaze creates a shimmering effect.",
+    "The floral motifs are delicately rendered."
+   ],
+   "clear": [
+    "It is a vase.",
+    "It has a decorative glaze."
+   ],
+   "uncertain": [
+    "The exact age of the vase.",
+    "The precise origin of the vase."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:32:05.640Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "18th century",
+    "name": "Chinese Qianlong-era Blue and White Porcelain Vase",
+    "place": "China",
+    "search": "blue white porcelain vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Ming_Porcelain_Vase_01.jpg/500px-Ming_Porcelain_Vase_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ming_Porcelain_Vase_01.jpg",
+      "credit": "Gary Todd \u00b7 CC0",
+      "score": 0.3823
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign%2C_Ming_Dynasty.jpg/500px-20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign%2C_Ming_Dynasty.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign,_Ming_Dynasty.jpg",
+      "credit": "Windmemories \u00b7 CC BY-SA 4.0",
+      "score": 0.3721
+     }
+    ]
+   },
+   {
+    "year": "1760s",
+    "name": "Meissen Soft-Paste Porcelain Vase",
+    "place": "Germany",
+    "search": "meissen soft paste vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Jar_MET_DP168331_%28cropped%29.jpg/500px-Jar_MET_DP168331_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Soft-paste_porcelain",
+      "credit": "Wikipedia: Soft-paste porcelain",
+      "score": 0.3335
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg/500px-Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg",
+      "credit": "Derby Porcelain Factory (British, founded 1756) \u00b7 Public domain",
+      "score": 0.3309
+     }
+    ]
+   },
+   {
+    "year": "1780s",
+    "name": "Wedgwood Jasperware Vase",
+    "place": "England",
+    "search": "wedgwood jasperware",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Wedgwood_jasperware%2C_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG/500px-Wedgwood_jasperware%2C_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Wedgwood_jasperware,_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG",
+      "credit": "Daderot \u00b7 CC0",
+      "score": 0.3572
+     },
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/db/Jasperware.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Jasperware",
+      "credit": "Wikipedia: Jasperware",
+      "score": 0.3443
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "Aesthetic Movement Ceramic Vase",
+    "place": "USA/UK",
+    "search": "aesthetic movement vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Vase_MET_DT161.jpg/500px-Vase_MET_DT161.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/John_Bennett_(potter)",
+      "credit": "Wikipedia: John Bennett (potter)",
+      "score": 0.3019
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif/lossy-page1-500px-Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif",
+      "credit": "Maw &amp; Co. \u00b7 CC0",
+      "score": 0.2846
+     }
+    ]
+   },
+   {
+    "year": "c. 1900-1930",
+    "name": "Arts & Crafts Movement Glazed Stoneware Vase",
+    "place": "UK",
+    "search": "arts and crafts glaze",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Vase_MET_DP229982.jpg/500px-Vase_MET_DP229982.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fulper_Pottery_Company",
+      "credit": "Wikipedia: Fulper Pottery Company",
+      "score": 0.3156
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Small_dish_shaped_like_three_pots_with_dewdrop_design%2C_Nabeshima_ware%2C_Edo_period%2C_1600s_AD%2C_porcelain%2C_cobalt_glaze_-_Tokyo_National_Museum_-_Tokyo%2C_Japan_-_DSC09504.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Small_dish_shaped_like_three_pots_with_dewdrop_design,_Nabeshima_ware,_Edo_period,_1600s_AD,_porcelain,_cobalt_glaze_-_Tokyo_National_Museum_-_Tokyo,_Japan_-_DSC09504.jpg",
+      "credit": "Daderot \u00b7 Public domain",
+      "score": 0.2903
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Egyptian Alabaster Vase",
+    "why": "Shared cylindrical form, used for sacred vessels",
+    "search": "egyptian alabaster",
+    "images": null
+   },
+   {
+    "name": "Greek Red-Figure Amphora",
+    "why": "Similar profile and ornate decoration",
+    "search": "greek red figure amphora",
+    "images": null
+   },
+   {
+    "name": "Japanese Raku Vase",
+    "why": "Influence of Asian forms on Western ceramics",
+    "search": "japanese raku vase",
+    "images": null
+   },
+   {
+    "name": "Roman Terra Sigillata Amphora",
+    "why": "Shared use of cylindrical form and ornate decoration",
+    "search": "roman terra sigillata",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a quaint, bourgeois trinket. But it's actually a descendant of the Chinese Qianlong-era Blue and White Porcelain Vase, which influenced European ceramicists in the 18th century. The Meissen Soft-Paste Porcelain Vase, made in Germany around the same time, shared similarities with your vase. Later, the Wedgwood Jasperware Vase popularized a similar aesthetic in England. And finally, the Arts & Crafts Movement took these influences and created its own distinctive style, which resulted in your very vase. You didn't choose it; it was chosen for you by all of this history.",
+  "shapes": [
+   {
+    "id": "arena_1039605",
+    "library": "arena",
+    "box": [
+     0.4375,
+     0.4375,
+     0.5625,
+     0.5625
+    ],
+    "desc": "Untitled",
+    "by": "Walmartimages"
+   },
+   {
+    "id": "arena_3407015",
+    "library": "arena",
+    "box": [
+     0,
+     0.5,
+     0.5625,
+     0.375
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "Rahi  Patel"
+   },
+   {
+    "id": "6deRJ7VRekc",
+    "library": "unsplash",
+    "box": [
+     0.7916666666666666,
+     0.6875,
+     0.20833333333333334,
+     0.3125
+    ],
+    "desc": "pink lotus flower",
+    "by": "Sora Sagano"
+   },
+   {
+    "id": "arena_453309",
+    "library": "arena",
+    "box": [
+     0,
+     0.625,
+     0.5625,
+     0.375
+    ],
+    "desc": "Tomas Saraceno",
+    "by": "Bryce Wilner"
+   },
+   {
+    "id": "arena_5069748",
+    "library": "arena",
+    "box": [
+     0,
+     0.55,
+     0.5625,
+     0.45
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "Erwin Sanvictores"
+   },
+   {
+    "id": "arena_6065456",
+    "library": "arena",
+    "box": [
+     0,
+     0.5625,
+     0.3125,
+     0.3125
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "\u2605 -"
+   },
+   {
+    "id": "5nH0Hh78Nh4",
+    "library": "unsplash",
+    "box": [
+     0,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "brown insect",
+    "by": "Max Muselmann"
+   },
+   {
+    "id": "arena_6114739",
+    "library": "arena",
+    "box": [
+     0.5714285714285714,
+     0.4375,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "eqidu0kwaae4a5z?format=jpg-name=small",
+    "by": "https://pbs.twimg.com"
+   }
+  ]
+ },
+ "vase_06": {
+  "parts": [
+   {
+    "part": "rooms/parts/vase_06_0.jpg",
+    "id": "BpyMbCNZdUE",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.32,
+     0.5625,
+     0.36
+    ],
+    "desc": "pink liquid illustration",
+    "by": "Aung Soe Min"
+   },
+   {
+    "part": "rooms/parts/vase_06_0.jpg",
+    "id": "Tx_DZOKZ-gw",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.3333333333333333,
+     0.5625,
+     0.375
+    ],
+    "desc": "man between red light hallway",
+    "by": "Mahdis Mousavi"
+   },
+   {
+    "part": "rooms/parts/vase_06_1.jpg",
+    "id": "Mo8l2XPCpAY",
+    "library": "unsplash",
+    "box": [
+     0.3333333333333333,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "The fun thing about drones is getting to take photos from completely new perspectives. For example, here\u2019s the top half of a 400-foot-tall dam, in all its cold industrial glory, located in the foothills of the Cascade Mountains. If you look at the top you can see the doors workers use for maintenance. That gives you an idea of its massive scale.",
+    "by": "Dan Meyers"
+   },
+   {
+    "part": "rooms/parts/vase_06_1.jpg",
+    "id": "fSPxYxOEUpc",
+    "library": "unsplash",
+    "box": [
+     0.25,
+     0.5714285714285714,
+     0.5625,
+     0.32142857142857145
+    ],
+    "desc": "sand dunes at night",
+    "by": "Maurits Bausenhart"
+   },
+   {
+    "part": "rooms/parts/vase_06_2.jpg",
+    "id": "arena_3760383",
+    "library": "arena",
+    "box": [
+     0.19047619047619047,
+     0.4375,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "http://akanemoriyama.com"
+   },
+   {
+    "part": "rooms/parts/vase_06_2.jpg",
+    "id": "33cf4x0dR3w",
+    "library": "unsplash",
+    "box": [
+     0.1875,
+     0.45,
+     0.3125,
+     0.25
+    ],
+    "desc": "woman standing on sand at night",
+    "by": "Kevin Wolf"
+   },
+   {
+    "part": "rooms/parts/vase_06_3.jpg",
+    "id": "fzak3_U4npE",
+    "library": "unsplash",
+    "box": [
+     0.5,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "Sk\u00f3gafoss waterfall in black and white",
+    "by": "Dylan Gialanella"
+   },
+   {
+    "part": "rooms/parts/vase_06_3.jpg",
+    "id": "arena_11569717",
+    "library": "arena",
+    "box": [
+     0.6875,
+     0.75,
+     0.3125,
+     0.25
+    ],
+    "desc": "from \u201cgreat\u201d",
+    "by": "Diego Fellmann"
+   }
+  ],
+  "colours": [
+   {
+    "id": "arena_12896288",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://mossworkspace.com"
+   },
+   {
+    "id": "arena_7579348",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ccasual\u201d",
+    "by": "https://66.media.tumblr.com"
+   },
+   {
+    "id": "arena_8541384",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://i.pinimg.com"
+   },
+   {
+    "id": "arena_3466701",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "studio romain lenancker",
+    "by": "Julien Boniteau"
+   },
+   {
+    "id": "arena_3838436",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://upload.wikimedia.org"
+   },
+   {
+    "id": "arena_1798658",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Untitled",
+    "by": "Itsnicethat"
+   }
+  ],
+  "surface": [
+   {
+    "id": "arena_3466701",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "studio romain lenancker",
+    "by": "Julien Boniteau"
+   },
+   {
+    "id": "arena_1569949",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "Hans van Sinderen"
+   },
+   {
+    "id": "arena_19761552",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "https://live.staticflickr.com"
+   },
+   {
+    "id": "arena_2030932",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201ctexture\u201d",
+    "by": "http://78.media.tumblr.com"
+   }
+  ],
+  "mood": [
+   {
+    "id": "arena_7260854",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201c_objekt\u201d",
+    "by": "Judd Smith"
+   },
+   {
+    "id": "arena_1142452",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cid form\u201d",
+    "by": "Calvin Lien"
+   },
+   {
+    "id": "arena_1039605",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "Untitled",
+    "by": "Walmartimages"
+   },
+   {
+    "id": "arena_24149484",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "https://scontent-lhr8-2.cdninstagram.com"
+   },
+   {
+    "id": "arena_20161248",
+    "library": "arena",
+    "box": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "desc": "miniature illuminated qur\u2019an",
+    "by": "https://arena-images-temp.s3.amazonaws.com"
+   }
+  ],
+  "scan": {
+   "name": "Art Deco glazed ceramic vase",
+   "summary": "Art Deco vase with geometric patterns and a glossy finish.",
+   "form": [
+    "Elongated, narrow neck transitioning to a wider base.",
+    "No visible legs or feet.",
+    "Edges smooth and rounded."
+   ],
+   "surface": [
+    "Glossy finish with a rich turquoise base color.",
+    "Muted black or dark blue geometric patterns.",
+    "No visible texture, appears smooth."
+   ],
+   "decoration": [
+    "Geometric patterns with stylized floral motifs."
+   ],
+   "palette": [
+    "Turquoise",
+    "Dark blue",
+    "Black",
+    "White"
+   ],
+   "material": "Glazed ceramic, likely porcelain.",
+   "made": "Hand-painted and glazed, possibly with slip-casting techniques.",
+   "resembles": [
+    "Consistent with Art Deco style.",
+    "Recalls Persian glazed pottery."
+   ],
+   "interesting": [
+    "The contrast between the vibrant turquoise and dark blue.",
+    "The subtle variations in the geometric patterns."
+   ],
+   "clear": [
+    "It is a ceramic vase.",
+    "The vase is decorated with geometric patterns."
+   ],
+   "uncertain": [
+    "The exact age and origin of the vase.",
+    "The specific technique used in its production."
+   ],
+   "model": "qwen2.5vl:7b",
+   "made_at": "2026-10-12T22:33:23.199Z",
+   "cached": true
+  },
+  "lineage": [
+   {
+    "year": "500 BC",
+    "name": "Ancient Greek Red-Figure Amphora",
+    "place": "Greece",
+    "search": "red figure amphora",
+    "images": null
+   },
+   {
+    "year": "200-300 AD",
+    "name": "Roman Terra Sigillata Amphora",
+    "place": "Rome",
+    "search": "terra sigillata",
+    "images": null
+   },
+   {
+    "year": "18th century",
+    "name": "Meissen Porcelain Vase",
+    "place": "Germany",
+    "search": "meissen porcelain",
+    "images": null
+   },
+   {
+    "year": "1850s",
+    "name": "Louis Comfort Tiffany's Favrile Glass Vase",
+    "place": "USA",
+    "search": "favrile glass vase",
+    "images": null
+   },
+   {
+    "year": "1920s",
+    "name": "Art Nouveau Glazed Porcelain Vase (Persian)",
+    "place": "Iran (Persia)",
+    "search": "art nouveau glazed porcelain",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Japanese Raku Teapot",
+    "why": "shared curved, organic forms",
+    "search": "raku teapot",
+    "images": null
+   },
+   {
+    "name": "Chinese Qing Dynasty Vase",
+    "why": "similar glazing techniques",
+    "search": "qing dynasty vase",
+    "images": null
+   },
+   {
+    "name": "African Tribal Water Jar",
+    "why": "analogous cylindrical shape",
+    "search": "tribal water jar",
+    "images": null
+   },
+   {
+    "name": "Greek Amphora ( ancient)",
+    "why": "shared vessel form",
+    "search": "ancient greek amphora",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a decorative trinket, but it's actually a descendant of ancient Greek pottery. The techniques used to create its glaze date back to the Roman Empire, and the shape itself has been influenced by centuries of ceramic innovation in Europe, such as the 18th century Meissen porcelain vases. By the time this Art Nouveau vase was created, the art of ceramic production had spread to the Middle East, where local artisans combined their own techniques with European influences to produce a unique piece like this one. And now it sits on your shelf, chosen for you by generations of craftsmen and artists whose work has trickled down through history, shaping the very object that catches your eye.",
+  "shapes": [
+   {
+    "id": "gewf5xhpVRM",
+    "library": "unsplash",
+    "box": [
+     0.5714285714285714,
+     0.4375,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "full moon",
+    "by": "Jennifer Aldrich"
+   },
+   {
+    "id": "dChZrZx6mf8",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0.5714285714285714,
+     0.5625,
+     0.32142857142857145
+    ],
+    "desc": "Infinity star",
+    "by": "Daniel Olah"
+   },
+   {
+    "id": "Ec9aoBWqL-c",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.5
+    ],
+    "desc": "full moon display",
+    "by": "Leslie Jones"
+   },
+   {
+    "id": "7K3VasWk47Q",
+    "library": "unsplash",
+    "box": [
+     0.4375,
+     0,
+     0.5625,
+     0.4090909090909091
+    ],
+    "desc": "Goldfish are super cute in close up. First time taking goldfish photos and I just noticed how adorable they are.",
+    "by": "Kyaw Tun"
+   },
+   {
+    "id": "arena_18859158",
+    "library": "arena",
+    "box": [
+     0.5714285714285714,
+     0.4375,
+     0.42857142857142855,
+     0.5625
+    ],
+    "desc": "from \u201cshapes\u201d",
+    "by": "https://cdn.dribbble.com"
+   },
+   {
+    "id": "arena_2336054",
+    "library": "arena",
+    "box": [
+     0.5,
+     0.4375,
+     0.375,
+     0.5625
+    ],
+    "desc": "from \u201cform\u201d",
+    "by": "Mark Donnelley"
+   },
+   {
+    "id": "t7LHEPiHpIY",
+    "library": "unsplash",
+    "box": [
+     0.5263157894736842,
+     0,
+     0.47368421052631576,
+     0.5625
+    ],
+    "desc": "white, green, and brown petaled flowers",
+    "by": "Evie S."
+   },
+   {
+    "id": "arena_6065456",
+    "library": "arena",
+    "box": [
+     0.6875,
+     0.5625,
+     0.3125,
+     0.3125
+    ],
+    "desc": "from \u201cobjects\u201d",
+    "by": "\u2605 -"
+   }
+  ]
+ }
+}

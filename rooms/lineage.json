@@ -1,0 +1,2758 @@
+{
+ "ceiling fan": {
+  "name": "Ceiling Fan",
+  "desc": "ceiling fan blades",
+  "lineage": [
+   {
+    "year": "c. 500 BC",
+    "name": "Egyptian Ceiling Ventilation Device",
+    "place": "Ancient Egypt",
+    "search": "ventilation ancient egypt",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/MITSUBISHI_ELECTRIC_WINDOW_TYPE_AIR_CONDITIONER_OUTDOOR_UNIT.jpg/500px-MITSUBISHI_ELECTRIC_WINDOW_TYPE_AIR_CONDITIONER_OUTDOOR_UNIT.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Air_conditioning",
+      "credit": "Wikipedia: Air conditioning",
+      "score": 0.2798
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Hatari_18_inch_fan.jpg/500px-Hatari_18_inch_fan.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fan_(machine)",
+      "credit": "Wikipedia: Fan (machine)",
+      "score": 0.2529
+     }
+    ]
+   },
+   {
+    "year": "1700s",
+    "name": "Hollander's Centrifugal Fan",
+    "place": "Netherlands",
+    "search": "centrifugal fan netherlands",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Maquette_UDF_-_Mus%C3%A9e_Safran_%28cropped%29.jpg/500px-Maquette_UDF_-_Mus%C3%A9e_Safran_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Propfan",
+      "credit": "Wikipedia: Propfan",
+      "score": 0.2453
+     }
+    ]
+   },
+   {
+    "year": "1858",
+    "name": "Sturtevant's Rotary Fan",
+    "place": "USA (Boston)",
+    "search": "rotary fan sturtevant",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/ABC_Dragonfly_at_London_Science_Museum.jpg/500px-ABC_Dragonfly_at_London_Science_Museum.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/List_of_aircraft_engines",
+      "credit": "Wikipedia: List of aircraft engines",
+      "score": 0.3112
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Sawyer's Electric Fan",
+    "place": "USA (Chicago)",
+    "search": "sawyer electric fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/The_Street_railway_journal_%281899%29_%2814736793626%29.jpg/500px-The_Street_railway_journal_%281899%29_%2814736793626%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:The_Street_railway_journal_(1899)_(14736793626).jpg",
+      "credit": "Internet Archive Book Images · No restrictions",
+      "score": 0.2067
+     }
+    ]
+   },
+   {
+    "year": 1920,
+    "name": "Haviland Electric Ceiling Fan",
+    "place": "USA (New York)",
+    "search": "haviland ceiling fan",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Wind Turbine Blade",
+    "why": "Harnesses wind energy for electricity",
+    "search": "wind turbine blades",
+    "images": null
+   },
+   {
+    "name": "Propeller",
+    "why": "Provides thrust in aircraft and ships",
+    "search": "propeller plane boat",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Ship-propeller_2000.jpg/500px-Ship-propeller_2000.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Propeller",
+      "credit": "Wikipedia: Propeller",
+      "score": 0.3411
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg/500px-Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Hydroplanes_-_On_Land_-_LARGEST_FLYING_BOAT_IN_THE_WORLD_TESTED_AT_NAVAL_AIR_STATION_-_NARA_-_31485090.jpg",
+      "credit": "Unknown authorUnknown author or not provided · Public domain",
+      "score": 0.2515
+     }
+    ]
+   },
+   {
+    "name": "Sail Plan",
+    "why": "Captures wind energy for sailing vessels",
+    "search": "sail plan boat",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/USS_Baltimore_%28C-3%29-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg/500px-USS_Baltimore_%28C-3%29-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:USS_Baltimore_(C-3)-_Sail_plan_of_Whale_Boat_Gig_-_NARA_-_75840675.jpg",
+      "credit": "Unknown authorUnknown author or not provided · Public domain",
+      "score": 0.3493
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Bombay_Boat_sail_plan.jpg/500px-Bombay_Boat_sail_plan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Bombay_Boat_sail_plan.jpg",
+      "credit": "Kemp, Dixon, 1839-1899; Heckstall-Smith, Brooke · Public domain",
+      "score": 0.3442
+     }
+    ]
+   },
+   {
+    "name": "Windmill Blade",
+    "why": "Grinds grain using wind power",
+    "search": "windmill blade",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/DK_Fanoe_Windmill01.JPG/500px-DK_Fanoe_Windmill01.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Windmill",
+      "credit": "Wikipedia: Windmill",
+      "score": 0.3012
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg/500px-Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ballycopeland_windmill_279350930_a90dcc8d8c_b.jpg",
+      "credit": "https://www.flickr.com/photos/carolinehornet/ · CC BY 2.0",
+      "score": 0.2945
+     }
+    ]
+   }
+  ],
+  "story": "You think this is just a mundane, mass-produced ceiling fan. But it's a descendant of ancient Egyptian ventilation devices that used centrifugal force to circulate air. In the 18th century, Dutch inventor Michiel van der Meer Hollander created the first powered fan, which was later improved upon by American engineer Samuel Sturtevant in 1858. The modern ceiling fan as you know it today emerged in the early 20th century, with the introduction of electric motors and sleek designs. You didn't choose this ceiling fan; it was chosen for you by centuries of innovators, manufacturers, and architects who shaped its design and functionality.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:10:10.277Z"
+ },
+ "chair": {
+  "name": "Armchair",
+  "desc": "wooden armchair with gray cushion and geometric patterned pillow",
+  "lineage": [
+   {
+    "year": "c. 2000 BC",
+    "name": "Egyptian Throne",
+    "place": "Ancient Egypt",
+    "search": "throne chair",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Throne_chair.jpg/500px-Throne_chair.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Throne_chair.jpg",
+      "credit": "Stolbovsky · CC BY-SA 3.0",
+      "score": 0.3435
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Warsaw_Throne_chair_of_Stanislaus_Augustus.jpg/500px-Warsaw_Throne_chair_of_Stanislaus_Augustus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Warsaw_Throne_chair_of_Stanislaus_Augustus.jpg",
+      "credit": "Anonymous (Warsaw)Unknown author · Public domain",
+      "score": 0.3424
+     }
+    ]
+   },
+   {
+    "year": "c. 300 BC",
+    "name": "Greek Klismos",
+    "place": "Ancient Greece",
+    "search": "klismos chair",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Tombstone_Xanthippos_BM_Sc628.jpg/500px-Tombstone_Xanthippos_BM_Sc628.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Klismos",
+      "credit": "Wikipedia: Klismos",
+      "score": 0.26
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Nicolai_Abildgaard_-_Klismos_chair.jpg/500px-Nicolai_Abildgaard_-_Klismos_chair.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Nicolai_Abildgaard_-_Klismos_chair.jpg",
+      "credit": "Ramblersen2 · CC BY-SA 4.0",
+      "score": 0.2393
+     }
+    ]
+   },
+   {
+    "year": "18th century",
+    "name": "English Windsor Chair",
+    "place": "England",
+    "search": "windsor armchair",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Wallace_Nutting_Windsors_-_correct_Windsor_furniture._%281918%29_%2814592391377%29_retouched.jpg/500px-Wallace_Nutting_Windsors_-_correct_Windsor_furniture._%281918%29_%2814592391377%29_retouched.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Windsor_chair",
+      "credit": "Wikipedia: Windsor chair",
+      "score": 0.3605
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Gothic_Windsor_armchair_%28one_of_a_pair%29_MET_LC-2016_234-003.jpg/500px-Gothic_Windsor_armchair_%28one_of_a_pair%29_MET_LC-2016_234-003.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Gothic_Windsor_armchair_(one_of_a_pair)_MET_LC-2016_234-003.jpg",
+      "credit": "CC0",
+      "score": 0.3539
+     }
+    ]
+   },
+   {
+    "year": "19th century",
+    "name": "Victorian Armchair",
+    "place": "Europe",
+    "search": "victorian arm chair",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_%28page_13%29.jpg/500px-Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_%28page_13%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_(page_13).jpg",
+      "credit": "Wenzlick, Peter, 1814-1895 · No restrictions",
+      "score": 0.3359
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_%28page_2%29.jpg/500px-Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_%28page_2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Rococo_Revival_Arm_Chair_Made_by_Peter_Wenzlick_-_DPLA_-_9654ce9f8ea4c9a812e78f4fcaaacc37_(page_2).jpg",
+      "credit": "Wenzlick, Peter, 1814-1895 · No restrictions",
+      "score": 0.3324
+     }
+    ]
+   },
+   {
+    "year": "1970s",
+    "name": "Mid-Century Modern Armchair",
+    "place": "USA",
+    "search": "mid century modern armchair",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Vladimir_Kagan._Armchair%2C_ca._1953.jpg/500px-Vladimir_Kagan._Armchair%2C_ca._1953.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Vladimir_Kagan._Armchair,_ca._1953.jpg",
+      "credit": "Vladimir Kagan · No restrictions",
+      "score": 0.3181
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Pierre-Jeanneret-PJ-SI-29A-Armchair.jpg/500px-Pierre-Jeanneret-PJ-SI-29A-Armchair.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Pierre-Jeanneret-PJ-SI-29A-Armchair.jpg",
+      "credit": "Phadzim · CC BY 4.0",
+      "score": 0.2984
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Sofa",
+    "why": "similar design, different scale",
+    "search": "sofa couch",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Sitzende_graue_Mieze_20201026_DSC5103.jpg/500px-Sitzende_graue_Mieze_20201026_DSC5103.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Sitzende_graue_Mieze_20201026_DSC5103.jpg",
+      "credit": "PantheraLeo1359531 · CC BY 4.0",
+      "score": 0.2995
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/2009-05-16_Main_office_lobby_at_Hampton_Forest_Apartments.jpg/500px-2009-05-16_Main_office_lobby_at_Hampton_Forest_Apartments.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Couch",
+      "credit": "Wikipedia: Couch",
+      "score": 0.2723
+     }
+    ]
+   },
+   {
+    "name": "Recliner",
+    "why": "shared concept of comfort and relaxation",
+    "search": "reclining chair",
+    "images": null
+   },
+   {
+    "name": "Bar Stool",
+    "why": "similar vertical support structure",
+    "search": "bar stool seating",
+    "images": null
+   },
+   {
+    "name": "Daybed",
+    "why": "analogous design for multiple occupants",
+    "search": "day bed furniture",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a generic armchair, but its history spans thousands of years. It starts with the Egyptian Throne, a symbol of power and status in ancient civilizations. From there, it evolved through the Greek Klismos chair's emphasis on comfort and design, to the English Windsor Chair's focus on craftsmanship and durability. The Victorian Armchair brought ornamentation and opulence, while the Mid-Century Modern Armchair introduced sleek lines and functionality. And yet, here you are, sitting in a chair chosen for you by all of these precedents.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:12:44.420Z"
+ },
+ "white brick fireplace": {
+  "name": "White Brick Fireplace",
+  "desc": "white brick fireplace with greenery garland and black mantelpiece",
+  "lineage": [
+   {
+    "year": "c. 1000 BC",
+    "name": "Greek Tympanum",
+    "place": "Ancient Greece",
+    "search": "architectural frieze",
+    "images": null
+   },
+   {
+    "year": "Roman Empire",
+    "name": "Roman Architrave",
+    "place": "Rome",
+    "search": "architectural archway",
+    "images": null
+   },
+   {
+    "year": "c. 1500 AD",
+    "name": "Italian Renaissance Chimney",
+    "place": "Tuscany",
+    "search": "stone fireplace",
+    "images": null
+   },
+   {
+    "year": "1800 AD",
+    "name": "English Georgian Fireplace",
+    "place": "London",
+    "search": "white marble mantel",
+    "images": null
+   },
+   {
+    "year": "1950s",
+    "name": "Mid-Century Modern Brick Fireplace",
+    "place": "USA",
+    "search": "bricked fireplace design",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Romanesque Door Arch",
+    "why": "similar arch shape, but larger scale",
+    "search": "stone doorway",
+    "images": null
+   },
+   {
+    "name": "Japanese Shoji Screen",
+    "why": "shared use of horizontal slats, but for light control",
+    "search": "slatted panel",
+    "images": null
+   },
+   {
+    "name": "Islamic Mosaic Panel",
+    "why": "common use of geometric patterns in brickwork",
+    "search": "mosaic tile",
+    "images": null
+   },
+   {
+    "name": "Chinese Ming Vase",
+    "why": "similar use of brick-red glaze, but for ceramics",
+    "search": "glazed pottery",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a bland, mass-produced fireplace. But its earliest ancestor is the Greek Tympanum, an architectural frieze that adorned temples and public buildings in ancient Greece. From there, it evolved through Roman architraves to Italian Renaissance chimneys, where it became a symbol of opulence and status. The English Georgian style further refined the design, adding white marble mantels and brick surrounds. And finally, this Mid-Century Modern brick fireplace arrived in your living room, a product of mass production but rooted in centuries of architectural tradition. You didn't choose it, but it was chosen for you by all those who came before.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:13:02.063Z"
+ },
+ "black cast iron fireplace insert": {
+  "name": "insert",
+  "desc": "black cast iron fireplace insert",
+  "lineage": [
+   {
+    "year": "18th century",
+    "name": "Copper Range Boilers",
+    "place": "Europe",
+    "search": "copper range boilers",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Kociol_parowy_lokomobilowy_typ_Ln2_skansen_kopalniatg_20070627.jpg/500px-Kociol_parowy_lokomobilowy_typ_Ln2_skansen_kopalniatg_20070627.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Boiler",
+      "credit": "Wikipedia: Boiler",
+      "score": 0.293
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Hot_water_supply_and_kitchen_boiler_connections_-_a_text_book_on_the_installation_of_hot_water_service_in_residences_and_other_buildings_and_methods_of_connecting_range_boilers%2C_steam_and_gas_water_%2814597959159%29.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Hot_water_supply_and_kitchen_boiler_connections_-_a_text_book_on_the_installation_of_hot_water_service_in_residences_and_other_buildings_and_methods_of_connecting_range_boilers,_steam_and_gas_water_(14597959159).jpg",
+      "credit": "Internet Archive Book Images · No restrictions",
+      "score": 0.2909
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "Cast Iron Stoves",
+    "place": "USA",
+    "search": "cast iron stoves",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Cast_Iron_Wood_Stove.JPG/500px-Cast_Iron_Wood_Stove.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Cast_Iron_Wood_Stove.JPG",
+      "credit": "Victorgrigas · CC BY-SA 3.0",
+      "score": 0.3343
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Cast_iron_stove.jpg/500px-Cast_iron_stove.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Cast_iron_stove.jpg",
+      "credit": "Johannes S., user Deibi at de.wikipedia · CC BY-SA 3.0",
+      "score": 0.3211
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Residential Coal-Burning Furnaces",
+    "place": "USA",
+    "search": "residential coal furnaces",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/FRONT_%28SOUTH%29_ELEVATION%2C_MIXER_RUINS_%28CENTER%29_WITH_STACKS_%28LEFT%29_AND_POWER_HOUSE_%28RIGHT_-_Tennessee_Coal_and_Iron_Company%2C_Ensley_Works%2C_Open_Hearth_Furnace_%28Ruins%29%2C_West_HAER_ALA%2C37-BIRM.V%2C16A-5_%28CT%29.tif/lossy-page1-500px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:FRONT_(SOUTH)_ELEVATION,_MIXER_RUINS_(CENTER)_WITH_STACKS_(LEFT)_AND_POWER_HOUSE_(RIGHT_-_Tennessee_Coal_and_Iron_Company,_Ensley_Works,_Open_Hearth_Furnace_(Ruins),_West_HAER_ALA,37-BIRM.V,16A-5_(CT).tif",
+      "credit": "Lowe, Jet · Public domain",
+      "score": 0.3162
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/OBLIQUE_VIEW%2C_MIXER_RUINS._-_Tennessee_Coal_and_Iron_Company%2C_Ensley_Works%2C_Open_Hearth_Furnace_%28Ruins%29%2C_West_of_Ensley_commercial_and_residential_districts%2C_Birmingham%2C_HAER_ALA%2C37-BIRM.V%2C16A-3.tif/lossy-page1-500px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:OBLIQUE_VIEW,_MIXER_RUINS._-_Tennessee_Coal_and_Iron_Company,_Ensley_Works,_Open_Hearth_Furnace_(Ruins),_West_of_Ensley_commercial_and_residential_districts,_Birmingham,_HAER_ALA,37-BIRM.V,16A-3.tif",
+      "credit": "Lowe, Jet, creator · Public domain",
+      "score": 0.292
+     }
+    ]
+   },
+   {
+    "year": "1920s",
+    "name": "Cast Iron Fireplace Inserts",
+    "place": "Europe",
+    "search": "cast iron fireplace inserts",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/INTERIOR_VIEW_OF_CAST_IRON_INSERT_IN_FIREPLACE_OF_FIRST_FLOOR_PARLOR_-_George_W._Eckhart_House%2C_810_Main_Street%2C_Wheeling%2C_Ohio_County%2C_WV_HABS_WVA%2C35-WHEEL%2C36-16.tif/lossy-page1-500px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:INTERIOR_VIEW_OF_CAST_IRON_INSERT_IN_FIREPLACE_OF_FIRST_FLOOR_PARLOR_-_George_W._Eckhart_House,_810_Main_Street,_Wheeling,_Ohio_County,_WV_HABS_WVA,35-WHEEL,36-16.tif",
+      "credit": "Public domain",
+      "score": 0.3214
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Custom_fitted_fireplace_insert-b.jpg/500px-Custom_fitted_fireplace_insert-b.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fireplace_insert",
+      "credit": "Wikipedia: Fireplace insert",
+      "score": 0.313
+     }
+    ]
+   },
+   {
+    "year": "Present Day",
+    "name": "Black Cast Iron Fireplace Insert",
+    "place": "Global",
+    "search": "black cast iron fireplace",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Fireplace-_mantel%2C_grate%2C_fender_%28AM_614477-1%29.jpg/500px-Fireplace-_mantel%2C_grate%2C_fender_%28AM_614477-1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Fireplace-_mantel,_grate,_fender_(AM_614477-1).jpg",
+      "credit": "CC BY 4.0",
+      "score": 0.3443
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/FIREPLACE_AND_MANTEL%2C_FIRST_FLOOR%2C_EAST_WALL%2C_NORTHEAST_ROOM_-_Old_Customs_House%2C_King_at_Sixth_Street%2C_Wilmington%2C_New_Castle_County%2C_DE_HABS_DEL%2C2-WILM%2C47-9.tif/lossy-page1-500px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:FIREPLACE_AND_MANTEL,_FIRST_FLOOR,_EAST_WALL,_NORTHEAST_ROOM_-_Old_Customs_House,_King_at_Sixth_Street,_Wilmington,_New_Castle_County,_DE_HABS_DEL,2-WILM,47-9.tif",
+      "credit": "Jack Boucher · Public domain",
+      "score": 0.3204
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Industrial Kilns",
+    "why": "Uses same cylindrical shape for heat retention.",
+    "search": "industrial kiln",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Etruria_Industrial_Museum_-_calcining_kiln_-_geograph.org.uk_-_6907978.jpg/500px-Etruria_Industrial_Museum_-_calcining_kiln_-_geograph.org.uk_-_6907978.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Etruria_Industrial_Museum_-_calcining_kiln_-_geograph.org.uk_-_6907978.jpg",
+      "credit": "Chris Allen · CC BY-SA 2.0",
+      "score": 0.2813
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Etruria_Industrial_Museum_-_up_the_kiln_-_geograph.org.uk_-_2187415.jpg/500px-Etruria_Industrial_Museum_-_up_the_kiln_-_geograph.org.uk_-_2187415.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Etruria_Industrial_Museum_-_up_the_kiln_-_geograph.org.uk_-_2187415.jpg",
+      "credit": "Chris Allen · CC BY-SA 2.0",
+      "score": 0.273
+     }
+    ]
+   },
+   {
+    "name": "Copper Water Heaters",
+    "why": "Shares similar cylindrical design for thermal mass.",
+    "search": "copper water heater",
+    "images": null
+   },
+   {
+    "name": "Cast Iron Radiators",
+    "why": "Features a similar tubular structure for heat distribution.",
+    "search": "cast iron radiator",
+    "images": null
+   },
+   {
+    "name": "Wood-Fired Pizza Ovens",
+    "why": "Utilizes a similar cylindrical shape for thermal insulation.",
+    "search": "wood fired pizza oven",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a generic fireplace insert, but it's a direct descendant of 18th-century copper range boilers used in European castles. These early versions were later adapted into cast iron stoves in the USA during the 1850s, which eventually evolved into residential coal-burning furnaces in the late 19th century. By the 1920s, cast iron fireplace inserts became a staple in European homes, and now you have one installed in your living room, chosen for you by generations of designers and manufacturers who refined this design to fit modern tastes. You didn't select it based on personal preference; it was chosen for its efficiency, functionality, and aesthetic appeal.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:13:44.535Z"
+ },
+ "mirror": {
+  "name": "mirror",
+  "desc": "beveled mirror with wooden frame",
+  "lineage": [
+   {
+    "year": "c. 4000 BC",
+    "name": "Polished obsidian mirror",
+    "place": "Mesopotamia",
+    "search": "polished black glass",
+    "images": null
+   },
+   {
+    "year": "c. 2000 BC",
+    "name": "Bronze mirror with etched design",
+    "place": "Ancient Egypt",
+    "search": "bronze etching mirror",
+    "images": null
+   },
+   {
+    "year": "1st century AD",
+    "name": "Roman bronze mirror",
+    "place": "Rome",
+    "search": "roman bronze mirror",
+    "images": null
+   },
+   {
+    "year": "16th century",
+    "name": "Venetian glass mirror with gilded frame",
+    "place": "Venice",
+    "search": "venetian gilded mirror",
+    "images": null
+   },
+   {
+    "year": "late 19th century",
+    "name": "Beveled glass mirror with carved wooden frame",
+    "place": "Europe",
+    "search": "beveled glass mirror",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Telescope",
+    "why": "same cylindrical shape, curved surface for viewing",
+    "search": "optical telescope",
+    "images": null
+   },
+   {
+    "name": "Microscope",
+    "why": "similar tube-like design with lens at end",
+    "search": "microscopy tool",
+    "images": null
+   },
+   {
+    "name": "Laser beam expander",
+    "why": "cylindrical shape to focus or spread light",
+    "search": "laser optics",
+    "images": null
+   },
+   {
+    "name": "Camera lens",
+    "why": "curved surfaces for focusing and refracting light",
+    "search": "camera optics",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple mirror, but it's the culmination of thousands of years of craftsmanship.,It begins with polished obsidian mirrors from ancient Mesopotamia, where artisans carefully shaped black glass to create reflective surfaces.,As civilizations rose and fell, new techniques emerged: etched designs on bronze, gilded frames in Venice, and eventually beveled glass with carved wooden surrounds.,Each innovation built upon the last, a gradual refinement of the mirror's form until it reached your bedroom wall.,Yet you didn't choose this mirror; it was chosen for you by the anonymous hands of countless craftsmen, each contributing to its evolution.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:14:02.895Z"
+ },
+ "sign": {
+  "name": "Sign",
+  "desc": "sign",
+  "lineage": [
+   {
+    "year": "c. 3500 BC",
+    "name": "Tutankhamun's Tomb Inscription",
+    "place": "Egypt",
+    "search": "tomb wall text",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Inside_Pharaoh_Tutankhamun%27s_tomb%2C_18th_dynasty.jpg/500px-Inside_Pharaoh_Tutankhamun%27s_tomb%2C_18th_dynasty.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Tomb_of_Tutankhamun",
+      "credit": "Wikipedia: Tomb of Tutankhamun",
+      "score": 0.306
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/CairoEgMuseumTaaMaskMostlyPhotographed.jpg/500px-CairoEgMuseumTaaMaskMostlyPhotographed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Tutankhamun",
+      "credit": "Wikipedia: Tutankhamun",
+      "score": 0.3013
+     }
+    ]
+   },
+   {
+    "year": "c. 500 AD",
+    "name": "Roman Monumental Inscription",
+    "place": "Rome",
+    "search": "stone monument text",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/5/53/Christparody.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Alexamenos_graffito",
+      "credit": "Wikipedia: Alexamenos graffito",
+      "score": 0.301
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Bursa_Swimming_Stones_monument_7055.jpg/500px-Bursa_Swimming_Stones_monument_7055.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Bursa_Swimming_Stones_monument_7055.jpg",
+      "credit": "Dosseman · CC BY-SA 4.0",
+      "score": 0.2443
+     }
+    ]
+   },
+   {
+    "year": "1500s",
+    "name": "Wooden Tavern Sign",
+    "place": "England",
+    "search": "wood signboard",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/McGillin%27s_Olde_Ale_House_exterior.jpg/500px-McGillin%27s_Olde_Ale_House_exterior.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/McGillin%27s_Olde_Ale_House",
+      "credit": "Wikipedia: McGillin's Olde Ale House",
+      "score": 0.2743
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Funabashiya_%28signboard%29.png/500px-Funabashiya_%28signboard%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Funabashiya_(signboard).png",
+      "credit": "Eiji Yoshikawa · Public domain",
+      "score": 0.2467
+     }
+    ]
+   },
+   {
+    "year": "1800s",
+    "name": "Painted Hotel Sign",
+    "place": "USA",
+    "search": "painted hotel lettering",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Seattle_-_Triangle_Hotel_and_Bar_north_side_01A.jpg/500px-Seattle_-_Triangle_Hotel_and_Bar_north_side_01A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Seattle_-_Triangle_Hotel_and_Bar_north_side_01A.jpg",
+      "credit": "Joe Mabel · CC BY-SA 3.0",
+      "score": 0.2959
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Sign_Painting%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg/500px-Sign_Painting%2C_LA%2C_CA%2C_jjron_22.03.2012.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Sign_painting",
+      "credit": "Wikipedia: Sign painting",
+      "score": 0.2924
+     }
+    ]
+   },
+   {
+    "year": "1955",
+    "name": "Neon Sign",
+    "place": "Las Vegas",
+    "search": "neon advertising sign",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/StateTheaterAuburnCA.jpg/500px-StateTheaterAuburnCA.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Neon_sign",
+      "credit": "Wikipedia: Neon sign",
+      "score": 0.3168
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Neon_Coca-Cola_sign_atop_the_Olympia_Building_in_Five_Points%2C_Atlanta%2C_October_2015.jpg/500px-Neon_Coca-Cola_sign_atop_the_Olympia_Building_in_Five_Points%2C_Atlanta%2C_October_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Neon_Coca-Cola_sign_atop_the_Olympia_Building_in_Five_Points,_Atlanta,_October_2015.jpg",
+      "credit": "Marc Merlin · CC BY-SA 4.0",
+      "score": 0.2777
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Warning Label",
+    "why": "same shape, different purpose",
+    "search": "yellow triangle text",
+    "images": null
+   },
+   {
+    "name": "Traffic Sign",
+    "why": "similar shape, regulatory function",
+    "search": "roadway marker",
+    "images": null
+   },
+   {
+    "name": "Nameplate",
+    "why": "flat surface, naming convention",
+    "search": " metal label",
+    "images": null
+   },
+   {
+    "name": "Banners",
+    "why": "long, flat, text-bearing",
+    "search": "textile advertising",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a generic sign, but it's been evolving for millennia. The earliest inscriptions on tomb walls in ancient Egypt laid the groundwork for later monumental texts. As civilizations rose and fell, signs adapted to new materials and technologies, like wooden tavern signs in 16th-century England. By the 19th century, painted hotel signs were a common sight in American cities. And then came neon signs, which illuminated the Las Vegas Strip in the mid-20th century. You didn't choose this sign; it was chosen for you by all of these predecessors.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:14:34.742Z"
+ },
+ "wreath": {
+  "name": "Wreath",
+  "desc": "wreath",
+  "lineage": [
+   {
+    "year": "c. 500 BC",
+    "name": "Greek Garland",
+    "place": "Ancient Greece",
+    "search": "laurel wreaths",
+    "images": null
+   },
+   {
+    "year": "Roman Empire",
+    "name": "Roman Laurel Wreath",
+    "place": "Rome",
+    "search": "imperial laurels",
+    "images": null
+   },
+   {
+    "year": "17th century",
+    "name": "English Flower Garland",
+    "place": "England",
+    "search": "flower garlands",
+    "images": null
+   },
+   {
+    "year": "19th century",
+    "name": "French Floral Crown",
+    "place": "Paris",
+    "search": "floral crowns",
+    "images": null
+   },
+   {
+    "year": "20th century",
+    "name": "Synthetic Wreath",
+    "place": "Global Industry",
+    "search": "artificial wreaths",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Tiara",
+    "why": "similar circular shape, ceremonial use",
+    "search": "crown jewel",
+    "images": null
+   },
+   {
+    "name": "Garland of Keys",
+    "why": "chain-like arrangement, often used for decoration",
+    "search": "keychains",
+    "images": null
+   },
+   {
+    "name": "Fruit Basket",
+    "why": "rounded container, holding items in a decorative way",
+    "search": "fresh fruit",
+    "images": null
+   },
+   {
+    "name": "Chalice",
+    "why": "cup-shaped form, often used for ceremonial purposes",
+    "search": "holy communion",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple decoration you picked up at the store. But this wreath has its roots in ancient Greece, where laurel leaves were woven into garlands to honor the gods. As the Roman Empire rose, they adopted and adapted this tradition, using it to crown victorious generals and emperors. Later, in 17th century England, flower garlands became a popular way to decorate homes and churches. And then, in the 20th century, synthetic materials made wreaths accessible to everyone, even if you didn't know their rich history. You didn't choose this wreath; it was chosen for you by centuries of cultural influence.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:14:50.592Z"
+ },
+ "pillow": {
+  "name": "Pillow",
+  "desc": "pillow",
+  "lineage": [
+   {
+    "year": "c. 7th century BC",
+    "name": "Egyptian wooden headrests",
+    "place": "Ancient Egypt",
+    "search": "wooden headrest",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Headrest%2C_wood_-_Museo_Egizio%2C_Turin_S_14166_p02.jpg/500px-Headrest%2C_wood_-_Museo_Egizio%2C_Turin_S_14166_p02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Headrest,_wood_-_Museo_Egizio,_Turin_S_14166_p02.jpg",
+      "credit": "CC0",
+      "score": 0.3319
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Poggiatesta_-_Museo_Egizio_Cat_6409_f01.jpg/500px-Poggiatesta_-_Museo_Egizio_Cat_6409_f01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Poggiatesta_-_Museo_Egizio_Cat_6409_f01.jpg",
+      "credit": "CC0",
+      "score": 0.3165
+     }
+    ]
+   },
+   {
+    "year": "1st century AD",
+    "name": "Roman pillows made of cloth",
+    "place": "Ancient Rome",
+    "search": "roman cloth pillow",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Pillows_on_a_hotel_bed.jpg/500px-Pillows_on_a_hotel_bed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Pillow",
+      "credit": "Wikipedia: Pillow",
+      "score": 0.2608
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Bettwaesche.jpg/500px-Bettwaesche.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Bedding",
+      "credit": "Wikipedia: Bedding",
+      "score": 0.2546
+     }
+    ]
+   },
+   {
+    "year": "18th century",
+    "name": "Pilows with feathers and down filling",
+    "place": "Europe",
+    "search": "feather pillow filling",
+    "images": null
+   },
+   {
+    "year": "1882",
+    "name": "Synthetic fiber pillows",
+    "place": "USA",
+    "search": "synthetic fiber pillow",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Rembourrage_Baby_Globe_polyfill.png/500px-Rembourrage_Baby_Globe_polyfill.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Rembourrage_Baby_Globe_polyfill.png",
+      "credit": "Sukkoria · CC BY-SA 4.0",
+      "score": 0.2959
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Pillows_on_a_hotel_bed.jpg/500px-Pillows_on_a_hotel_bed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Pillow",
+      "credit": "Wikipedia: Pillow",
+      "score": 0.2925
+     }
+    ]
+   },
+   {
+    "year": "20th century",
+    "name": "Modern pillow with polyester and cotton filling",
+    "place": "Global",
+    "search": "polyester cotton pillow",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Pillows_on_a_hotel_bed.jpg/500px-Pillows_on_a_hotel_bed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Pillow",
+      "credit": "Wikipedia: Pillow",
+      "score": 0.3044
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/La_cama_deshecha_%282724466831%29.jpg/500px-La_cama_deshecha_%282724466831%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Duvet",
+      "credit": "Wikipedia: Duvet",
+      "score": 0.2475
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Cushion",
+    "why": "Supports a specific part of the body",
+    "search": "cushion support",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Johanne_Bindesb%C3%B8ll_cushion_Thorvaldsens_Museum.jpg/500px-Johanne_Bindesb%C3%B8ll_cushion_Thorvaldsens_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Johanne_Bindesb%C3%B8ll_cushion_Thorvaldsens_Museum.jpg",
+      "credit": "Johanne Bindesbøll · CC0",
+      "score": 0.3016
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/%28MHNT%29_Phlox_subulata_%27Emerald_Cushion_Blue%27_-_Les_Martels%2C_Giroussens_Tarn.jpg/500px-%28MHNT%29_Phlox_subulata_%27Emerald_Cushion_Blue%27_-_Les_Martels%2C_Giroussens_Tarn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:(MHNT)_Phlox_subulata_%27Emerald_Cushion_Blue%27_-_Les_Martels,_Giroussens_Tarn.jpg",
+      "credit": "Didier Descouens · CC BY-SA 4.0",
+      "score": 0.2055
+     }
+    ]
+   },
+   {
+    "name": "Mattress topper",
+    "why": "Adds comfort and support to an existing mattress",
+    "search": "mattress topper comfort",
+    "images": null
+   },
+   {
+    "name": "Bean bag chair",
+    "why": "Provides casual seating with cushioning",
+    "search": "bean bag chair cushion",
+    "images": null
+   },
+   {
+    "name": "Cushion cover",
+    "why": "Protects a pillow or cushion from wear and tear",
+    "search": "cushion cover protection",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple pillow, but it's actually the culmination of centuries of development. The earliest headrests were made of wood in ancient Egypt around 7th century BC. From there, the concept evolved to include cloth and filling materials like feathers and down. By the 18th century, pillows with synthetic fiber fillings became common in Europe. And now, you have this pillow on your couch, a product of mass production and global trade. You didn't choose it, but it was chosen for you by generations of designers, manufacturers, and consumers.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:15:17.222Z"
+ },
+ "baskets": {
+  "name": "Basket",
+  "desc": "baskets",
+  "lineage": [
+   {
+    "year": "c. 4000 BC",
+    "name": "Ancient Egyptian Reed Basket",
+    "place": "Egyptian Nile Delta",
+    "search": "reed basket",
+    "images": null
+   },
+   {
+    "year": "c. 2000 BC",
+    "name": "Greek Pithos",
+    "place": "Ancient Greece",
+    "search": "clay storage vessel",
+    "images": null
+   },
+   {
+    "year": "18th century",
+    "name": "Willow Basketry",
+    "place": "English Countryside",
+    "search": "willow basket weaving",
+    "images": null
+   },
+   {
+    "year": "1870s",
+    "name": "Wire-Basketry Machine",
+    "place": "British Industrial Towns",
+    "search": "wire mesh baskets",
+    "images": null
+   },
+   {
+    "year": "1950s",
+    "name": "Synthetic Basket",
+    "place": "Global Manufacturing",
+    "search": "plastic storage basket",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Colander",
+    "why": "similar shape, different purpose",
+    "search": "kitchen mesh strainer",
+    "images": null
+   },
+   {
+    "name": "Screen",
+    "why": "grid pattern, variable size",
+    "search": "window screening",
+    "images": null
+   },
+   {
+    "name": "Filter",
+    "why": "porous material, water or air flow",
+    "search": "coffee filter paper",
+    "images": null
+   },
+   {
+    "name": "Cage",
+    "why": "open framework, containment function",
+    "search": "birdcage wire mesh",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple basket. But it's been shaped by thousands of years of human ingenuity. From the reed baskets of ancient Egypt to the wire-basketry machines of 19th century Britain, the design has evolved through the contributions of countless artisans and inventors. And now, you have one on your kitchen counter, chosen for its functionality, not its beauty.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:15:31.495Z"
+ },
+ "rotary telephone": {
+  "name": "rotary phone",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 1830",
+    "name": "Mechanical Telegraph",
+    "place": "London",
+    "search": "telegraph machine",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Vienna_-_Morse_telegraph_machine_-_0137.jpg/500px-Vienna_-_Morse_telegraph_machine_-_0137.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Vienna_-_Morse_telegraph_machine_-_0137.jpg",
+      "credit": "Jorge Royan · CC BY-SA 3.0",
+      "score": 0.3267
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Telegraph_machine_in_DOSAAF_museum_%28Minsk%29.jpg/500px-Telegraph_machine_in_DOSAAF_museum_%28Minsk%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Telegraph_machine_in_DOSAAF_museum_(Minsk).jpg",
+      "credit": "Homoatrox · CC BY-SA 3.0",
+      "score": 0.3253
+     }
+    ]
+   },
+   {
+    "year": "1876",
+    "name": "Bell's Telephone",
+    "place": "Boston",
+    "search": "early telephone",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Early_telephone%2C_Puhoi_Heritage_Museum.jpg/500px-Early_telephone%2C_Puhoi_Heritage_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Early_telephone,_Puhoi_Heritage_Museum.jpg",
+      "credit": "Bjankuloski06 · CC BY 4.0",
+      "score": 0.3478
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/History_of_the_telephoneA.jpg/500px-History_of_the_telephoneA.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:History_of_the_telephoneA.jpg",
+      "credit": "CC BY-SA 4.0",
+      "score": 0.341
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "First Rotary Switchboard",
+    "place": "Philadelphia",
+    "search": "switchboard with dials",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg/500px-Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Woman_Showing_Dial_Position_at_Kenwood_Switchboard_at_Northwestern_Bell_Telephone_Company_-_DPLA_-_1ce8975f7cac573564375b425ea55cc7.jpg",
+      "credit": "Public domain",
+      "score": 0.3306
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg/500px-Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Black_Diamond_Historical_Museum_-_telephone_switchboard_01.jpg",
+      "credit": "Joe Mabel · CC BY-SA 4.0",
+      "score": 0.325
+     }
+    ]
+   },
+   {
+    "year": "1891",
+    "name": "Almon Brown Strowger's Automatic Telephone Exchange",
+    "place": "Kansas City",
+    "search": "dial exchange system",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2801%29.jpg/500px-Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2801%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Postamt_Freiberg,_Post-_und_Fernmeldeausstellung_(01).jpg",
+      "credit": "Manfred Schröter, Berga · CC BY-SA 4.0",
+      "score": 0.3548
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2802%29.jpg/500px-Postamt_Freiberg%2C_Post-_und_Fernmeldeausstellung_%2802%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Postamt_Freiberg,_Post-_und_Fernmeldeausstellung_(02).jpg",
+      "credit": "Manfred Schröter, Berga · CC BY-SA 4.0",
+      "score": 0.3444
+     }
+    ]
+   },
+   {
+    "year": "1940s",
+    "name": "Touch-Tone Rotary Phone",
+    "place": "USA",
+    "search": "touch tone rotary",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/AT%26T_push_button_telephone_western_electric_model_2500_dmg_black.jpg/500px-AT%26T_push_button_telephone_western_electric_model_2500_dmg_black.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Push-button_telephone",
+      "credit": "Wikipedia: Push-button telephone",
+      "score": 0.308
+     },
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/7a/DTMF_keypad.gif?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/DTMF_signaling",
+      "credit": "Wikipedia: DTMF signaling",
+      "score": 0.2455
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Mechanical Calculator",
+    "why": "similar dial mechanism",
+    "search": "mechanical calculator",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Mechanical-calculator-Brunsviga-800-02.jpg/500px-Mechanical-calculator-Brunsviga-800-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Mechanical-calculator-Brunsviga-800-02.jpg",
+      "credit": "CEphoto, Uwe Aranas · CC BY-SA 3.0",
+      "score": 0.3366
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/2019-08-04_Mechanical_calculator_3.jpg/500px-2019-08-04_Mechanical_calculator_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:2019-08-04_Mechanical_calculator_3.jpg",
+      "credit": "Maksym Kozlenko · CC BY-SA 4.0",
+      "score": 0.3295
+     }
+    ]
+   },
+   {
+    "name": "Musical Box",
+    "why": "rotary motion and rhythmic pattern",
+    "search": "musical box",
+    "images": null
+   },
+   {
+    "name": "Typewriter",
+    "why": "rotating dials for character selection",
+    "search": "typewriter",
+    "images": null
+   },
+   {
+    "name": "Cash Register",
+    "why": "similar mechanical counting mechanism",
+    "search": "cash register",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a relic of the past, but it's the culmination of over a century of innovation. The first telegraph machines in London laid the groundwork for the early telephone systems that would follow. Almon Brown Strowger's automatic exchange system, which used rotary dials to connect calls, was patented in 1891 and revolutionized the industry. By the 1940s, touch-tone rotary phones had become a standard feature of American homes, chosen by utility companies and manufacturers rather than consumers. You didn't choose this phone; it was already there when you moved into your apartment.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:50:57.310Z"
+ },
+ "kettle": {
+  "name": "kettle",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "3000 BC",
+    "name": "clay pot",
+    "place": "Mesoamerica",
+    "search": "ancient clay vessel",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Ancient_khoum_clay_vessel_Sultan_Saodat.jpg/500px-Ancient_khoum_clay_vessel_Sultan_Saodat.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ancient_khoum_clay_vessel_Sultan_Saodat.jpg",
+      "credit": "Panpanchik · CC BY-SA 4.0",
+      "score": 0.33
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg/500px-Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Painted_clay_vessel_from_Mingachevir_in_Museum_of_History_of_Azerbaijan.jpg",
+      "credit": "Interfase · Public domain",
+      "score": 0.3265
+     }
+    ]
+   },
+   {
+    "year": "500 AD",
+    "name": "bronze cauldron",
+    "place": "Roman Empire",
+    "search": "roman bronze cooking",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Silver_cauldron.jpg/500px-Silver_cauldron.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Gundestrup_cauldron",
+      "credit": "Wikipedia: Gundestrup cauldron",
+      "score": 0.3652
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG/500px-019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:019_Wandalische_Funde_von_dem_%C3%84u%C3%9Fere_Karpatensenken_und_Westbeskiden.JPG",
+      "credit": "Silar · CC BY-SA 3.0",
+      "score": 0.3354
+     }
+    ]
+   },
+   {
+    "year": "1500s",
+    "name": "tin kettle",
+    "place": "Germany",
+    "search": "german tinware kitchen",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Tin_Kettle_Island.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Tin_Kettle_Island",
+      "credit": "Wikipedia: Tin Kettle Island",
+      "score": 0.2655
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Clifton-Aldan_Station.jpg/500px-Clifton-Aldan_Station.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Clifton_Heights,_Pennsylvania",
+      "credit": "Wikipedia: Clifton Heights, Pennsylvania",
+      "score": 0.2526
+     }
+    ]
+   },
+   {
+    "year": "1700s",
+    "name": "copper teakettle",
+    "place": "England",
+    "search": "english copper tea pot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Copper_Pot.jpg/500px-Copper_Pot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Copper_Pot.jpg",
+      "credit": "Hardyplants · CC0",
+      "score": 0.3646
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Paddock_Family_Tea_Kettle.jpg/500px-Paddock_Family_Tea_Kettle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Paddock_Family_Tea_Kettle.jpg",
+      "credit": "Unknown authorUnknown author · Public domain",
+      "score": 0.344
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "stainless steel kettle",
+    "place": "United States",
+    "search": "american stainless steel",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Bernadotte_Wasserkessel.jpg/500px-Bernadotte_Wasserkessel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Kettle",
+      "credit": "Wikipedia: Kettle",
+      "score": 0.3515
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg/500px-ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:ICEPHOBIC_COATINGS_ON_STAINLESS_STEEL_CYLINDERS_-_NARA_-_17497900.jpg",
+      "credit": "Unknown authorUnknown author or not provided · Public domain",
+      "score": 0.2781
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "whistling teapot",
+    "why": "similar shape, whistle mechanism",
+    "search": "chinese whistling tea pot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_%281920%29_%2814595562977%29.jpg/500px-Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_%281920%29_%2814595562977%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Tales_from_the_X-bar_horse_camp_-_The_blue-roan_%22outlaw%22_and_other_stories_(1920)_(14595562977).jpg",
+      "credit": "Internet Archive Book Images · No restrictions",
+      "score": 0.2224
+     }
+    ]
+   },
+   {
+    "name": "electric teapot",
+    "why": "replaced stove with electric element",
+    "search": "modern electric teapot",
+    "images": null
+   },
+   {
+    "name": "thermos flask",
+    "why": "insulated container for liquids",
+    "search": "vacuum insulated thermos",
+    "images": null
+   },
+   {
+    "name": "coffee urn",
+    "why": "large, pourable container",
+    "search": "industrial coffee server",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple kettle on your stovetop. But its history begins with ancient Mesoamericans who used clay pots to boil water 5,000 years ago. These early vessels were passed down through the Roman Empire, where they evolved into bronze cauldrons that could hold scalding hot liquids. By the 1500s, German craftsmen had perfected tin kettles that rivaled those of their European counterparts. It wasn't until the Industrial Revolution that stainless steel kettles became widespread, and by the late 19th century, your exact model was mass-produced in American factories. You didn't choose this kettle; it was chosen for you by the countless artisans, engineers, and manufacturers who worked on its predecessors over millennia.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:51:25.790Z"
+ },
+ "bentwood chair": {
+  "name": "Bentwood",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 1800",
+    "name": "Cant",
+    "place": "England",
+    "search": "cant seat wood",
+    "images": null
+   },
+   {
+    "year": "1830s",
+    "name": "Cant Rocker",
+    "place": "USA",
+    "search": "cant rocker chair",
+    "images": null
+   },
+   {
+    "year": "1850s",
+    "name": "Windsor Chair",
+    "place": "USA",
+    "search": "windsor armchair",
+    "images": null
+   },
+   {
+    "year": "1882",
+    "name": "Bentwood Chair",
+    "place": "Germany",
+    "search": "bentwood chair",
+    "images": null
+   },
+   {
+    "year": "1950s",
+    "name": "Eames Molded Plastic Chair",
+    "place": "USA",
+    "search": "eames molded plastic",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Japanese Origami Chair",
+    "why": "folded paper design",
+    "search": "origami chair",
+    "images": null
+   },
+   {
+    "name": "Turkish Ottoman Stool",
+    "why": "curved, low seat",
+    "search": "ottoman stool",
+    "images": null
+   },
+   {
+    "name": "Indian Chaise Lounge",
+    "why": "sloping back support",
+    "search": "chaise lounge india",
+    "images": null
+   },
+   {
+    "name": "African Kneeler",
+    "why": "low, curved seat for kneeling",
+    "search": "african kneeler",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a cheap office chair. It's actually the descendant of medieval English cant seats, which were later adapted into rockers in 19th-century America. By the mid-1800s, craftsmen in the USA had developed the Windsor Chair style, which would influence the design of the first bentwood chairs in Germany in the late 19th century. The one in your office was likely mass-produced from molded plastic in the 1950s, but it's still part of a long line of designers and manufacturers who chose this shape for you.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:51:42.041Z"
+ },
+ "fire extinguisher": {
+  "name": "Fire Extinguisher",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "18th century",
+    "name": "Hand-operated pump with leather hose",
+    "place": "London, England",
+    "search": "hand operated fire engine",
+    "images": null
+   },
+   {
+    "year": "1853",
+    "name": "Cylinder-shaped water extinguisher",
+    "place": "Paris, France",
+    "search": "cylinder water extinguisher",
+    "images": null
+   },
+   {
+    "year": "1882",
+    "name": "Hose reel with pump and tank",
+    "place": "New York City, USA",
+    "search": "hose reel fire engine",
+    "images": null
+   },
+   {
+    "year": "1904",
+    "name": "Carbon tetrachloride extinguisher",
+    "place": "Chicago, USA",
+    "search": "carbon tetrachloride extinguisher",
+    "images": null
+   },
+   {
+    "year": "1940s",
+    "name": "Multi-purpose dry chemical extinguisher",
+    "place": "USA",
+    "search": "dry chemical fire extinguisher",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Fire Hose",
+    "why": "pressurized water distribution system",
+    "search": "fire hose reel",
+    "images": null
+   },
+   {
+    "name": "Steam Power Generator",
+    "why": "high-pressure steam generation",
+    "search": "steam generator boiler",
+    "images": null
+   },
+   {
+    "name": "High-Pressure Water Pump",
+    "why": "mechanical water injection",
+    "search": "water pump engine",
+    "images": null
+   },
+   {
+    "name": "Carbon Dioxide Fire Suppression System",
+    "why": "rapid fire extinguishing agent",
+    "search": "co2 suppression system",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a mundane object on the wall, but it's actually a descendant of hand-operated pumps used in 18th century London. Its modern form emerged in Paris in 1853 with the introduction of cylinder-shaped water extinguishers. As cities grew and industries developed, so did the design, with the addition of hoses and reels in New York City in 1882. By the mid-20th century, multi-purpose dry chemical extinguishers became standard, chosen for their effectiveness and ease of use. You didn't choose this fire extinguisher; it was chosen for you by centuries of innovation and practicality.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:51:59.866Z"
+ },
+ "arts & crafts movement glazed stoneware vase": {
+  "name": "Arts & Crafts Vase",
+  "desc": "c. 1900-1930 · Likely British (possibly Staffordshire) · glazed stoneware",
+  "lineage": [
+   {
+    "year": "18th century",
+    "name": "Chinese Qianlong-era Blue and White Porcelain Vase",
+    "place": "China",
+    "search": "blue white porcelain vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Ming_Porcelain_Vase_01.jpg/500px-Ming_Porcelain_Vase_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ming_Porcelain_Vase_01.jpg",
+      "credit": "Gary Todd · CC0",
+      "score": 0.3823
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign%2C_Ming_Dynasty.jpg/500px-20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign%2C_Ming_Dynasty.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:20241025_Gourd-Shaped_Blue_and_White_Porcelain_Vase_of_Wanli_Reign,_Ming_Dynasty.jpg",
+      "credit": "Windmemories · CC BY-SA 4.0",
+      "score": 0.3721
+     }
+    ]
+   },
+   {
+    "year": "1760s",
+    "name": "Meissen Soft-Paste Porcelain Vase",
+    "place": "Germany",
+    "search": "meissen soft paste vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Jar_MET_DP168331_%28cropped%29.jpg/500px-Jar_MET_DP168331_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Soft-paste_porcelain",
+      "credit": "Wikipedia: Soft-paste porcelain",
+      "score": 0.3335
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg/500px-Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Derby_Porcelain_Factory_-_Potpourri_Vase_-_Walters_48844.jpg",
+      "credit": "Derby Porcelain Factory (British, founded 1756) · Public domain",
+      "score": 0.3309
+     }
+    ]
+   },
+   {
+    "year": "1780s",
+    "name": "Wedgwood Jasperware Vase",
+    "place": "England",
+    "search": "wedgwood jasperware",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Wedgwood_jasperware%2C_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG/500px-Wedgwood_jasperware%2C_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Wedgwood_jasperware,_view_2_-_Joseph_Allen_Skinner_Museum_-_DSC07910.JPG",
+      "credit": "Daderot · CC0",
+      "score": 0.3572
+     },
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/db/Jasperware.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Jasperware",
+      "credit": "Wikipedia: Jasperware",
+      "score": 0.3443
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "Aesthetic Movement Ceramic Vase",
+    "place": "USA/UK",
+    "search": "aesthetic movement vase",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Vase_MET_DT161.jpg/500px-Vase_MET_DT161.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/John_Bennett_(potter)",
+      "credit": "Wikipedia: John Bennett (potter)",
+      "score": 0.3019
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif/lossy-page1-500px-Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Maw_%26_Co._-_Vase_-_2017.208_-_Cleveland_Museum_of_Art.tif",
+      "credit": "Maw &amp; Co. · CC0",
+      "score": 0.2846
+     }
+    ]
+   },
+   {
+    "year": "c. 1900-1930",
+    "name": "Arts & Crafts Movement Glazed Stoneware Vase",
+    "place": "UK",
+    "search": "arts and crafts glaze",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Vase_MET_DP229982.jpg/500px-Vase_MET_DP229982.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fulper_Pottery_Company",
+      "credit": "Wikipedia: Fulper Pottery Company",
+      "score": 0.3156
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Small_dish_shaped_like_three_pots_with_dewdrop_design%2C_Nabeshima_ware%2C_Edo_period%2C_1600s_AD%2C_porcelain%2C_cobalt_glaze_-_Tokyo_National_Museum_-_Tokyo%2C_Japan_-_DSC09504.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Small_dish_shaped_like_three_pots_with_dewdrop_design,_Nabeshima_ware,_Edo_period,_1600s_AD,_porcelain,_cobalt_glaze_-_Tokyo_National_Museum_-_Tokyo,_Japan_-_DSC09504.jpg",
+      "credit": "Daderot · Public domain",
+      "score": 0.2903
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Egyptian Alabaster Vase",
+    "why": "Shared cylindrical form, used for sacred vessels",
+    "search": "egyptian alabaster",
+    "images": null
+   },
+   {
+    "name": "Greek Red-Figure Amphora",
+    "why": "Similar profile and ornate decoration",
+    "search": "greek red figure amphora",
+    "images": null
+   },
+   {
+    "name": "Japanese Raku Vase",
+    "why": "Influence of Asian forms on Western ceramics",
+    "search": "japanese raku vase",
+    "images": null
+   },
+   {
+    "name": "Roman Terra Sigillata Amphora",
+    "why": "Shared use of cylindrical form and ornate decoration",
+    "search": "roman terra sigillata",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a quaint, bourgeois trinket. But it's actually a descendant of the Chinese Qianlong-era Blue and White Porcelain Vase, which influenced European ceramicists in the 18th century. The Meissen Soft-Paste Porcelain Vase, made in Germany around the same time, shared similarities with your vase. Later, the Wedgwood Jasperware Vase popularized a similar aesthetic in England. And finally, the Arts & Crafts Movement took these influences and created its own distinctive style, which resulted in your very vase. You didn't choose it; it was chosen for you by all of this history.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:52:26.090Z"
+ },
+ "art nouveau glazed porcelain vase": {
+  "name": "Art Nouveau Vase",
+  "desc": "c. 1900-1930 · Iran (Persia) · glazed porcelain",
+  "lineage": [
+   {
+    "year": "500 BC",
+    "name": "Ancient Greek Red-Figure Amphora",
+    "place": "Greece",
+    "search": "red figure amphora",
+    "images": null
+   },
+   {
+    "year": "200-300 AD",
+    "name": "Roman Terra Sigillata Amphora",
+    "place": "Rome",
+    "search": "terra sigillata",
+    "images": null
+   },
+   {
+    "year": "18th century",
+    "name": "Meissen Porcelain Vase",
+    "place": "Germany",
+    "search": "meissen porcelain",
+    "images": null
+   },
+   {
+    "year": "1850s",
+    "name": "Louis Comfort Tiffany's Favrile Glass Vase",
+    "place": "USA",
+    "search": "favrile glass vase",
+    "images": null
+   },
+   {
+    "year": "1920s",
+    "name": "Art Nouveau Glazed Porcelain Vase (Persian)",
+    "place": "Iran (Persia)",
+    "search": "art nouveau glazed porcelain",
+    "images": null
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Japanese Raku Teapot",
+    "why": "shared curved, organic forms",
+    "search": "raku teapot",
+    "images": null
+   },
+   {
+    "name": "Chinese Qing Dynasty Vase",
+    "why": "similar glazing techniques",
+    "search": "qing dynasty vase",
+    "images": null
+   },
+   {
+    "name": "African Tribal Water Jar",
+    "why": "analogous cylindrical shape",
+    "search": "tribal water jar",
+    "images": null
+   },
+   {
+    "name": "Greek Amphora ( ancient)",
+    "why": "shared vessel form",
+    "search": "ancient greek amphora",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a decorative trinket, but it's actually a descendant of ancient Greek pottery. The techniques used to create its glaze date back to the Roman Empire, and the shape itself has been influenced by centuries of ceramic innovation in Europe, such as the 18th century Meissen porcelain vases. By the time this Art Nouveau vase was created, the art of ceramic production had spread to the Middle East, where local artisans combined their own techniques with European influences to produce a unique piece like this one. And now it sits on your shelf, chosen for you by generations of craftsmen and artists whose work has trickled down through history, shaping the very object that catches your eye.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T22:52:44.041Z"
+ },
+ "table lamp": {
+  "name": "table lamp",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 2000 BC",
+    "name": "Hurrian oil lamp",
+    "place": "Ancient Mesopotamia",
+    "search": "hurrian oil lamp",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/P1050759_Louvre_st%C3%A8le_du_Baal_au_foudre_rwk.JPG/500px-P1050759_Louvre_st%C3%A8le_du_Baal_au_foudre_rwk.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/List_of_Ugaritic_deities",
+      "credit": "Wikipedia: List of Ugaritic deities",
+      "score": 0.2511
+     }
+    ]
+   },
+   {
+    "year": "Roman Empire, 1st century AD",
+    "name": "Oil lantern",
+    "place": "Rome",
+    "search": "roman oil lantern",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/6/68/CNW_brakeman%27s_kerosene_lantern.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Lantern",
+      "credit": "Wikipedia: Lantern",
+      "score": 0.3348
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Crockery_and_glass_journal_%281875%29_%2814798957833%29.jpg/500px-Crockery_and_glass_journal_%281875%29_%2814798957833%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Crockery_and_glass_journal_(1875)_(14798957833).jpg",
+      "credit": "Internet Archive Book Images · No restrictions",
+      "score": 0.2961
+     }
+    ]
+   },
+   {
+    "year": "18th century",
+    "name": "Candlestick with candle holder",
+    "place": "Europe",
+    "search": "candlestick candle holder",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Single_candle_in_brass_holder_st_Johns_Lutheran.jpg/500px-Single_candle_in_brass_holder_st_Johns_Lutheran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Single_candle_in_brass_holder_st_Johns_Lutheran.jpg",
+      "credit": "Leon Brooks · Public domain",
+      "score": 0.3352
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg/500px-Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Igreja_de_Nossa_Senhora_da_Palma_Salvador_Candle_Holders_2018-0607.jpg",
+      "credit": "Paul R. Burley · CC BY-SA 4.0",
+      "score": 0.3283
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Edison's carbon filament lamp",
+    "place": "USA",
+    "search": "edison carbon filament",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/76/Edison_bulb.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "link": "https://commons.wikimedia.org/wiki/File:Edison_bulb.jpg",
+      "credit": "Uploaded at enwp by User:Alkivar · CC BY-SA 3.0",
+      "score": 0.3587
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Edison_carbon_filament_light_bulb.jpg/500px-Edison_carbon_filament_light_bulb.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Edison_carbon_filament_light_bulb.jpg",
+      "credit": "Joseph E. Hinds · Public domain",
+      "score": 0.357
+     }
+    ]
+   },
+   {
+    "year": "20th century",
+    "name": "Table lamp with electric bulb",
+    "place": "Global",
+    "search": "electric table lamp",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Gluehlampe_01_KMJ.png/500px-Gluehlampe_01_KMJ.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Incandescent_light_bulb",
+      "credit": "Wikipedia: Incandescent light bulb",
+      "score": 0.3346
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Light-bulbs.jpg/500px-Light-bulbs.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Electric_light",
+      "credit": "Wikipedia: Electric light",
+      "score": 0.3109
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Kerosene lantern",
+    "why": "Fuelled by kerosene, often used outdoors",
+    "search": "kerosene lantern",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Hurricane_lamp_in_dark.jpg/500px-Hurricane_lamp_in_dark.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Hurricane_lamp_in_dark.jpg",
+      "credit": "Anton Croos · CC BY-SA 3.0",
+      "score": 0.3712
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Kerosene_lantern.jpg/500px-Kerosene_lantern.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Kerosene_lantern.jpg",
+      "credit": "Bige1977 at English Wikipedia · Public domain",
+      "score": 0.3665
+     }
+    ]
+   },
+   {
+    "name": "Candle holder",
+    "why": "Holds a candle in place",
+    "search": "candle holder",
+    "images": null
+   },
+   {
+    "name": "Oil lamp",
+    "why": "Burns oil for light",
+    "search": "oil lamp",
+    "images": null
+   },
+   {
+    "name": "Solar-powered lantern",
+    "why": "Uses solar panels to charge a battery",
+    "search": "solar lantern",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a mundane table lamp, but it has a rich history that dates back to ancient Mesopotamia. The Hurrian oil lamp, with its wick and reservoir, was the precursor to many later lighting designs. Fast forward to the Roman Empire, where oil lanterns became a common fixture in homes. In the 18th century, candlesticks with candle holders were all the rage in Europe. But it wasn't until Thomas Edison's invention of the carbon filament lamp in 1882 that electric table lamps began to appear. And now, this particular lamp sits on your coffee table, chosen for you by a long line of designers and manufacturers who have refined its design over the centuries.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-12T23:01:36.588Z"
+ },
+ "typewriter": {
+  "name": "typewriter",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 400 BC",
+    "name": "Greek clay tablet writer",
+    "place": "Ancient Greece",
+    "search": "clay tablet scribe",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Alulu_Beer_Receipt.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "link": "https://commons.wikimedia.org/wiki/File:Alulu_Beer_Receipt.jpg",
+      "credit": "Ur-Amma, the scribe who created the text, Dr Tom L. Lee who  · Public domain",
+      "score": 0.3059
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Water_clock_tablet.jpg/500px-Water_clock_tablet.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Water_clock_tablet.jpg",
+      "credit": "Fæ · CC BY-SA 3.0",
+      "score": 0.3025
+     }
+    ]
+   },
+   {
+    "year": "c. 800 AD",
+    "name": "Illuminated manuscript pen",
+    "place": "Medieval Europe",
+    "search": "inkwell quill",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Byzantium%2C_Constantinople%2C_11th_century_-_Gospel_Book_with_Commentaries_-_1942.152_-_Cleveland_Museum_of_Art.tif/lossy-page1-500px-Byzantium%2C_Constantinople%2C_11th_century_-_Gospel_Book_with_Commentaries_-_1942.152_-_Cleveland_Museum_of_Art.tif.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Illuminated_manuscript",
+      "credit": "Wikipedia: Illuminated manuscript",
+      "score": 0.2476
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/RomanVirgilFolio101r.jpg/500px-RomanVirgilFolio101r.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Miniature_(illuminated_manuscript)",
+      "credit": "Wikipedia: Miniature (illuminated manuscript)",
+      "score": 0.2394
+     }
+    ]
+   },
+   {
+    "year": "1780s",
+    "name": "Pitman's single-key machine",
+    "place": "Birmingham, England",
+    "search": "printing press key",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Printing_and_bookbinding_for_schools_%281914%29_%2814782638662%29.jpg/500px-Printing_and_bookbinding_for_schools_%281914%29_%2814782638662%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Printing_and_bookbinding_for_schools_(1914)_(14782638662).jpg",
+      "credit": "Vaughn, Samuel Jesse, b. 1877 · No restrictions",
+      "score": 0.3015
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/ENIAC-changing_a_tube_%28cropped%29.jpg/500px-ENIAC-changing_a_tube_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Computer",
+      "credit": "Wikipedia: Computer",
+      "score": 0.2867
+     }
+    ]
+   },
+   {
+    "year": "1868",
+    "name": "Sholes & Glidden Type-Writer",
+    "place": "Milwaukee, USA",
+    "search": "type writer patent",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Type-Writer._-_DPLA_-_13819260b300e974774e9d1a8786b64f_%28page_1%29.jpg/500px-Type-Writer._-_DPLA_-_13819260b300e974774e9d1a8786b64f_%28page_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Type-Writer._-_DPLA_-_13819260b300e974774e9d1a8786b64f_(page_1).jpg",
+      "credit": "Austin, Thomas R · Public domain",
+      "score": 0.2734
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/C._Lathan_Sholes_Type_Writer_-_DPLA_-_3bf8eba42131aa00317c180792611750_%28page_1%29.jpg/500px-C._Lathan_Sholes_Type_Writer_-_DPLA_-_3bf8eba42131aa00317c180792611750_%28page_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:C._Lathan_Sholes_Type_Writer_-_DPLA_-_3bf8eba42131aa00317c180792611750_(page_1).jpg",
+      "credit": "Department of the Interior. Patent Office. (1849 - 1925) · Public domain",
+      "score": 0.2591
+     }
+    ]
+   },
+   {
+    "year": "1920s",
+    "name": "Underwood No. 5 Portable",
+    "place": "Grand Rapids, USA",
+    "search": "portable typewriter",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_6.jpg/500px-Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_6.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_6.jpg",
+      "credit": "W.carter · CC BY-SA 4.0",
+      "score": 0.3266
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_5.jpg/500px-Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Manual_portable_typewriter_Imperial_The_Good_Companion_Model_T_5.jpg",
+      "credit": "W.carter · CC BY-SA 4.0",
+      "score": 0.3244
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Typing ball printer",
+    "why": "similar key-to-print mechanism",
+    "search": "ball typing printer",
+    "images": null
+   },
+   {
+    "name": "Braille writer",
+    "why": "raised characters for tactile feedback",
+    "search": "braille embosser",
+    "images": null
+   },
+   {
+    "name": "Morse code telegraph key",
+    "why": "similar lever-and-contact design",
+    "search": "morse key",
+    "images": null
+   },
+   {
+    "name": "Hole punch machine",
+    "why": "cylinder and rotating mechanism",
+    "search": "punch hole machine",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a relic from your grandparent's office, but it has roots in ancient Greek scribes who wrote on clay tablets. The modern typewriter evolved through the 19th century with innovations like Pitman's single-key machine and Sholes & Glidden's Type-Writer patent. By the early 20th century, portable models like the Underwood No. 5 were mass-produced for office use. You may have chosen your laptop or phone over this clunky old typewriter, but it was already chosen for you by the designers, manufacturers, and consumers who came before.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:19:57.302Z"
+ },
+ "bicycle bell": {
+  "name": "bike bell",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 1800",
+    "name": "hand ringer",
+    "place": "Europe",
+    "search": "bell hand ring",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/CAMPA1965.JPG/500px-CAMPA1965.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:CAMPA1965.JPG",
+      "credit": "Sancampa · Public domain",
+      "score": 0.3109
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Handbell_Large01.jpg/500px-Handbell_Large01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Handbell_Large01.jpg",
+      "credit": "Miya · CC BY-SA 3.0",
+      "score": 0.283
+     }
+    ]
+   },
+   {
+    "year": "1855",
+    "name": "tubular bell",
+    "place": "France",
+    "search": "tubular bicycle bell",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Tubular_bells_-_dusseldorf_germany_-_2014_12_27.webm/500px--Tubular_bells_-_dusseldorf_germany_-_2014_12_27.webm.jpg",
+      "link": "https://en.wikipedia.org/wiki/Tubular_bells",
+      "credit": "Wikipedia: Tubular bells",
+      "score": 0.2497
+     }
+    ]
+   },
+   {
+    "year": "1884",
+    "name": "safety bell",
+    "place": "USA",
+    "search": "safety bicycle bell",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Safetycoffin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Safety_coffin",
+      "credit": "Wikipedia: Safety coffin",
+      "score": 0.2509
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/St._Nicholas_%28serial%29_%281873%29_%2814593541649%29.jpg/500px-St._Nicholas_%28serial%29_%281873%29_%2814593541649%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:St._Nicholas_(serial)_(1873)_(14593541649).jpg",
+      "credit": "Internet Archive Book Images · No restrictions",
+      "score": 0.2419
+     }
+    ]
+   },
+   {
+    "year": "1900",
+    "name": "tinny bell",
+    "place": "UK",
+    "search": "bike tin bell",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Galaxy_195104.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/The_Marching_Morons",
+      "credit": "Wikipedia: The Marching Morons",
+      "score": 0.2088
+     }
+    ]
+   },
+   {
+    "year": "1975",
+    "name": "plastic bell",
+    "place": "China",
+    "search": "bike plastic bell",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/PoliceComicNo15.jpg/500px-PoliceComicNo15.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Plastic_Man",
+      "credit": "Wikipedia: Plastic Man",
+      "score": 0.2039
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "car horn",
+    "why": "similar sound production mechanism",
+    "search": "car horn",
+    "images": null
+   },
+   {
+    "name": "school alarm",
+    "why": "same alerting function",
+    "search": "school alarm",
+    "images": null
+   },
+   {
+    "name": "construction whistle",
+    "why": "identical loud, piercing tone",
+    "search": "construction site whistle",
+    "images": null
+   },
+   {
+    "name": "train warning bell",
+    "why": "similar warning purpose",
+    "search": "train warning bell",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a cheap trinket on your bike handlebars. But it has its roots in the early 19th century, when pedestrians and horse-drawn carriages needed to alert each other of their presence. The first hand ringer was used by pedestrians to signal their approach. By the mid-1800s, tubular bells were being attached to bicycles in France. In the late 1800s, safety bells became a standard feature on American bicycles, designed to reduce accidents between cyclists and horses. Fast forward to the 20th century, when tinny bells from the UK and plastic bells from China flooded the market. You didn't choose this bell; it was chosen for you by centuries of innovation and mass production.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:20:47.042Z"
+ },
+ "chandelier": {
+  "name": "Venetian Chandeliers",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 500 BC",
+    "name": "Antony's Chandeliers",
+    "place": "Egypt",
+    "search": "Candle holders ancient",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Qing_Bronze_Candle_Holder_Reproducing_Ancient_Design.jpg/500px-Qing_Bronze_Candle_Holder_Reproducing_Ancient_Design.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Qing_Bronze_Candle_Holder_Reproducing_Ancient_Design.jpg",
+      "credit": "Gary Todd · CC0",
+      "score": 0.2101
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Eros_holding_a_candle_receptacle_%283308997515%29.jpg/500px-Eros_holding_a_candle_receptacle_%283308997515%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Eros_holding_a_candle_receptacle_(3308997515).jpg",
+      "credit": "Tilemahos Efthimiadis from Athens, Greece · CC BY 2.0",
+      "score": 0.2029
+     }
+    ]
+   }
+  ],
+  "cousins": [],
+  "story": "",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:21:50.691Z"
+ },
+ "gramophone": {
+  "name": "Gramophone",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "1860",
+    "name": "Phonograph",
+    "place": "Baltimore",
+    "search": "Early Sound Recording",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Edison_and_phonograph_edit1.jpg/500px-Edison_and_phonograph_edit1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Phonograph",
+      "credit": "Wikipedia: Phonograph",
+      "score": 0.2988
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Frances_Densmore_recording_Mountain_Chief2.jpg/500px-Frances_Densmore_recording_Mountain_Chief2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Frances_Densmore_recording_Mountain_Chief2.jpg",
+      "credit": "Harris &amp; Ewing · Public domain",
+      "score": 0.2749
+     }
+    ]
+   },
+   {
+    "year": "1882",
+    "name": "Graphophone",
+    "place": "New York",
+    "search": "Edison Graphophone",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Graphophone1901.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Graphophone",
+      "credit": "Wikipedia: Graphophone",
+      "score": 0.3245
+     },
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Graphophone1901.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "link": "https://commons.wikimedia.org/wiki/File:Graphophone1901.jpg",
+      "credit": "Catalog published by the Maison de la Bonne Presse. · Public domain",
+      "score": 0.3245
+     }
+    ]
+   },
+   {
+    "year": "1887",
+    "name": "Graphophone",
+    "place": "Newark",
+    "search": "Edison Improved",
+    "images": [
+     {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Graphophone1901.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "link": "https://en.wikipedia.org/wiki/Graphophone",
+      "credit": "Wikipedia: Graphophone",
+      "score": 0.3245
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Improved_phonograph%2C_1878.jpg/500px-Improved_phonograph%2C_1878.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Improved_phonograph,_1878.jpg",
+      "credit": "Daderot · Public domain",
+      "score": 0.3095
+     }
+    ]
+   },
+   {
+    "year": "1890s",
+    "name": "Phonograph",
+    "place": "Various",
+    "search": "Thomas Edison's Phonograph",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Thomas_Edison_House_and_Museum%2C_Ft_Myers_Florida%2C_1970s_-_Phonograph_in_Muesum.jpg/500px-Thomas_Edison_House_and_Museum%2C_Ft_Myers_Florida%2C_1970s_-_Phonograph_in_Muesum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Thomas_Edison_House_and_Museum,_Ft_Myers_Florida,_1970s_-_Phonograph_in_Muesum.jpg",
+      "credit": "Infrogmation · CC BY-SA 4.0",
+      "score": 0.3506
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Edison_and_phonograph_edit2.jpg/500px-Edison_and_phonograph_edit2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Edison_and_phonograph_edit2.jpg",
+      "credit": "Levin C. Handy (per http://hdl.loc.gov/loc.pnp/cwpbh.04326) · Public domain",
+      "score": 0.2996
+     }
+    ]
+   },
+   {
+    "year": "1920s",
+    "name": "Gramophone",
+    "place": "Europe and US",
+    "search": "Electric Gramophones",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Portable_Philips_LP-_record_player.jpg/500px-Portable_Philips_LP-_record_player.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Portable_Philips_LP-_record_player.jpg",
+      "credit": "Amitbalani · CC0",
+      "score": 0.3013
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/HMV_Record_Player.jpg/500px-HMV_Record_Player.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:HMV_Record_Player.jpg",
+      "credit": "Amitbalani · CC0",
+      "score": 0.2957
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Vinyl record player",
+    "why": "Mechanical playback, similar cylinder shape",
+    "search": "Portable Music Player",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Vinilos_distintos_tama%C3%B1os.jpg/500px-Vinilos_distintos_tama%C3%B1os.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Phonograph_record",
+      "credit": "Wikipedia: Phonograph record",
+      "score": 0.2846
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Edison_and_phonograph_edit1.jpg/500px-Edison_and_phonograph_edit1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Phonograph",
+      "credit": "Wikipedia: Phonograph",
+      "score": 0.2516
+     }
+    ]
+   },
+   {
+    "name": "CD player",
+    "why": "Digital playback, similar disc shape",
+    "search": "Compact Disc Player",
+    "images": null
+   },
+   {
+    "name": "8-track cartridge player",
+    "why": "Serialized magnetic tape, similar spool design",
+    "search": "Cartridge Music Player",
+    "images": null
+   },
+   {
+    "name": "Reel-to-reel tape deck",
+    "why": "Magnetic tape, similar spool and take-up reel",
+    "search": "Studio Tape Recorder",
+    "images": null
+   }
+  ],
+  "story": "You think this is just an old record player in your attic. But it's a direct descendant of the Phonograph, invented by Thomas Edison in 1860. The Graphophone improved upon it in the late 1800s, and by the early 1900s, electric gramophones were being mass-produced in Europe and the US. You didn't choose this gramophone; it was chosen for you by the designers who labored to perfect sound reproduction over a century.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:22:44.351Z"
+ },
+ "desk fan": {
+  "name": "Desk Fan",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "1890",
+    "name": "Electric Dynamo Ventilator",
+    "place": "USA",
+    "search": "electric ventilator",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Mounted_electric_fan_in_a_classroom.jpg/500px-Mounted_electric_fan_in_a_classroom.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Mounted_electric_fan_in_a_classroom.jpg",
+      "credit": "Curpharar · CC BY-SA 4.0",
+      "score": 0.3058
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Ventilator_BW_2026-06-19_16-42-30_running.jpg/500px-Ventilator_BW_2026-06-19_16-42-30_running.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ventilator_BW_2026-06-19_16-42-30_running.jpg",
+      "credit": "Berthold Werner · CC BY-SA 4.0",
+      "score": 0.2906
+     }
+    ]
+   },
+   {
+    "year": "1879",
+    "name": "Centrifugal Fan",
+    "place": "UK",
+    "search": "centrifugal fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Warman_centrifugal_pump.jpg/500px-Warman_centrifugal_pump.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Centrifugal_pump",
+      "credit": "Wikipedia: Centrifugal pump",
+      "score": 0.3101
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Inline_Centrifugal_Fan.jpg/500px-Inline_Centrifugal_Fan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Inline_Centrifugal_Fan.jpg",
+      "credit": "Saud · CC BY-SA 4.0",
+      "score": 0.304
+     }
+    ]
+   },
+   {
+    "year": "1832",
+    "name": "Mechanical Fan",
+    "place": "France",
+    "search": "mechanical fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Hatari_18_inch_fan.jpg/500px-Hatari_18_inch_fan.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Fan_(machine)",
+      "credit": "Wikipedia: Fan (machine)",
+      "score": 0.3276
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Ventilator_BW_2026-06-19_16-42-30_running.jpg/500px-Ventilator_BW_2026-06-19_16-42-30_running.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ventilator_BW_2026-06-19_16-42-30_running.jpg",
+      "credit": "Berthold Werner · CC BY-SA 4.0",
+      "score": 0.3232
+     }
+    ]
+   },
+   {
+    "year": "1795",
+    "name": "Hand-Cranked Fan",
+    "place": "China",
+    "search": "hand cranked fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Brise_Fan_LACMA_M.78.108.10.jpg/500px-Brise_Fan_LACMA_M.78.108.10.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Hand_fan",
+      "credit": "Wikipedia: Hand fan",
+      "score": 0.2714
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/GAZ-21_engine_restored_left.jpg/500px-GAZ-21_engine_restored_left.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:GAZ-21_engine_restored_left.jpg",
+      "credit": "DL24 · CC0",
+      "score": 0.2624
+     }
+    ]
+   },
+   {
+    "year": "c. 500 BC",
+    "name": "Simple Handheld Fan",
+    "place": "Ancient Greece",
+    "search": "handheld fan",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Handheld_Fan_CIMB_Bank.jpg/500px-Handheld_Fan_CIMB_Bank.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Handheld_Fan_CIMB_Bank.jpg",
+      "credit": "Danielrayyan09 · CC BY 4.0",
+      "score": 0.3033
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Eventail_chinois_asym%C3%A9trique_Alcazar_Seville_Spain.jpg/500px-Eventail_chinois_asym%C3%A9trique_Alcazar_Seville_Spain.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Eventail_chinois_asym%C3%A9trique_Alcazar_Seville_Spain.jpg",
+      "credit": "Jebulon · CC0",
+      "score": 0.274
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Blower (Industrial)",
+    "why": "Uses centrifugal principle for heavy duty use",
+    "search": "industrial blower",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Roots_blower_-_2_lobes.svg/500px-Roots_blower_-_2_lobes.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Roots_blower",
+      "credit": "Wikipedia: Roots blower",
+      "score": 0.2597
+     }
+    ]
+   },
+   {
+    "name": "Leaf Blower (Gardening)",
+    "why": "Utilizes axial flow to clear leaves",
+    "search": "leaf blower",
+    "images": null
+   },
+   {
+    "name": "Compressor (Air Conditioning)",
+    "why": "Deploys similar rotary mechanism for cooling",
+    "search": "air compressor",
+    "images": null
+   },
+   {
+    "name": "Centrifugal Pump",
+    "why": "Applies same principle to liquid circulation",
+    "search": "centrifugal pump",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a mundane desk fan, but it's actually the culmination of centuries of innovation. The earliest handheld fans date back to ancient Greece, where they were used for personal cooling. Over time, designs evolved in China, France, and eventually England, with the introduction of mechanical and centrifugal principles. In 1890, the electric dynamo ventilator was patented, paving the way for modern desk fans like the one on your desk. And yet, despite its rich history, you didn't choose this fan; it was chosen for you by all those who came before.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:23:42.465Z"
+ },
+ "door knocker": {
+  "name": "Door Knocker",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 2000 BC",
+    "name": "Bronze Door Chime",
+    "place": "Ancient China",
+    "search": "door chime bronze",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Bull%27s_head_ornament_for_a_lyre_MET_DP260070.jpg/500px-Bull%27s_head_ornament_for_a_lyre_MET_DP260070.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Bronze",
+      "credit": "Wikipedia: Bronze",
+      "score": 0.2623
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Tintinnabulum_Pompeii_MAN_Napoli_Inv27854.jpg/500px-Tintinnabulum_Pompeii_MAN_Napoli_Inv27854.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Tintinnabulum_(ancient_Rome)",
+      "credit": "Wikipedia: Tintinnabulum (ancient Rome)",
+      "score": 0.2485
+     }
+    ]
+   },
+   {
+    "year": "c. 100 AD",
+    "name": "Roman Door Bell",
+    "place": "Rome, Italy",
+    "search": "roman door bell",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Roman_furniture_fitting%2C_Bell_mount_%28FindID_602709%29.jpg/500px-Roman_furniture_fitting%2C_Bell_mount_%28FindID_602709%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Roman_furniture_fitting,_Bell_mount_(FindID_602709).jpg",
+      "credit": "Oxfordshire County Council, Anni Byard, 2014-02-22 13:37:49 · CC BY-SA 4.0",
+      "score": 0.3162
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Bell_Tower_door_at_the_Sacred_Heart_Church_in_Gy%C3%B6mr%C5%91%2C_Pest_County%2C_Hungary.jpg/500px-Bell_Tower_door_at_the_Sacred_Heart_Church_in_Gy%C3%B6mr%C5%91%2C_Pest_County%2C_Hungary.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Bell_Tower_door_at_the_Sacred_Heart_Church_in_Gy%C3%B6mr%C5%91,_Pest_County,_Hungary.jpg",
+      "credit": "Globetrotter19 · CC BY-SA 3.0",
+      "score": 0.2607
+     }
+    ]
+   },
+   {
+    "year": "18th century",
+    "name": "Gilded Door Knocker",
+    "place": "London, England",
+    "search": "gilded door knocker",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Gilded_bronze_door_knocker.jpg/500px-Gilded_bronze_door_knocker.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Gilded_bronze_door_knocker.jpg",
+      "credit": "BabelStone · CC BY-SA 3.0",
+      "score": 0.3084
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/0851_0925_Gilded_Bronze_Pushou_%28door_knocker%29_former_Shu_Kingdom_National_Museum_of_China_anagoria.jpg/500px-0851_0925_Gilded_Bronze_Pushou_%28door_knocker%29_former_Shu_Kingdom_National_Museum_of_China_anagoria.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:0851_0925_Gilded_Bronze_Pushou_(door_knocker)_former_Shu_Kingdom_National_Museum_of_China_anagoria.jpg",
+      "credit": "Anagoria · CC BY 3.0",
+      "score": 0.3074
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "Cast Iron Door Knocker",
+    "place": "New York City, USA",
+    "search": "cast iron door knocker",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Celtic_Door_Knocker.jpg/500px-Celtic_Door_Knocker.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Celtic_Door_Knocker.jpg",
+      "credit": "Luke6040 \n\nRobin Lumley · CC BY-SA 3.0",
+      "score": 0.326
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/The_Sanctuary_knocker%2C_Durham_Cathedral_-_geograph.org.uk_-_1759573.jpg/500px-The_Sanctuary_knocker%2C_Durham_Cathedral_-_geograph.org.uk_-_1759573.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Sanctuary_knocker",
+      "credit": "Wikipedia: Sanctuary knocker",
+      "score": 0.3157
+     }
+    ]
+   },
+   {
+    "year": " Late 19th century",
+    "name": "Bronze Door Knocker",
+    "place": "Paris, France",
+    "search": "bronze door knocker",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Germany_Rhineland-Palatinate_Trier_cathedral_door_knocker_left.jpg/500px-Germany_Rhineland-Palatinate_Trier_cathedral_door_knocker_left.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Germany_Rhineland-Palatinate_Trier_cathedral_door_knocker_left.jpg",
+      "credit": "Virtual-Pano · CC BY 4.0",
+      "score": 0.3309
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/The_Sanctuary_knocker%2C_Durham_Cathedral_-_geograph.org.uk_-_1759573.jpg/500px-The_Sanctuary_knocker%2C_Durham_Cathedral_-_geograph.org.uk_-_1759573.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Sanctuary_knocker",
+      "credit": "Wikipedia: Sanctuary knocker",
+      "score": 0.3263
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Ship Bell",
+    "why": "Sounded alarm to crew",
+    "search": "ship bell",
+    "images": null
+   },
+   {
+    "name": "Alarm Clock",
+    "why": "Wake sleeper from bed",
+    "search": "alarm clock",
+    "images": null
+   },
+   {
+    "name": "Doorbell",
+    "why": "Notify occupant of visitor",
+    "search": "doorbell",
+    "images": null
+   },
+   {
+    "name": "Knocker for the Deaf",
+    "why": "Alerted hearing-impaired person",
+    "search": "knocker deaf",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a simple door knocker, but it's a relic of ancient civilizations. It descends from the Bronze Door Chime of 2000 BC China, where metalworking was first practiced. The Romans later adopted and refined the design with their own bell system. In the 18th century, the gilded door knocker emerged in London, while the cast iron version became popular in New York City during the mid-19th century. Your modern bronze door knocker is a direct descendant of these historical forms, chosen for you by centuries of craftsmen and manufacturers.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:24:37.174Z"
+ },
+ "cast iron teapot": {
+  "name": "Cast Iron Teapot",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "c. 300 BC",
+    "name": "Ancient Chinese Bronze Cauldron",
+    "place": "China",
+    "search": "bronze cauldron",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Ding_cauldron_of_Duke_Mao.jpg/500px-Ding_cauldron_of_Duke_Mao.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Ding_cauldron_of_Duke_Mao.jpg",
+      "credit": "anonymous · CC BY 4.0",
+      "score": 0.384
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Bronze_cauldron_and_lid_MET_DP244544.jpg/500px-Bronze_cauldron_and_lid_MET_DP244544.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Bronze_cauldron_and_lid_MET_DP244544.jpg",
+      "credit": "CC0",
+      "score": 0.3788
+     }
+    ]
+   },
+   {
+    "year": "12th century",
+    "name": "Japanese Kama Wok",
+    "place": "Japan",
+    "search": "kama wok",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Kamado4816.jpg/500px-Kamado4816.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Kamado",
+      "credit": "Wikipedia: Kamado",
+      "score": 0.2866
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Casual_tea_set%40Japan.jpg/500px-Casual_tea_set%40Japan.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Tea_culture_in_Japan",
+      "credit": "Wikipedia: Tea culture in Japan",
+      "score": 0.2263
+     }
+    ]
+   },
+   {
+    "year": "17th century",
+    "name": "Dutch Iron Teapot",
+    "place": "Netherlands",
+    "search": "dutch iron teapot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Black_tea_pot_cropped.jpg/500px-Black_tea_pot_cropped.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Teapot",
+      "credit": "Wikipedia: Teapot",
+      "score": 0.3324
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Tea_pots.jpg/500px-Tea_pots.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Yixing_ware",
+      "credit": "Wikipedia: Yixing ware",
+      "score": 0.308
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "English Cast Iron Teapot",
+    "place": "England",
+    "search": "english cast iron teapot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/A_well-used%2C_blackened_cast_iron_kettle_or_teapot.jpg/500px-A_well-used%2C_blackened_cast_iron_kettle_or_teapot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:A_well-used,_blackened_cast_iron_kettle_or_teapot.jpg",
+      "credit": "পাপৰি বৰা · CC BY-SA 4.0",
+      "score": 0.378
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Black_kojoko_teapot.jpg/500px-Black_kojoko_teapot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Black_kojoko_teapot.jpg",
+      "credit": "Sara Richards · CC BY-SA 2.0",
+      "score": 0.3527
+     }
+    ]
+   },
+   {
+    "year": "late 20th century",
+    "name": "Japanese Cast Iron Teapot",
+    "place": "Japan",
+    "search": "japanese cast iron teapot",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Tetsubin_2005.jpg/500px-Tetsubin_2005.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Tetsubin_2005.jpg",
+      "credit": "No machine-readable author provided. Blanu assumed (based on · CC BY-SA 3.0",
+      "score": 0.3643
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Black_kojoko_teapot.jpg/500px-Black_kojoko_teapot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Black_kojoko_teapot.jpg",
+      "credit": "Sara Richards · CC BY-SA 2.0",
+      "score": 0.3571
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Wok",
+    "why": "deep-frying vessel with similar shape and material",
+    "search": "wok",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Wok_cooking.jpg/500px-Wok_cooking.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "link": "https://en.wikipedia.org/wiki/Wok",
+      "credit": "Wikipedia: Wok",
+      "score": 0.2931
+     }
+    ]
+   },
+   {
+    "name": "Dutch Oven",
+    "why": "cooking pot with thick, heat-retentive walls",
+    "search": "dutch oven",
+    "images": null
+   },
+   {
+    "name": "Cast Iron Skillet",
+    "why": "flat cooking surface with similar material",
+    "search": "cast iron skillet",
+    "images": null
+   },
+   {
+    "name": "Brazier",
+    "why": "open-topped container for holding hot coals or embers",
+    "search": "brazier",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a common household item, but it has a rich history. The cast iron teapot's earliest ancestor was the ancient Chinese bronze cauldron, used for cooking and ceremonial purposes. Over time, similar designs were adopted in Japan, where the kama wok was used for cooking, and later in Europe, where the Dutch iron teapot became popular. In the 19th century, English craftsmen refined the design, creating a more ornate and functional version that would eventually make its way to your kitchen. And yet, despite all this history, you didn't choose this teapot - it was chosen for you by the countless people who worked on its predecessors.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:25:34.425Z"
+ },
+ "brass candlestick": {
+  "name": "candlestick",
+  "desc": "",
+  "lineage": [
+   {
+    "year": "10th century",
+    "name": "Saxon Candlesticks",
+    "place": "England",
+    "search": "saxon metalwork",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Anglo-Saxon_cremation_metalwork_%28FindID_202968%29.jpg/500px-Anglo-Saxon_cremation_metalwork_%28FindID_202968%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Anglo-Saxon_cremation_metalwork_(FindID_202968).jpg",
+      "credit": "Suffolk County Council Archaeology Service, Jane Carr, 2007- · CC BY-SA 4.0",
+      "score": 0.2792
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Anglo-Saxon_cremation_metalwork_%28FindID_202891%29.jpg/500px-Anglo-Saxon_cremation_metalwork_%28FindID_202891%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Anglo-Saxon_cremation_metalwork_(FindID_202891).jpg",
+      "credit": "Suffolk County Council Archaeology Service, Jane Carr, 2007- · CC BY-SA 4.0",
+      "score": 0.2754
+     }
+    ]
+   },
+   {
+    "year": "1500s",
+    "name": "Nuremberg Candlesticks",
+    "place": "Germany",
+    "search": "nuremberg metal",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Nuremberg_Germany_435_Germanisches_Nationalmuseum_%2825%29_%285967153939%29.jpg/500px-Nuremberg_Germany_435_Germanisches_Nationalmuseum_%2825%29_%285967153939%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Nuremberg_Germany_435_Germanisches_Nationalmuseum_(25)_(5967153939).jpg",
+      "credit": "DAVID HOLT from London, England · CC BY-SA 2.0",
+      "score": 0.2679
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Covered_goblet%2C_Venice_or_Southern_Netherlands%2C_late_1500s%2C_glass%2C_gilt_metal_-_Germanisches_Nationalmuseum_-_Nuremberg%2C_Germany_-_DSC03213.jpg/500px-Covered_goblet%2C_Venice_or_Southern_Netherlands%2C_late_1500s%2C_glass%2C_gilt_metal_-_Germanisches_Nationalmuseum_-_Nuremberg%2C_Germany_-_DSC03213.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Covered_goblet,_Venice_or_Southern_Netherlands,_late_1500s,_glass,_gilt_metal_-_Germanisches_Nationalmuseum_-_Nuremberg,_Germany_-_DSC03213.jpg",
+      "credit": "Daderot · Public domain",
+      "score": 0.2675
+     }
+    ]
+   },
+   {
+    "year": "1750s",
+    "name": "Chippendale Candlesticks",
+    "place": "England",
+    "search": "chippendale furniture",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Thomas_Chippendale_-_Pair_of_Candle_Stands_%28torch%C3%A8res%29_-_2018.203_-_Cleveland_Museum_of_Art.tif/lossy-page1-500px-Thomas_Chippendale_-_Pair_of_Candle_Stands_%28torch%C3%A8res%29_-_2018.203_-_Cleveland_Museum_of_Art.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Thomas_Chippendale_-_Pair_of_Candle_Stands_(torch%C3%A8res)_-_2018.203_-_Cleveland_Museum_of_Art.tif",
+      "credit": "Thomas Chippendale · CC0",
+      "score": 0.3597
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Mirror_by_Thomas_Chippendale%2C_c._1778%2C_giltwood_-_Gallery_-_Harewood_House_-_West_Yorkshire%2C_England_-_DSC02012.jpg/500px-Mirror_by_Thomas_Chippendale%2C_c._1778%2C_giltwood_-_Gallery_-_Harewood_House_-_West_Yorkshire%2C_England_-_DSC02012.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Mirror_by_Thomas_Chippendale,_c._1778,_giltwood_-_Gallery_-_Harewood_House_-_West_Yorkshire,_England_-_DSC02012.jpg",
+      "credit": "Daderot · Public domain",
+      "score": 0.2704
+     }
+    ]
+   },
+   {
+    "year": "1850s",
+    "name": "Gothic Revival Candlesticks",
+    "place": "USA",
+    "search": "gothic revival ironwork",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Tabernacle_grille_in_wrought_iron%2C_V%26A_London.jpg/500px-Tabernacle_grille_in_wrought_iron%2C_V%26A_London.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Tabernacle_grille_in_wrought_iron,_V%26A_London.jpg",
+      "credit": "14GTR · CC0",
+      "score": 0.3098
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Waldwic_Plantation_02.jpg/500px-Waldwic_Plantation_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Waldwic_Plantation_02.jpg",
+      "credit": "Altairisfar · Public domain",
+      "score": 0.2728
+     }
+    ]
+   },
+   {
+    "year": "1920s",
+    "name": "Art Deco Candlesticks",
+    "place": "France",
+    "search": "art deco bronze",
+    "images": [
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Art_Deco_fruit_ball%2C_by_a_French_workshop%2C_bronze_sphinxes%2C_early_20th_century%2C_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_%2801%29.jpg/500px-Art_Deco_fruit_ball%2C_by_a_French_workshop%2C_bronze_sphinxes%2C_early_20th_century%2C_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_%2801%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Art_Deco_fruit_ball,_by_a_French_workshop,_bronze_sphinxes,_early_20th_century,_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_(01).jpg",
+      "credit": "Neoclassicism Enthusiast · CC0",
+      "score": 0.3067
+     },
+     {
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Art_Deco_fruit_ball%2C_by_a_French_workshop%2C_bronze_sphinxes%2C_early_20th_century%2C_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_%2802%29.jpg/500px-Art_Deco_fruit_ball%2C_by_a_French_workshop%2C_bronze_sphinxes%2C_early_20th_century%2C_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_%2802%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "link": "https://commons.wikimedia.org/wiki/File:Art_Deco_fruit_ball,_by_a_French_workshop,_bronze_sphinxes,_early_20th_century,_sold_at_ArtMark_in_the_Cesianu-Racovi%C8%9B%C4%83_Palace_in_Bucharest_(02).jpg",
+      "credit": "Neoclassicism Enthusiast · CC0",
+      "score": 0.2855
+     }
+    ]
+   }
+  ],
+  "cousins": [
+   {
+    "name": "Grecian Urn",
+    "why": "shared cylindrical form",
+    "search": "greek pottery",
+    "images": null
+   },
+   {
+    "name": "Wine Bottle",
+    "why": "similar base and neck proportions",
+    "search": "wine glass",
+    "images": null
+   },
+   {
+    "name": "Tea Kettle",
+    "why": "curved handle and spout",
+    "search": "whistling kettle",
+    "images": null
+   },
+   {
+    "name": "Lamp Post",
+    "why": "shared vertical axis and supporting structure",
+    "search": "streetlamp",
+    "images": null
+   },
+   {
+    "name": "Vase",
+    "why": "shared cylindrical body and base",
+    "search": "flowerpot",
+    "images": null
+   }
+  ],
+  "story": "You think this is just a cheap, mass-produced candlestick. But it's actually a descendant of the Saxon Candlesticks from 10th century England, which were made with intricate metalwork and ornate designs. Over time, its design evolved through various styles and periods, including the Nuremberg Candlesticks of the 1500s and the Chippendale Candlesticks of the 1750s. Eventually, it ended up in your room, chosen for you by the anonymous forces of mass production and consumer culture.",
+  "model": "llama3.1:8b",
+  "made": "2026-10-20T10:26:28.566Z"
+ }
+}

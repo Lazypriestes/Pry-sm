@@ -3,6 +3,11 @@
   POST /match  {image: dataURL (square crop of the part), k?}  -> {matches: [...], ms}
        each match: {id, score, coarse, layout, box: [x, y, w, h] as fractions of the photo,
                     w, h (photo px), desc, by, url}
+  POST /similar {text?, image?, minus?, library?, k?, embed?}         -> {matches: [...]} photos whose overall look (CLIP) fits:
+       a description ("deep green, iridescent purple"), an image, or both; minus = a phrase to take out of the image
+       (e.g. "a photo of a vase", so the references are not just more vases); embed = "siglip" (default when
+       tools/siglip_index.py has run) or "clip"
+  POST /rank  {text, images: [url, ...]}                        -> {scores: [...]} how well each image shows <text> (CLIP)
   GET  /photo/<id>.jpg                                          -> the photo (local file)
   GET  /status                                                  -> {ready, photos, regions}
 
@@ -15,7 +20,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np
 import torch
 from PIL import Image
-from transformers import AutoModel, CLIPModel, CLIPProcessor
+from transformers import AutoModel, AutoProcessor, CLIPModel, CLIPProcessor
 
 sys.path.insert(0, os.path.dirname(__file__))
 from match_index import shape_image, hog_cells, patch_features, MODEL, DEVICE, ROOT, LIBRARIES  # noqa: E402
@@ -25,6 +30,7 @@ COARSE_K = 400                    # candidates from the fast search, re-checked 
 GRID = 4                          # layout check on a 4x4 grid of cells
 # A vase should turn into something *else*: skip matches that are themselves vessels.
 VESSEL = re.compile(r"\b(vases?|vessels?|pots?|pottery|ceramics?|stoneware|porcelain|bottles?|jars?|cups?|urns?|amphora|jugs?|pitchers?)\b", re.I)
+SIGLIP = "google/siglip2-base-patch16-224"
 state = {"ready": False, "error": None}
 LOCK = threading.Lock()
 
@@ -45,11 +51,16 @@ def load():
                 "offsets": np.load(os.path.join(idx, "tok_offsets.npy")),
                 # CLIP "what is this a picture of" per photo (tools/clip_index.py), for context
                 "clip": np.load(os.path.join(idx, "clip.npy")).astype(np.float32) if os.path.exists(os.path.join(idx, "clip.npy")) else None,
+                # SigLIP 2 (tools/siglip_index.py): the stronger look-alike search for "feels like", colour, surface
+                "siglip": np.load(os.path.join(idx, "siglip.npy")).astype(np.float32) if os.path.exists(os.path.join(idx, "siglip.npy")) else None,
             }
         state["model"] = AutoModel.from_pretrained(MODEL, torch_dtype=torch.float16).to(DEVICE).eval()
         state["clip"] = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", torch_dtype=torch.float16).to(DEVICE).eval()
         state["clip_proc"] = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
         state["vase_dir"] = clip_text("a photo of a vase")          # removed from the whole-vase look
+        if any(L["siglip"] is not None for L in state["libs"].values()):
+            state["sig"] = AutoModel.from_pretrained(SIGLIP, dtype=torch.float16).to(DEVICE).eval()
+            state["sig_proc"] = AutoProcessor.from_pretrained(SIGLIP)
         flag_vessels()
         state["ready"] = True
         print("ready: " + ", ".join(f"{n} {len(L['photos'])} photos" for n, L in state["libs"].items()) + f" in {time.time() - t:.0f}s", flush=True)
@@ -81,6 +92,24 @@ def clip_text(text):
 def clip_image(img):
     x = state["clip_proc"](images=[img.convert("RGB")], return_tensors="pt")["pixel_values"].to(DEVICE, torch.float16)
     e = state["clip"].visual_projection(state["clip"].vision_model(pixel_values=x).pooler_output).float()[0].cpu().numpy()
+    return e / (np.linalg.norm(e) + 1e-8)
+
+
+def _pooled(o):
+    return o.pooler_output if hasattr(o, "pooler_output") else o
+
+
+@torch.no_grad()
+def sig_text(text):
+    t = state["sig_proc"](text=[text.lower()], return_tensors="pt", padding="max_length", max_length=64, truncation=True).to(DEVICE)
+    e = _pooled(state["sig"].get_text_features(**t)).float()[0].cpu().numpy()
+    return e / (np.linalg.norm(e) + 1e-8)
+
+
+@torch.no_grad()
+def sig_image(img):
+    x = state["sig_proc"](images=[img.convert("RGB")], return_tensors="pt")["pixel_values"].to(DEVICE, torch.float16)
+    e = _pooled(state["sig"].get_image_features(pixel_values=x)).float()[0].cpu().numpy()
     return e / (np.linalg.norm(e) + 1e-8)
 
 
@@ -156,7 +185,7 @@ def search(L, name, qv, q_grid, q_where, q_energy):
     return scored
 
 
-def match(img, k=6, library="both", ctx=None):
+def match(img, k=6, library="both", ctx=None, exclude=None, skip_vessels=True):
     img = img.convert("RGB").resize((224, 224))
     feats = patch_features(state["model"], shape_image(img, short=224))       # 16, 16, 384
     qv = feats.reshape(-1, feats.shape[-1]).mean(0); qv /= np.linalg.norm(qv) + 1e-8
@@ -175,13 +204,19 @@ def match(img, k=6, library="both", ctx=None):
         ctx_sim = {(r[3], r[4]): c for r, c in zip(scored, cs)}
         scored = [(float((1 - weight) * a + weight * b),) + r[1:] + (r[0],) for r, a, b in zip(scored, z_shape, z_ctx)]
     scored.sort(reverse=True)
+    # exclude: an object's own name (room.html) -- a ceiling fan should find propellers, not other ceiling fans.
+    ex_T = np.stack([clip_text(f"a photo of {l}") for l in [exclude] + OTHER_LABELS]) if exclude else None
     out, seen = [], set()
     for score, c, lay, name, p, x, y, s, *shape_score in scored:                # one region per photo
         if (name, p) in seen: continue
         seen.add((name, p))
         ph = state["libs"][name]["photos"][p]
-        if VESSEL.search(" ".join([ph.get("desc", ""), ph.get("ai", ""), ph.get("channel", "")])): continue
-        if state["libs"][name].get("vessel") is not None and state["libs"][name]["vessel"][p]: continue
+        if skip_vessels and VESSEL.search(" ".join([ph.get("desc", ""), ph.get("ai", ""), ph.get("channel", "")])): continue
+        if skip_vessels and state["libs"][name].get("vessel") is not None and state["libs"][name]["vessel"][p]: continue
+        if ex_T is not None and state["libs"][name]["clip"] is not None:
+            lg = 100 * ex_T @ state["libs"][name]["clip"][p]
+            pr = np.exp(lg - lg.max()); pr /= pr.sum()
+            if pr[0] > 0.3 or re.search(r"\b" + re.escape(exclude.split()[-1].rstrip("s")), ph.get("desc", "") + " " + ph.get("ai", ""), re.I): continue
         desc = ph["desc"]
         if name == "arena" and (not desc or re.search(r"\.(jpe?g|png|gif|webp)|^[\w-]{0,40}\d{4,}", desc, re.I)):
             desc = f"from “{ph.get('channel', '').replace('-', ' ').rsplit(' ', 1)[0]}”" if ph.get("channel") else ""
@@ -194,6 +229,62 @@ def match(img, k=6, library="both", ctx=None):
 
 
 _remote = {}
+
+
+def similar(text=None, image=None, minus=None, library="arena", k=6, embed=None):
+    emb = embed if embed in ("clip", "siglip") else ("siglip" if state.get("sig") is not None else "clip")
+    if emb == "siglip" and state.get("sig") is None: emb = "clip"
+    txt, img_fn = (sig_text, sig_image) if emb == "siglip" else (clip_text, clip_image)
+    parts = []
+    if text: parts.append(txt(str(text)[:300]))
+    if image is not None:
+        e = img_fn(image)
+        if minus:
+            m = txt(str(minus)[:100]); e = e - (e @ m) * m; e /= np.linalg.norm(e) + 1e-8
+        parts.append(e)
+    if not parts: return []
+    q = sum(parts); q /= np.linalg.norm(q) + 1e-8
+    out = []
+    for name in [n for n in state["libs"] if library in ("both", n)] or list(state["libs"]):
+        L = state["libs"][name]
+        if L[emb] is None: continue
+        sims = L[emb] @ q
+        if minus and "vase" in minus: sims = np.where(L["vessel"], -1, sims)
+        for p in np.argsort(-sims)[:k * 3]:
+            ph = L["photos"][p]
+            desc = ph["desc"]
+            if name == "arena" and (not desc or re.search(r"\.(jpe?g|png|gif|webp)|^[\w-]{0,40}\d{4,}", desc, re.I)):
+                desc = f"from “{ph.get('channel', '').replace('-', ' ').rsplit(' ', 1)[0]}”" if ph.get("channel") else ""
+            out.append({"id": ph["id"], "library": name, "embed": emb, "score": round(float(sims[p]), 4), "desc": desc, "by": ph["by"],
+                        "box": [0, 0, 1, 1], "w": ph["w"], "h": ph["h"]})
+    out.sort(key=lambda m: -m["score"])
+    return out[:k]
+
+
+def fetch_image(url):
+    import urllib.request
+    for attempt in range(3):                                     # Wikimedia answers bursts with 429
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "objview-research/0.1 (study prototype)"})
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return Image.open(io.BytesIO(r.read())).convert("RGB")
+        except Exception:  # noqa: BLE001
+            time.sleep(0.8 * (attempt + 1))
+    return None
+
+
+def rank(text, urls):
+    """CLIP: how well does each image show <text>? Downloaded images that fail score -1."""
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(4) as ex: ims = list(ex.map(fetch_image, urls[:24]))
+    t = clip_text(f"a photo of {text}")
+    neg = np.stack([clip_text(f"a photo of {n}") for n in ["a page of printed text", "a portrait of a person", "a map", "a logo"]])
+    out = []
+    for im in ims:
+        if im is None: out.append(-1.0); continue
+        e = clip_image(im)
+        out.append(round(float(e @ t - 0.5 * max(0.0, float((neg @ e).max() - e @ t))), 4))
+    return out
 
 
 def remote_url(lib, pid):
@@ -237,14 +328,20 @@ class Handler(BaseHTTPRequestHandler):
         self._send(404, {"error": "not found"})
 
     def do_POST(self):
-        if self.path != "/match": return self._send(404, {"error": "not found"})
+        if self.path not in ("/match", "/rank", "/similar"): return self._send(404, {"error": "not found"})
         if not state["ready"]: return self._send(503, {"error": state["error"] or "index still loading"})
         try:
             b = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))))
+            if self.path == "/similar":
+                im = Image.open(io.BytesIO(base64.b64decode(b["image"].split(",", 1)[1]))) if b.get("image") else None
+                with LOCK: return self._send(200, {"matches": similar(b.get("text"), im, b.get("minus"), str(b.get("library") or "arena"), int(b.get("k") or 6), b.get("embed"))})
+            if self.path == "/rank":
+                with LOCK: return self._send(200, {"scores": rank(str(b.get("text") or ""), [str(u) for u in b.get("images") or []])})
             img = Image.open(io.BytesIO(base64.b64decode(b["image"].split(",", 1)[1])))
             t = time.time()
             with LOCK:
-                res = match(img, int(b.get("k") or 6), str(b.get("library") or "both"), b.get("context"))
+                res = match(img, int(b.get("k") or 6), str(b.get("library") or "both"), b.get("context"),
+                            exclude=str(b["exclude"])[:60] if b.get("exclude") else None, skip_vessels=b.get("vessels") is not True)
             self._send(200, {"matches": res, "ms": round((time.time() - t) * 1000)})
         except Exception as e:  # noqa: BLE001
             self._send(500, {"error": repr(e)})

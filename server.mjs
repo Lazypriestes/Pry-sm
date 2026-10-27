@@ -10,6 +10,8 @@
 import { createServer } from "node:http";
 import { readFile, stat, writeFile, mkdir } from "node:fs/promises";
 import { join, extname, normalize, dirname } from "node:path";
+import { createHash } from "node:crypto";
+import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -22,6 +24,11 @@ const VLM_LOCAL = process.env.VLM_LOCAL || "gemma3:4b";
 const GEN_LOCAL = process.env.GEN_LOCAL_URL || "http://127.0.0.1:8002";
 // Real-image matching (tools/match_server.py): photos containing a region shaped like the circled part.
 const MATCH_LOCAL = process.env.MATCH_URL || "http://127.0.0.1:8003";
+// Objects in a room photo (tools/room_server.py, Florence-2) and their histories (room.html).
+const ROOM_LOCAL = process.env.ROOM_URL || "http://127.0.0.1:8004";
+const LLM_LOCAL = process.env.LLM_LOCAL || "llama3.1:8b";
+const SCAN_LOCAL = process.env.SCAN_LOCAL || "qwen2.5vl:7b";      // looks at each object (gemma3:4b missed too much)
+const UA = { "User-Agent": "objview-research/0.1 (study prototype)" };
 
 // fal backend. Image-to-image: FLUX-dev (~2 s). Outpainting with a mask: flux-lora-fill (~7 s;
 // "fal-ai/flux-pro/v1/fill" is a little richer but ~15 s). Readings: Gemini Flash (~1.5 s).
@@ -36,10 +43,13 @@ const INTERPRET_PROMPT = `Like seeing shapes in clouds, read this fragment by it
 What much larger thing could it be a small part of? First something built or architectural, then something from nature, then something surprising.`;
 
 let FAL_KEY = process.env.FAL_KEY;
+// Google Cloud Vision (Lens-style "web detection"): an API key from console.cloud.google.com, saved in .env
+let GOOGLE_VISION_KEY = process.env.GOOGLE_VISION_KEY;
 try {
   for (const line of (await readFile(join(ROOT, ".env"), "utf8")).split("\n")) {
     const m = line.match(/^\s*([A-Z_]+)\s*=\s*(.*)\s*$/);
     if (m && m[1] === "FAL_KEY") FAL_KEY = m[2];
+    if (m && m[1] === "GOOGLE_VISION_KEY") GOOGLE_VISION_KEY = m[2];
   }
 } catch (e) { /* no .env */ }
 
@@ -144,9 +154,19 @@ async function matchProxy(req, res) {
   if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
   try {
     const r = await fetch(`${MATCH_LOCAL}/match`, { method: "POST", signal: AbortSignal.timeout(20000),
-      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image, k: b.k || 6, library: b.library, context: b.context }) });
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image, k: b.k || 6, library: b.library, context: b.context, exclude: b.exclude, vessels: b.vessels }) });
     const j = await r.json().catch(() => ({}));
     send(res, r.status, j);
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+// Photos whose overall look (CLIP) fits a description and/or an image: colour, surface and mood references.
+async function similarProxy(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  try {
+    const r = await fetch(`${MATCH_LOCAL}/similar`, { method: "POST", signal: AbortSignal.timeout(30000), headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: b.text, image: isDataImage(b.image) ? b.image : undefined, minus: b.minus, library: b.library, k: b.k, embed: b.embed }) });
+    send(res, r.status, await r.json().catch(() => ({})));
   } catch (e) { send(res, 502, { error: String(e.message || e) }); }
 }
 async function photoProxy(id, res) {
@@ -177,6 +197,182 @@ async function saveRef(req, res) {
   send(res, 200, { path });
 }
 
+// ---- Room: objects and how they came to be -------------------------------------------------------
+async function objectsProxy(req, res) {
+  let b;
+  try { b = await readBody(req, 30e6); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
+  try {
+    const r = await fetch(`${ROOM_LOCAL}/objects`, { method: "POST", signal: AbortSignal.timeout(400000),
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: b.image }) });
+    send(res, r.status, await r.json().catch(() => ({ error: `room server ${r.status}` })));
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+
+const LINEAGE_SYSTEM = `You are a design historian. For an everyday object, you trace how it came to be and what else shares its form.
+Answer only with JSON:
+{"name": short name,
+ "lineage": 5 ancestors, oldest first, ending with the modern version: [{"year": "c. 500 BC" or "1882", "name": the specific historical object or invention, "place": where, "search": 2-4 words naming the object itself, as it would be titled in a photo archive (never a museum or person name)}]. Only well-known, real objects; if unsure of a date, use a century,
+ "cousins": 4 things from other worlds with the same form or working principle: [{"name", "why": under 10 words, "search": 2-4 words naming that thing}]. Think of shape first: blades, rings, cylinders, legs, frames,
+ "story": 4 sentences, second person. The reader glanced past this object and thinks it is beneath their notice. Start with what they assume ("You think this is just..."). Then, coolly and precisely, trace how it trickled down from the earliest ancestor through specific inventors, workshops, cities and years, to the one in their room. End by pointing out that they did not choose it; it was chosen for them by all of that. Tone: dry, exacting, faintly amused, never warm. No exclamation marks, no "let me tell you".}`;
+const LINEAGE_FILE = join(ROOT, "rooms", "lineage.json");
+let lineageCache = null;
+const lineagePending = new Map();
+async function loadLineage() {
+  if (!lineageCache) { try { lineageCache = JSON.parse(await readFile(LINEAGE_FILE, "utf8")); } catch (e) { lineageCache = {}; } }
+  return lineageCache;
+}
+async function getJSON(url, ms = 10000) {
+  try { const r = await fetch(url, { headers: UA, signal: AbortSignal.timeout(ms) }); return r.ok ? await r.json() : null; } catch (e) { return null; }
+}
+// Candidate pictures: the lead image of the matching Wikipedia article(s), plus Wikimedia Commons files.
+async function candidates(item) {
+  const q = encodeURIComponent;
+  const [wp, cm] = await Promise.all([
+    getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=2&gsrsearch=${q(item.name)}` +
+            `&prop=pageimages|info&inprop=url&piprop=thumbnail&pithumbsize=480`),
+    getJSON(`https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=7` +
+            `&gsrsearch=${q("filetype:bitmap " + (item.search || item.name))}&prop=imageinfo&iiprop=url|extmetadata` +
+            `&iiextmetadatafilter=Artist|LicenseShortName&iiurlwidth=480`)]);
+  const out = [];
+  for (const p of Object.values(wp?.query?.pages || {}))
+    if (p.thumbnail?.source) out.push({ src: p.thumbnail.source, link: p.fullurl, credit: `Wikipedia: ${p.title}` });
+  for (const p of Object.values(cm?.query?.pages || {})) {
+    const ii = p.imageinfo?.[0]; if (!ii?.thumburl) continue;
+    const m = ii.extmetadata || {};
+    const artist = String(m.Artist?.value || "").replace(/<[^>]+>/g, "").trim().slice(0, 60);
+    out.push({ src: ii.thumburl, link: ii.descriptionurl, credit: [artist, m.LicenseShortName?.value].filter(Boolean).join(" · ") || "Wikimedia Commons" });
+  }
+  return out;
+}
+async function pictureFor(item) {
+  const c = await candidates(item);
+  if (!c.length) return null;
+  try {
+    const r = await fetch(`${MATCH_LOCAL}/rank`, { method: "POST", signal: AbortSignal.timeout(60000),
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: item.name, images: c.map(x => x.src) }) });
+    const scores = (await r.json()).scores || [];
+    // Up to two pictures per step, the ones CLIP thinks show it best.
+    const good = scores.map((s, i) => [s, i]).sort((a, b) => b[0] - a[0]).filter(x => x[0] > 0.2).slice(0, 2);
+    return good.length ? good.map(([s, i]) => ({ ...c[i], score: s })) : null;
+  } catch (e) { return [c[0]]; }                                 // matcher not running: take the first one
+}
+async function makeLineage(name, desc) {
+  const r = await fetch(`${OLLAMA}/api/generate`, { method: "POST", signal: AbortSignal.timeout(180000),
+    body: JSON.stringify({ model: LLM_LOCAL, system: LINEAGE_SYSTEM, prompt: `The object: ${desc && desc !== name ? `${name} (${desc})` : name}`,
+      stream: false, format: "json", keep_alive: "30m", options: { temperature: 0.6, num_predict: 900 } }) });
+  const j = await r.json();
+  const L = JSON.parse(j.response);
+  const clean = (a, n) => (Array.isArray(a) ? a : []).filter(x => x && x.name).slice(0, n);
+  L.lineage = clean(L.lineage, 6); L.cousins = clean(L.cousins, 5);
+  // Three at a time: Wikimedia throttles bursts of image downloads.
+  const items = [...L.lineage, ...L.cousins];
+  for (let i = 0; i < items.length; i += 3)
+    await Promise.all(items.slice(i, i + 3).map(async it => { it.images = await pictureFor(it); }));
+  return { name: L.name || name, desc, lineage: L.lineage, cousins: L.cousins, story: String(L.story || ""), model: LLM_LOCAL, made: new Date().toISOString() };
+}
+// Cached in rooms/lineage.json by object name; edit an entry and set "checked": true to keep it.
+async function lineage(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  const name = String(b.name || "").trim().toLowerCase().slice(0, 80);
+  if (!name) return send(res, 400, { error: "name required" });
+  const cache = await loadLineage();
+  if (cache[name] && !b.refresh) return send(res, 200, { ...cache[name], cached: true });
+  if (cache[name]?.checked) return send(res, 200, { ...cache[name], cached: true });
+  try {
+    if (!lineagePending.has(name)) lineagePending.set(name, makeLineage(name, String(b.desc || "").slice(0, 160)).finally(() => lineagePending.delete(name)));
+    const L = await lineagePending.get(name);
+    cache[name] = L;
+    await mkdir(dirname(LINEAGE_FILE), { recursive: true });
+    await writeFile(LINEAGE_FILE, JSON.stringify(cache, null, 1));
+    send(res, 200, L);
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+
+// A careful look at one object: form, surface, decoration, palette, material, what is certain and what is not.
+const SCAN_PROMPT = `You are a careful museum cataloguer examining one object, shown cut out of its photograph on a dark background. Describe only what you can see, and say when something cannot be told from a photo.
+Answer as JSON:
+{"name": what it is, 2-4 words,
+ "summary": one sentence: what it is and its overall character,
+ "form": 3 short observations about shape and construction (parts like top, body, base, legs, edges),
+ "surface": 3 short observations about colour, finish, texture, gloss,
+ "decoration": up to 3 short observations describing any motifs (flowers, figures, lettering), patterns or ornament; empty list only if the surface is plain,
+ "palette": 4-6 colour names as a designer would name them (e.g. "olive grey", "ivory"),
+ "material": the most likely material, hedged if unsure,
+ "made": how it was probably made, hedged,
+ "resembles": 1-2 styles or traditions it resembles, phrased as comparisons ("consistent with ...", "recalls ..."), never as identifications,
+ "interesting": 2 things a careful viewer would notice,
+ "clear": 2 things that are certain from the photo,
+ "uncertain": 2 things a photo cannot establish}
+Each observation under 14 words.`;
+const SCAN_FILE = join(ROOT, "rooms", "scans.json");
+let scanCache = null;
+const scanPending = new Map();
+async function scan(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  const key = String(b.key || "").slice(0, 120);
+  if (!key) return send(res, 400, { error: "key required" });
+  if (!scanCache) { try { scanCache = JSON.parse(await readFile(SCAN_FILE, "utf8")); } catch (e) { scanCache = {}; } }
+  if (scanCache[key] && (!b.refresh || scanCache[key].checked)) return send(res, 200, { ...scanCache[key], cached: true });
+  if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
+  try {
+    if (!scanPending.has(key)) scanPending.set(key, (async () => {
+      const hint = b.name ? ` A detector called it "${String(b.name).slice(0, 60)}"${b.desc && b.desc !== b.name ? ` ("${String(b.desc).slice(0, 120)}")` : ""}; correct it if wrong.` : "";
+      const r = await fetch(`${OLLAMA}/api/generate`, { method: "POST", signal: AbortSignal.timeout(180000),
+        body: JSON.stringify({ model: SCAN_LOCAL, prompt: SCAN_PROMPT + hint, images: [b.image.split(",", 2)[1]], stream: false, format: "json",
+          keep_alive: "30m", options: { temperature: 0.3, num_predict: 800 } }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || `ollama ${r.status}`);
+      return { ...JSON.parse(j.response), model: SCAN_LOCAL, made_at: new Date().toISOString() };
+    })().finally(() => scanPending.delete(key)));
+    const out = await scanPending.get(key);
+    scanCache[key] = out;
+    await mkdir(dirname(SCAN_FILE), { recursive: true });
+    await writeFile(SCAN_FILE, JSON.stringify(scanCache, null, 1));
+    send(res, 200, out);
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+
+// ---- Google Lens-style search (Cloud Vision web detection) ----------------------------------------
+// What Google thinks the image shows, related topics, visually similar images on the web and pages that
+// contain it. Results are cached by image hash outside the project, so the same crop is only sent once.
+const LENS_CACHE = join(homedir(), ".local", "share", "objview-match", "lens_cache");
+async function lens(req, res) {
+  let b;
+  try { b = await readBody(req); } catch (e) { return send(res, 400, { error: "bad request" }); }
+  if (!isDataImage(b.image)) return send(res, 400, { error: "image (data URL) required" });
+  const content = b.image.split(",", 2)[1];
+  const key = createHash("sha1").update(content).digest("hex").slice(0, 20), file = join(LENS_CACHE, key + ".json");
+  try { return send(res, 200, { ...JSON.parse(await readFile(file, "utf8")), cached: true }); } catch (e) { /* not cached */ }
+  if (!GOOGLE_VISION_KEY) return send(res, 503, { error: "no GOOGLE_VISION_KEY in .env" });
+  const t = performance.now();
+  try {
+    const r = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(GOOGLE_VISION_KEY)}`, {
+      method: "POST", signal: AbortSignal.timeout(20000), headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ requests: [{ image: { content }, features: [{ type: "WEB_DETECTION", maxResults: 20 }, { type: "LABEL_DETECTION", maxResults: 10 }],
+                                          imageContext: { webDetectionParams: { includeGeoResults: false } } }] }) });
+    const j = await r.json().catch(() => ({}));
+    const a = j.responses?.[0] || {};
+    if (!r.ok || a.error) return send(res, 502, { error: (a.error || j.error || {}).message || `google ${r.status}` });
+    const w = a.webDetection || {};
+    const out = {
+      guess: (w.bestGuessLabels || []).map(l => l.label).filter(Boolean),
+      entities: (w.webEntities || []).filter(e => e.description).map(e => ({ name: e.description, score: +(e.score || 0).toFixed(3) })),
+      labels: (a.labelAnnotations || []).map(l => ({ name: l.description, score: +(l.score || 0).toFixed(3) })),
+      similar: (w.visuallySimilarImages || []).map(i => i.url).filter(Boolean),
+      matching: [...(w.fullMatchingImages || []), ...(w.partialMatchingImages || [])].map(i => i.url).filter(Boolean),
+      pages: (w.pagesWithMatchingImages || []).map(p => ({ url: p.url, title: String(p.pageTitle || "").replace(/<[^>]+>/g, ""),
+              image: (p.fullMatchingImages || p.partialMatchingImages || [])[0]?.url || null })),
+      ms: Math.round(performance.now() - t), made: new Date().toISOString()
+    };
+    await mkdir(LENS_CACHE, { recursive: true });
+    await writeFile(file, JSON.stringify(out));
+    send(res, 200, out);
+  } catch (e) { send(res, 502, { error: String(e.message || e) }); }
+}
+
 async function matchReady() {
   try { const r = await fetch(`${MATCH_LOCAL}/status`, { signal: AbortSignal.timeout(1500) }); const j = await r.json(); return j.ready ? j : false; }
   catch (e) { return false; }
@@ -185,7 +381,12 @@ async function matchReady() {
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   if (url.pathname === "/api/match" && req.method === "POST") return matchProxy(req, res);
+  if (url.pathname === "/api/similar" && req.method === "POST") return similarProxy(req, res);
   if (url.pathname === "/api/imagine" && req.method === "POST") return saveImagine(req, res);
+  if (url.pathname === "/api/objects" && req.method === "POST") return objectsProxy(req, res);
+  if (url.pathname === "/api/lineage" && req.method === "POST") return lineage(req, res);
+  if (url.pathname === "/api/scan" && req.method === "POST") return scan(req, res);
+  if (url.pathname === "/api/lens" && req.method === "POST") return lens(req, res);
   if (url.pathname === "/api/imagine/ref" && req.method === "POST") return saveRef(req, res);
   const photo = url.pathname.match(/^\/api\/photo\/([\w-]+)\.jpg$/);
   if (photo) return photoProxy(photo[1], res);
@@ -194,7 +395,9 @@ createServer(async (req, res) => {
   if (url.pathname === "/api/status") {
     const generation = BACKEND === "local" ? await localGenReady() : !!FAL_KEY;
     const m = await matchReady();
-    return send(res, 200, { backend: BACKEND, generation, matching: !!m, match_photos: m ? m.photos : 0,
+    let room = false;
+    try { room = (await (await fetch(`${ROOM_LOCAL}/status`, { signal: AbortSignal.timeout(1500) })).json()).ready === true; } catch (e) { /* off */ }
+    return send(res, 200, { backend: BACKEND, generation, matching: !!m, match_photos: m ? m.photos : 0, room_objects: room, lens: !!GOOGLE_VISION_KEY,
       model: BACKEND === "local" ? "sdxl-turbo (local)" : GEN_MODEL,
       fill_model: BACKEND === "local" ? "sdxl-turbo inpaint (local)" : FILL_MODEL,
       vlm_model: BACKEND === "local" ? VLM_LOCAL : VLM_MODEL });

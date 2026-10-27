@@ -1,0 +1,686 @@
+{
+ "objects:ceiling_fan": {
+  "name": "Ceiling fan",
+  "summary": "Ceiling fan with dark blades and central hub.",
+  "form": [
+   "Three blades radiate from central hub.",
+   "Blades are straight and symmetrical.",
+   "Central hub is circular and glossy."
+  ],
+  "surface": [
+   "Dark brown or black color.",
+   "Glossy finish reflects light.",
+   "Edges appear slightly worn."
+  ],
+  "decoration": [],
+  "palette": [
+   "Dark brown",
+   "Black",
+   "Glossy brown",
+   "Dark grey"
+  ],
+  "material": "Metallic, possibly brass or bronze, with plastic blades.",
+  "made": "Molded and assembled, likely.",
+  "resembles": [
+   "Modern industrial design",
+   "Simple functional style"
+  ],
+  "interesting": [
+   "Wear on edges suggests use.",
+   "Glossy finish contrasts with wear."
+  ],
+  "clear": [
+   "Three blades are present.",
+   "Central hub is circular."
+  ],
+  "uncertain": [
+   "Exact age and origin.",
+   "Condition beyond wear."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:31:48.506Z"
+ },
+ "objects:vase_23": {
+  "name": "vase",
+  "summary": "Art Nouveau vase with iridescent glaze and floral motifs.",
+  "form": [
+   "Oval body with flared neck.",
+   "Base is slightly wider than the neck.",
+   "No visible legs or feet."
+  ],
+  "surface": [
+   "Iridescent glaze with green and purple hues.",
+   "Smooth texture with a glossy finish.",
+   "Glaze has a mottled, iridescent quality."
+  ],
+  "decoration": [
+   "Floral motifs with white flowers and green leaves."
+  ],
+  "palette": [
+   "Emerald green",
+   "Purple",
+   "Iridescent",
+   "White",
+   "Brown"
+  ],
+  "material": "Glazed stoneware",
+  "made": "Handcrafted",
+  "resembles": [
+   "Art Nouveau style",
+   "Arts & Crafts Movement"
+  ],
+  "interesting": [
+   "The iridescent glaze creates a shimmering effect.",
+   "The floral motifs are delicately rendered."
+  ],
+  "clear": [
+   "It is a vase.",
+   "It has a decorative glaze."
+  ],
+  "uncertain": [
+   "The exact age of the vase.",
+   "The precise origin of the vase."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:32:05.640Z"
+ },
+ "objects:table_lamp": {
+  "name": "lamp",
+  "summary": "A simple, elegant table lamp with a classic design.",
+  "form": [
+   "Conical shade sits atop a vase-like body.",
+   "Base is rounded and flares slightly outward.",
+   "No visible legs or support structure."
+  ],
+  "surface": [
+   "Off-white or cream color.",
+   "Smooth finish with a slight sheen.",
+   "Texture appears matte, not glossy."
+  ],
+  "decoration": [],
+  "palette": [
+   "Cream",
+   "Ivory",
+   "Beige",
+   "Soft white"
+  ],
+  "material": "Porcelain or ceramic, possibly painted.",
+  "made": "Handcrafted or mass-produced, possibly with slipcasting.",
+  "resembles": [
+   "Consistent with Art Deco design.",
+   "Recalls early 20th-century table lamps."
+  ],
+  "interesting": [
+   "The subtle sheen suggests a painted finish.",
+   "The simplicity of the design is striking."
+  ],
+  "clear": [
+   "The lamp is a table lamp.",
+   "The material is likely ceramic or porcelain."
+  ],
+  "uncertain": [
+   "The exact age of the lamp.",
+   "The specific method of production."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:32:19.473Z"
+ },
+ "objects:rotary_telephone": {
+  "name": "rotary telephone",
+  "summary": "Rotary dial telephone with vintage design.",
+  "form": [
+   "Curved top with handset.",
+   "Rectangular body with dial.",
+   "Base supports the body.",
+   "No visible legs or feet."
+  ],
+  "surface": [
+   "Black body.",
+   "Smooth finish.",
+   "Slight sheen, possibly plastic or painted metal.",
+   "No visible texture or pattern."
+  ],
+  "decoration": [],
+  "palette": [
+   "black",
+   "white",
+   "silver",
+   "red"
+  ],
+  "material": "plastic or painted metal, possibly bakelite or similar",
+  "made": "molded and assembled, possibly injection-molded",
+  "resembles": [
+   "1930s-1950s design",
+   "telecommunications equipment"
+  ],
+  "interesting": [
+   "Worn appearance suggests age.",
+   "Handset cord is coiled.",
+   "Dial has emergency numbers."
+  ],
+  "clear": [
+   "Rotary dial design.",
+   "Black color scheme."
+  ],
+  "uncertain": [
+   "Exact age of the telephone.",
+   "Original location or use."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:32:31.730Z"
+ },
+ "objects:kettle": {
+  "name": "whistling kettle",
+  "summary": "Modernist whistling kettle with a curved handle and spout.",
+  "form": [
+   "Conical body with a flared base.",
+   "Curved handle and spout with a small knob.",
+   "Base has small perforations."
+  ],
+  "surface": [
+   "Shiny metallic finish.",
+   "Smooth texture with reflective surface.",
+   "Glossy appearance with light reflections."
+  ],
+  "decoration": [],
+  "palette": [
+   "silver",
+   "blue",
+   "black",
+   "red",
+   "dark grey"
+  ],
+  "material": "polished metal, possibly stainless steel or aluminum",
+  "made": "likely cast and polished, possibly with some welding or soldering",
+  "resembles": [
+   "Modernist design",
+   "Scandinavian style"
+  ],
+  "interesting": [
+   "The contrast between the blue handle and the metallic body.",
+   "The small knob on the spout."
+  ],
+  "clear": [
+   "It is a kettle.",
+   "It has a whistling mechanism."
+  ],
+  "uncertain": [
+   "The exact material of the kettle.",
+   "The specific manufacturing process."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:32:44.630Z"
+ },
+ "objects:bentwood_chair": {
+  "name": "wooden chair",
+  "summary": "Bentwood chair with ornate back and woven seat",
+  "form": [
+   "Heart-shaped back with intricate scrollwork",
+   "Woven seat for comfort",
+   "Four turned legs with simple feet"
+  ],
+  "surface": [
+   "Light wood tone with signs of wear",
+   "Smooth finish with some scratches",
+   "Texture of wood grain visible"
+  ],
+  "decoration": [
+   "Heart-shaped back with swirling motifs"
+  ],
+  "palette": [
+   "Light brown",
+   "White",
+   "Black",
+   "Gray"
+  ],
+  "material": "Bentwood, possibly oak or maple",
+  "made": "Carved and bent wood, likely by hand",
+  "resembles": [
+   "Consistent with Arts and Crafts style",
+   "Recalls early 20th-century furniture"
+  ],
+  "interesting": [
+   "Worn appearance suggests long use",
+   "Heart motif on back may have symbolic significance"
+  ],
+  "clear": [
+   "Chair is upright and stable",
+   "Heart-shaped back is symmetrical"
+  ],
+  "uncertain": [
+   "Age of the chair cannot be determined",
+   "Origin or maker cannot be identified from the photo"
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:32:57.397Z"
+ },
+ "objects:fire_extinguisher": {
+  "name": "portable fire extinguisher",
+  "summary": "A portable fire extinguisher with a wheeled base.",
+  "form": [
+   "Cylindrical body with a handle on top.",
+   "Base with wheels for mobility.",
+   "Top with a nozzle and hose attachment."
+  ],
+  "surface": [
+   "Red body with white text.",
+   "Smooth finish.",
+   "Glossy surface, reflective."
+  ],
+  "decoration": [
+   "Text and symbols on the body.",
+   "No flowers or figures.",
+   "Lettering includes 'SONIC' and 'SKP 50'."
+  ],
+  "palette": [
+   "Red",
+   "White",
+   "Black",
+   "Gray"
+  ],
+  "material": "Metallic, likely steel or aluminum, with plastic components.",
+  "made": "Welded construction with plastic parts.",
+  "resembles": [
+   "Industrial design.",
+   "Emergency equipment design."
+  ],
+  "interesting": [
+   "The 'SONIC' branding suggests a specific manufacturer.",
+   "The 'SKP 50' marking likely indicates the extinguishing capacity."
+  ],
+  "clear": [
+   "It is a fire extinguisher.",
+   "It has a wheeled base for mobility."
+  ],
+  "uncertain": [
+   "The exact type of fire it extinguishes.",
+   "The specific model or type beyond 'SKP 50'."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:33:09.991Z"
+ },
+ "objects:vase_06": {
+  "name": "Art Deco glazed ceramic vase",
+  "summary": "Art Deco vase with geometric patterns and a glossy finish.",
+  "form": [
+   "Elongated, narrow neck transitioning to a wider base.",
+   "No visible legs or feet.",
+   "Edges smooth and rounded."
+  ],
+  "surface": [
+   "Glossy finish with a rich turquoise base color.",
+   "Muted black or dark blue geometric patterns.",
+   "No visible texture, appears smooth."
+  ],
+  "decoration": [
+   "Geometric patterns with stylized floral motifs."
+  ],
+  "palette": [
+   "Turquoise",
+   "Dark blue",
+   "Black",
+   "White"
+  ],
+  "material": "Glazed ceramic, likely porcelain.",
+  "made": "Hand-painted and glazed, possibly with slip-casting techniques.",
+  "resembles": [
+   "Consistent with Art Deco style.",
+   "Recalls Persian glazed pottery."
+  ],
+  "interesting": [
+   "The contrast between the vibrant turquoise and dark blue.",
+   "The subtle variations in the geometric patterns."
+  ],
+  "clear": [
+   "It is a ceramic vase.",
+   "The vase is decorated with geometric patterns."
+  ],
+  "uncertain": [
+   "The exact age and origin of the vase.",
+   "The specific technique used in its production."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-12T22:33:23.199Z"
+ },
+ "objects:typewriter": {
+  "name": "typewriter",
+  "summary": "Black vintage typewriter with a retro design.",
+  "form": [
+   "Curved top with paper feed slot.",
+   "Rectangular body with a flat base.",
+   "No visible legs or feet."
+  ],
+  "surface": [
+   "Black finish.",
+   "Smooth texture.",
+   "Slight sheen, possibly plastic or metal."
+  ],
+  "decoration": [
+   "Silver Reed logo on top.",
+   "Lettering on the side reads 'Silver Reed' and 'Répétite II'."
+  ],
+  "palette": [
+   "black",
+   "silver",
+   "white",
+   "grey"
+  ],
+  "material": "Likely plastic or metal, possibly with a plastic overlay.",
+  "made": "Probably injection-molded plastic or cast metal with a plastic overlay.",
+  "resembles": [
+   "Consistent with mid-20th-century design.",
+   "Recalls vintage office equipment."
+  ],
+  "interesting": [
+   "The logo and model name are prominently displayed.",
+   "The keys are arranged in a standard QWERTY layout."
+  ],
+  "clear": [
+   "It is a typewriter.",
+   "It is black in color."
+  ],
+  "uncertain": [
+   "The exact material composition.",
+   "The age of the typewriter."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:18:59.380Z"
+ },
+ "objects:bicycle_bell": {
+  "name": "bicycle bell",
+  "summary": "Gold bell with black accents, likely for a bicycle.",
+  "form": [
+   "Bell-shaped top with a circular clapper.",
+   "Black base with a word 'PATENT' visible.",
+   "Curved arm for attachment to a bicycle frame."
+  ],
+  "surface": [
+   "Gold surface with a reflective finish.",
+   "Black parts have a matte finish.",
+   "Edges are smooth and rounded."
+  ],
+  "decoration": [
+   "The word 'ROSE' is embossed on the gold bell.",
+   "No other visible motifs or patterns."
+  ],
+  "palette": [
+   "Gold",
+   "Black",
+   "Matte black",
+   "Reflective gold"
+  ],
+  "material": "Metal (gold and black), possibly brass and steel.",
+  "made": "Forged and assembled, likely.",
+  "resembles": [
+   "Consistent with vintage bicycle accessories.",
+   "Recalls classic bell designs from the 19th century."
+  ],
+  "interesting": [
+   "The bell's age and origin are unknown.",
+   "The word 'ROSE' suggests a brand or model name."
+  ],
+  "clear": [
+   "It is a bell.",
+   "It is attached to a bicycle frame."
+  ],
+  "uncertain": [
+   "The exact age of the bell.",
+   "The specific use or function beyond being a bell."
+  ],
+  "detector": "bicycle bell",
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:20:16.304Z"
+ },
+ "objects:chandelier": {
+  "name": "ornate chandelier",
+  "summary": "elaborate, gilded chandelier with intricate design.",
+  "form": [
+   "Curled arms extend from central body.",
+   "Multiple arms hold candle-like structures.",
+   "Base is spherical and reflective."
+  ],
+  "surface": [
+   "Gold-colored, highly reflective.",
+   "Smooth finish, no visible texture.",
+   "Glossy, likely lacquered or polished."
+  ],
+  "decoration": [],
+  "palette": [
+   "golden yellow",
+   "ivory",
+   "dark gold",
+   "brass"
+  ],
+  "material": "gilded metal, possibly brass or bronze",
+  "made": "hammered and soldered, then gilded",
+  "resembles": [
+   "Baroque chandelier",
+   "Louis XIV style"
+  ],
+  "interesting": [
+   "Central body appears to be aaded.",
+   "Lighting suggests electric bulbs rather than candles."
+  ],
+  "clear": [
+   "It is a a chandelier.",
+   "It is ornate and gilded."
+  ],
+  "uncertain": [
+   "The exact age of the chandelier.",
+   "The specific origin or maker."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:21:35.652Z"
+ },
+ "objects:gramophone": {
+  "name": "phonograph",
+  "summary": "Antique phonograph with ornate design.",
+  "form": [
+   "Fan-shaped top with embossed leaves.",
+   "Square body with rounded corners.",
+   "Base with ornate detailing and 'Victrola' label."
+  ],
+  "surface": [
+   "Dark brown wood.",
+   "High-gloss finish.",
+   "Smooth texture.",
+   "Light brown base with darker wood inlay."
+  ],
+  "decoration": [
+   "Leaf motifs on top.",
+   "Ornate base with 'Victrola' label.",
+   "No visible figures or complex patterns."
+  ],
+  "palette": [
+   "Dark brown",
+   "Light brown",
+   "Gold",
+   "Black"
+  ],
+  "material": "Wood, possibly mahogany or walnut, with metal components.",
+  "made": "Carved and assembled by hand, likely in a workshop.",
+  "resembles": "Consistent with Victorian-era design.",
+  "interesting": [
+   "The 'Victrola' label suggests it's a a model from the early 20th century.",
+   "The ornate design suggests it was a premium model."
+  ],
+  "clear": [
+   "It is a phonograph.",
+   "It has a 'Victrola' brand."
+  ],
+  "uncertain": [
+   "The exact year of manufacture.",
+   "The specific model number."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:22:09.132Z"
+ },
+ "objects:desk_fan": {
+  "name": "Desk fan",
+  "summary": "Circular desk fan with a minimalist design.",
+  "form": [
+   "Circular shape with a central hub.",
+   "Four legs provide stability.",
+   "Base is slightly elevated for airflow."
+  ],
+  "surface": [
+   "Light green color.",
+   "Smooth finish.",
+   "Slight sheen suggests plastic or painted metal."
+  ],
+  "decoration": [],
+  "palette": [
+   "Light green",
+   "White",
+   "Black"
+  ],
+  "material": "Plastic or painted metal, possibly with a plastic cover.",
+  "made": "Likely injection-molded plastic or cast metal with painted finish.",
+  "resembles": [
+   "Consistent with mid-century modern design.",
+   "Recalls simple, functional furniture pieces."
+  ],
+  "interesting": [
+   "The minimalist design suggests it's a vintage or retro model.",
+   "The legs are slightly angled, enhancing airflow."
+  ],
+  "clear": [
+   "It is a a desk fan.",
+   "It has a circular shape."
+  ],
+  "uncertain": [
+   "The exact age of the fan.",
+   "The specific brand or model."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:23:02.855Z"
+ },
+ "objects:door_knocker": {
+  "name": "door knocker",
+  "summary": "Decorative metal door knocker with a fist motif.",
+  "form": [
+   "Circular top with concentric ridges.",
+   "Body features a raised fist.",
+   "Base is a curved loop for hanging."
+  ],
+  "surface": [
+   "Dark brown patina.",
+   "Metallic finish with slight sheen.",
+   "Ridges have a textured appearance."
+  ],
+  "decoration": [
+   "Fist motif in the center.",
+   "Concentric ridges around the top.",
+   "No visible lettering or flowers."
+  ],
+  "palette": [
+   "Dark brown",
+   "Metallic silver",
+   "Rustic brown",
+   "Dark bronze"
+  ],
+  "material": "Metal, possibly iron or bronze, with a patina.",
+  "made": "Forged and possibly handcrafted.",
+  "resembles": [
+   "Medieval or Renaissance style.",
+   "European craftsmanship from the 16th-17th century."
+  ],
+  "interesting": [
+   "The raised fist is a unique and possibly symbolic design.",
+   "The patina suggests age and use over time."
+  ],
+  "clear": [
+   "It is a a door knocker.",
+   "It has a decorative design."
+  ],
+  "uncertain": [
+   "The exact age of the object.",
+   "The specific cultural origin."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:24:03.888Z"
+ },
+ "objects:cast_iron_teapot": {
+  "name": "cast iron teapot",
+  "summary": "Rustic, textured cast iron teapot with ornate detailing.",
+  "form": [
+   "Curved top handle.",
+   "Fluted body with embossed patterns.",
+   "Short spout for pouring."
+  ],
+  "surface": [
+   "Dark brown, possibly rusted.",
+   "Textured with embossed patterns.",
+   "Matte finish, no gloss."
+  ],
+  "decoration": [
+   "Floral motifs embossed on the body."
+  ],
+  "palette": [
+   "Dark brown",
+   "Rust",
+   "Charcoal grey",
+   "Black"
+  ],
+  "material": "Cast iron, possibly with some rust.",
+  "made": "Likely cast in a mold, then possibly hand-finished.",
+  "resembles": [
+   "Japanese tea ceremony teapot",
+   "Antique European cooking pot"
+  ],
+  "interesting": [
+   "The embossed floral patterns are intricate and detailed.",
+   "The handle appears slightly worn, suggesting age and use."
+  ],
+  "clear": [
+   "It is a teapot.",
+   "It is made of cast iron."
+  ],
+  "uncertain": [
+   "The exact age of the teapot.",
+   "The specific origin or cultural context."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:25:03.091Z"
+ },
+ "objects:brass_candlestick": {
+  "name": "candlestick",
+  "summary": "Gold-toned candlestick with classical design.",
+  "form": [
+   "Tall, slender form.",
+   "Base flares slightly.",
+   "Top tapers to a point."
+  ],
+  "surface": [
+   "Gold tone.",
+   "Smooth finish.",
+   "Slight sheen visible."
+  ],
+  "decoration": [],
+  "palette": [
+   "golden yellow",
+   "ivory",
+   "copper"
+  ],
+  "material": "likely brass, possibly gold-plated",
+  "made": "probably cast and polished",
+  "resembles": [
+   "Classical Greek or Roman style",
+   "Victorian-era design"
+  ],
+  "interesting": [
+   "Tapered top for candle placement.",
+   "Flared base for stability."
+  ],
+  "clear": [
+   "Tall and slender.",
+   "Gold tone color."
+  ],
+  "uncertain": [
+   "Exact material composition.",
+   "Age or origin."
+  ],
+  "model": "qwen2.5vl:7b",
+  "made_at": "2026-10-20T10:25:53.116Z"
+ }
+}

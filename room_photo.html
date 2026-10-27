@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room Lineage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0b; --ink: #ecebe6; --dim: #8d8b83; --line: rgba(236,235,230,.55); --glow: #f2d58a;
+  --card: #161614; --shade: rgba(8,8,7,.72);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, system-ui, sans-serif; overflow: hidden; }
+button { font: inherit; color: inherit; background: none; border: 1px solid var(--line); padding: 8px 16px; border-radius: 999px; cursor: pointer; }
+button:hover { background: rgba(236,235,230,.08); }
+.mono { font-family: "JetBrains Mono", monospace; }
+
+/* start */
+#start { position: fixed; inset: 0; display: grid; place-items: center; z-index: 20; background: var(--bg); }
+#start .box { max-width: 520px; padding: 0 16px; text-align: center; }
+#start h1 { font: 400 52px/1.05 "Instrument Serif", serif; margin: 0 0 18px; }
+#start p { color: var(--dim); margin: 0 0 26px; }
+#start .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+#drop-hint { margin-top: 22px; font-size: 12px; color: var(--dim); }
+#status { margin-top: 18px; font-size: 12px; color: var(--dim); min-height: 18px; }
+
+/* stage */
+#stage { position: fixed; left: 0; top: 0; }
+#room { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; }
+#overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+#shade { fill: var(--shade); opacity: 0; transition: opacity .6s ease; }
+#shade.on { opacity: 1; }
+.outline { fill: none; stroke: var(--glow); stroke-width: 2; vector-effect: non-scaling-stroke; opacity: 0;
+           filter: drop-shadow(0 0 6px rgba(242,213,138,.9)); transition: opacity .25s; }
+.outline.charging { opacity: .35; }
+.outline.open { opacity: 1; stroke-dasharray: 6 5; animation: march 1.2s linear infinite; }
+@keyframes march { to { stroke-dashoffset: -22; } }
+
+/* cards */
+#cards, #links { position: fixed; inset: 0; pointer-events: none; }
+#links { width: 100vw; height: 100vh; }
+#links path { fill: none; stroke: var(--line); stroke-width: 1; opacity: 0; transition: opacity .5s; }
+#links path.cousin { stroke-dasharray: 2 4; }
+#links path.on { opacity: .7; }
+.card { position: absolute; width: 168px; background: var(--card); border: 1px solid rgba(236,235,230,.14); border-radius: 6px;
+        overflow: hidden; pointer-events: auto; opacity: 0; transform: scale(.85) translateY(6px);
+        transition: opacity .35s ease, transform .45s cubic-bezier(.2,.9,.3,1.3); box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+.card.on { opacity: 1; transform: none; }
+.card .img { height: 116px; background: #222 center/cover no-repeat; }
+.card .txt { padding: 7px 9px 9px; }
+.card .year { font: 500 11px "JetBrains Mono", monospace; color: var(--glow); letter-spacing: .02em; }
+.card .kind { font: 500 10px "JetBrains Mono", monospace; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
+.card .name { font: 400 17px/1.15 "Instrument Serif", serif; margin-top: 2px; }
+.card .sub { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.card .credit { position: absolute; left: 0; right: 0; top: 0; padding: 4px 6px; font-size: 9px; color: #ddd; background: rgba(0,0,0,.6);
+                opacity: 0; transition: opacity .2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card:hover .credit { opacity: 1; }
+.card a { color: inherit; text-decoration: none; }
+
+#label { position: fixed; pointer-events: none; font: 400 26px "Instrument Serif", serif; font-style: italic; color: var(--ink);
+         text-shadow: 0 2px 14px #000; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+#label.on { opacity: 1; }
+#label small { font: 400 11px "JetBrains Mono", monospace; font-style: normal; color: var(--dim); margin-left: 8px; }
+
+#story { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); width: min(820px, calc(100vw - 32px));
+         font: italic 400 21px/1.35 "Instrument Serif", serif; text-align: center; color: var(--ink); text-shadow: 0 2px 16px #000;
+         pointer-events: none; opacity: 0; transition: opacity .5s; }
+#story.on { opacity: 1; }
+#story .ai { display: block; margin-top: 6px; font: 400 10px "JetBrains Mono", monospace; font-style: normal; color: var(--dim); }
+
+/* scan panel: a careful look at the object */
+#scan { position: fixed; top: 52px; bottom: 16px; width: 300px; overflow: hidden; pointer-events: none; z-index: 5;
+        font-size: 12px; line-height: 1.4; opacity: 0; transition: opacity .3s; }
+#scan.on { opacity: 1; }
+#scan .sec { opacity: 0; transform: translateY(4px); transition: opacity .35s, transform .35s; margin-bottom: 11px; }
+#scan .sec.on { opacity: 1; transform: none; }
+#scan .h { font: 500 10px "JetBrains Mono", monospace; color: var(--glow); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; }
+#scan .title { font: 400 28px/1.05 "Instrument Serif", serif; }
+#scan .summary { font: italic 400 16px/1.3 "Instrument Serif", serif; color: var(--ink); }
+#scan ul { margin: 0; padding: 0; list-style: none; }
+#scan li { padding-left: 12px; position: relative; color: #d6d4cc; }
+#scan li::before { content: "·"; position: absolute; left: 2px; color: var(--dim); }
+#scan li.ok::before { content: "✓"; color: #9fc79a; left: 0; }
+#scan li.q::before { content: "?"; color: #e0a46a; left: 1px; }
+#scan .swatches { display: flex; height: 22px; border-radius: 3px; overflow: hidden; margin: 4px 0 4px; }
+#scan .names { color: var(--dim); font-size: 11px; }
+#scan .wait { font: 400 11px "JetBrains Mono", monospace; color: var(--dim); }
+#scan .note { font: 400 10px "JetBrains Mono", monospace; color: var(--dim); margin-top: 6px; }
+body.small #scan { width: 200px; font-size: 10.5px; }
+body.small #scan .title { font-size: 21px; }
+body.small #scan .summary { font-size: 13px; }
+#scanline { position: fixed; height: 2px; background: var(--glow); box-shadow: 0 0 14px 3px rgba(242,213,138,.7); pointer-events: none;
+            opacity: 0; z-index: 4; }
+#scanline.run { animation: sweep 1.4s ease-in-out 2; }
+@keyframes sweep { 0% { opacity: 0; transform: translateY(0); } 10% { opacity: .9; } 90% { opacity: .9; } 100% { opacity: 0; transform: translateY(var(--dy)); } }
+#hud { position: fixed; right: 14px; top: 12px; display: flex; gap: 8px; align-items: center; z-index: 10; font-size: 11px; color: var(--dim); }
+#hud button { padding: 5px 11px; font-size: 11px; }
+#credit { position: fixed; left: 14px; top: 12px; font-size: 10px; color: var(--dim); z-index: 10; }
+#credit a { color: inherit; }
+body.small .card { width: 120px; }
+body.small .card .img { height: 78px; }
+body.small .card .name { font-size: 14px; }
+body.small .card .sub { display: none; }
+body.small #story { font-size: 15px; bottom: 12px; }
+body.small #label { font-size: 20px; }
+body.small #hud-status { display: none; }
+#dropzone { position: fixed; inset: 0; z-index: 30; border: 2px dashed var(--glow); background: rgba(12,12,11,.85); display: none;
+            place-items: center; font: italic 32px "Instrument Serif", serif; }
+#dropzone.on { display: grid; }
+</style>
+</head>
+<body>
+<div id="start">
+  <div class="box">
+    <h1>Nothing in this room is just a thing</h1>
+    <p>Move your mouse around the room. Rest on anything for a moment and see where it came from.</p>
+    <div class="row">
+      <button id="go">Enter the room</button>
+      <button id="pick">Use my own photo</button>
+    </div>
+    <div id="drop-hint">or drop a photo of a room anywhere</div>
+    <div id="status" class="mono"></div>
+  </div>
+</div>
+
+<div id="stage">
+  <img id="room" alt="">
+  <svg id="overlay" viewBox="0 0 1 1" preserveAspectRatio="none">
+    <defs><mask id="cut"><rect x="-2" y="-2" width="5" height="5" fill="white"/><polygon id="hole" fill="black"/></mask></defs>
+    <rect id="shade" x="-2" y="-2" width="5" height="5" mask="url(#cut)"/>
+    <g id="outlines"></g>
+  </svg>
+</div>
+<svg id="links"></svg>
+<div id="cards"></div>
+<div id="label"></div>
+<div id="story"></div>
+<div id="scan"></div>
+<div id="scanline"></div>
+<div id="credit"></div>
+<div id="hud"><span id="hud-status" class="mono"></span><button id="dl">Download log</button></div>
+<div id="dropzone">Drop the room here</div>
+<input id="file" type="file" accept="image/*" hidden>
+
+<script>
+const DEFAULT_ROOM = { id: "l8Y9fVgxrEE", src: "rooms/l8Y9fVgxrEE.jpg", objects: "rooms/l8Y9fVgxrEE.objects.json",
+  credit: 'Photo: Camylla Battani, <a href="https://unsplash.com/photos/l8Y9fVgxrEE" target="_blank" rel="noopener">Unsplash</a>' };
+const DWELL_MS = 450;          // resting this long on an object opens it
+const LEAVE_MS = 700;          // off the object this long closes it
+const POP_MS = 380;            // one more card every POP_MS while you stay
+let CARD_W = 168, CARD_H = 172;
+const PAD = 12;
+
+const $ = id => document.getElementById(id);
+const room = $("room"), stage = $("stage");
+const S = { objects: [], lineage: {}, shapes: {}, scans: {}, palettes: {}, active: null, candidate: null, candSince: 0, leftAt: 0,
+            timers: [], roomId: null, imgData: null };
+const LOG = { started: new Date().toISOString(), room: null, ua: navigator.userAgent, events: [] };
+const t0 = performance.now();
+const log = (type, extra = {}) => LOG.events.push({ t: Math.round(performance.now() - t0), type, ...extra });
+const status = s => { $("status").textContent = s; $("hud-status").textContent = s; };
+
+// ---------- room loading ----------
+async function toDataURL(src, max = 1600) {
+  const im = await new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
+  const k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+  const c = document.createElement("canvas"); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+  c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", 0.9);
+}
+
+async function openRoom(src, id, creditHTML, objectsURL) {
+  status("reading the room…");
+  S.imgData = await toDataURL(src);
+  room.src = S.imgData;
+  await room.decode().catch(() => {});
+  S.roomId = id; LOG.room = { id, w: room.naturalWidth, h: room.naturalHeight };
+  $("credit").innerHTML = creditHTML || "";
+  let data = null;
+  if (objectsURL) { try { const r = await fetch(objectsURL); if (r.ok) data = await r.json(); } catch (e) {} }
+  if (!data) {
+    status("finding the objects… (about a minute the first time)");
+    const r = await fetch("/api/objects", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: S.imgData }) });
+    data = await r.json();
+    if (!r.ok) { status("could not read the room: " + (data.error || r.status) + " — is tools/room_server.py running?"); return false; }
+  }
+  S.objects = data.objects || [];
+  LOG.room.objects = S.objects.map(o => o.name);
+  log("room", { objects: S.objects.length });
+  drawOutlines(); layout();
+  $("start").style.display = "none";
+  prefetch();
+  return true;
+}
+
+function drawOutlines() {
+  $("outlines").innerHTML = S.objects.map(o =>
+    `<polygon class="outline" data-id="${o.id}" points="${o.poly.map(p => p.join(",")).join(" ")}"/>`).join("");
+}
+
+function layout() {
+  // smaller cards on small screens, so more of them fit around the object
+  const small = innerWidth < 1000 || innerHeight < 700;
+  document.body.classList.toggle("small", small);
+  [CARD_W, CARD_H] = small ? [120, 128] : [168, 172];
+  if (!room.naturalWidth) return;
+  const W = innerWidth, H = innerHeight, k = Math.min(W / room.naturalWidth, H / room.naturalHeight);
+  const w = room.naturalWidth * k, h = room.naturalHeight * k;
+  Object.assign(stage.style, { width: w + "px", height: h + "px", left: (W - w) / 2 + "px", top: (H - h) / 2 + "px" });
+  $("links").setAttribute("viewBox", `0 0 ${W} ${H}`);
+  if (S.active) { const a = S.active; close(true); open(a); }
+}
+addEventListener("resize", layout);
+
+// Scans (~10 s each) and histories (~20 s each) are slow, so they are fetched in the background, one by one.
+async function prefetch() {
+  for (const o of S.objects) {
+    if (S.scans[o.id]) continue;
+    status(`looking at ${o.name}… (${S.objects.indexOf(o) + 1}/${S.objects.length})`);
+    await getScan(o);
+  }
+  for (const o of S.objects) {
+    const key = o.name.toLowerCase();
+    if (S.lineage[key]) continue;
+    status(`tracing ${o.name}… (${S.objects.indexOf(o) + 1}/${S.objects.length})`);
+    await getLineage(o);
+  }
+  status("");
+}
+const pendingLineage = {};
+function getLineage(o) {
+  const key = o.name.toLowerCase();
+  if (S.lineage[key]) return Promise.resolve(S.lineage[key]);
+  if (!pendingLineage[key]) pendingLineage[key] = fetch("/api/lineage", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: o.name, desc: o.desc }) }).then(r => r.json()).then(j => {
+        if (j.error) throw new Error(j.error);
+        S.lineage[key] = j;
+        if (S.active === o) addCards(o);
+        return j;
+      }).catch(e => { console.warn("lineage", o.name, e); delete pendingLineage[key]; return null; });
+  return pendingLineage[key];
+}
+
+const pendingScan = {};
+function getScan(o) {
+  if (S.scans[o.id]) return Promise.resolve(S.scans[o.id]);
+  if (!pendingScan[o.id]) pendingScan[o.id] = fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: `${S.roomId}:${o.id}:${o.name}`, name: o.name, desc: o.desc, image: boxCrop(o) }) })
+    .then(r => r.json()).then(j => {
+      if (j.error) throw new Error(j.error);
+      S.scans[o.id] = j;
+      if (S.active === o) showScan(o);
+      return j;
+    }).catch(e => { console.warn("scan", o.name, e); delete pendingScan[o.id]; return null; });
+  return pendingScan[o.id];
+}
+
+// The object's actual colours, measured from its pixels (k-means), largest share first.
+function palette(o) {
+  if (S.palettes[o.id]) return S.palettes[o.id];
+  const c = document.createElement("canvas"); c.width = c.height = 96;
+  const g = c.getContext("2d", { willReadFrequently: true });
+  const px = [];
+  try {
+    g.clearRect(0, 0, 96, 96); g.drawImage(cropCanvas(o, 96, null, 1.0), 0, 0);
+    const d = g.getImageData(0, 0, 96, 96).data;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i], gg = d[i + 1], b = d[i + 2];
+      if (d[i + 3] < 255) continue;                                   // outside (or on the edge of) the outline
+      px.push([r, gg, b]);
+    }
+  } catch (e) { return []; }
+  if (px.length < 20) return [];
+  let cs = Array.from({ length: 5 }, (_, i) => px[Math.floor((i + .5) * px.length / 5)].slice());
+  let lab = new Array(px.length).fill(0);
+  for (let it = 0; it < 10; it++) {
+    px.forEach((p, i) => { let best = 0, bd = Infinity; cs.forEach((c, j) => { const dd = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2 + (p[2] - c[2]) ** 2; if (dd < bd) { bd = dd; best = j; } }); lab[i] = best; });
+    cs = cs.map((c, j) => { const m = px.filter((_, i) => lab[i] === j); return m.length ? [0, 1, 2].map(k => m.reduce((a, p) => a + p[k], 0) / m.length) : c; });
+  }
+  const out = cs.map((c, j) => ({ rgb: c.map(Math.round), share: lab.filter(l => l === j).length / px.length }))
+    .filter(x => x.share > 0.03).sort((a, b) => b.share - a.share);
+  return (S.palettes[o.id] = out);
+}
+
+// Shape cousins: photos from the matching library with a region shaped like this object (not the same kind of thing).
+// The object cut out along its outline, centred on a square of plain colour.
+function cropCanvas(o, size = 256, bg = "#fff", margin = 1.08) {
+  const W = room.naturalWidth, H = room.naturalHeight;
+  const [bx, by, bw, bh] = o.box, side = Math.max(bw * W, bh * H) * margin;
+  const cx = (bx + bw / 2) * W, cy = (by + bh / 2) * H, h = size / 2;
+  const c = document.createElement("canvas"); c.width = c.height = size;
+  const g = c.getContext("2d"), k = size / side;
+  if (bg) { g.fillStyle = bg; g.fillRect(0, 0, size, size); }
+  if (!o.poly || polyShare(o) < 0.2) { g.drawImage(room, cx - side / 2, cy - side / 2, side, side, 0, 0, size, size); return c; }   // outline unreliable: whole box
+  g.save(); g.beginPath();
+  o.poly.forEach(([x, y], i) => g[i ? "lineTo" : "moveTo"]((x * W - cx) * k + h, (y * H - cy) * k + h));
+  g.closePath(); g.clip();
+  g.drawImage(room, cx - side / 2, cy - side / 2, side, side, 0, 0, size, size);
+  g.restore();
+  return c;
+}
+// How much of its box the outline covers (a cut-off outline covers very little).
+function polyShare(o) {
+  let a = 0; const P = o.poly;
+  for (let i = 0, j = P.length - 1; i < P.length; j = i++) a += (P[j][0] + P[i][0]) * (P[j][1] - P[i][1]);
+  return Math.abs(a / 2) / (o.box[2] * o.box[3] + 1e-9);
+}
+// Plain box crop (with the room around it) for the scan: outlines can be wrong, context helps the model.
+function boxCrop(o, size = 640, margin = 1.15) {
+  const W = room.naturalWidth, H = room.naturalHeight, [bx, by, bw, bh] = o.box;
+  const w = bw * W * margin, h = bh * H * margin, k = size / Math.max(w, h);
+  const c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  c.getContext("2d").drawImage(room, (bx + bw / 2) * W - w / 2, (by + bh / 2) * H - h / 2, w, h, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", 0.9);
+}
+function cropObject(o, size, bg, margin) { return cropCanvas(o, size, bg, margin).toDataURL("image/jpeg", 0.9); }
+function getShapes(o) {
+  if (!S.shapes[o.id]) S.shapes[o.id] = fetch("/api/match", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: cropObject(o), k: 3, library: "both", exclude: o.name, vessels: true }) })
+    .then(r => r.json()).then(j => j.matches || []).catch(() => []);
+  return S.shapes[o.id];
+}
+
+// ---------- hover ----------
+function inside(pt, poly) {
+  let c = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+function objectAt(x, y) {
+  const r = stage.getBoundingClientRect(), pt = [(x - r.left) / r.width, (y - r.top) / r.height];
+  // the smallest object under the pointer wins (the pillow, not the chair it sits on); thin things like
+  // fan blades are hard to land on, so the object's box counts too when no outline is under the pointer
+  const small = (a, b) => a.box[2] * a.box[3] - b.box[2] * b.box[3];
+  const inBox = o => pt[0] >= o.box[0] && pt[0] <= o.box[0] + o.box[2] && pt[1] >= o.box[1] && pt[1] <= o.box[1] + o.box[3];
+  return S.objects.filter(o => inside(pt, o.poly)).sort(small)[0] || S.objects.filter(inBox).sort(small)[0] || null;
+}
+function overCard(x, y) { return [...document.querySelectorAll(".card.on")].some(c => { const r = c.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; }); }
+
+function setCharging(o) {
+  document.querySelectorAll(".outline.charging").forEach(e => e.classList.remove("charging"));
+  if (o && o !== S.active) document.querySelector(`.outline[data-id="${o.id}"]`)?.classList.add("charging");
+}
+
+let lastMove = { x: 0, y: 0 };
+addEventListener("mousemove", e => { lastMove = { x: e.clientX, y: e.clientY }; tick(); });
+setInterval(tick, 80);
+function tick() {
+  if (!S.objects.length || $("start").style.display !== "none") return;
+  const { x, y } = lastMove, now = performance.now();
+  const o = objectAt(x, y);
+  if (S.active) {
+    if (o === S.active || overCard(x, y)) { S.leftAt = 0; }
+    else if (!S.leftAt) S.leftAt = now;
+    else if (now - S.leftAt > LEAVE_MS) close();
+  }
+  if (o !== S.candidate) { S.candidate = o; S.candSince = now; setCharging(o); if (o) log("enter", { object: o.name }); }
+  else if (o && o !== S.active && now - S.candSince > DWELL_MS && (!S.active || !overCard(x, y))) { if (S.active) close(); open(o); }
+}
+
+// ---------- open / close ----------
+function stageRect(o) {
+  const r = stage.getBoundingClientRect(), [bx, by, bw, bh] = o.box;
+  return { x: r.left + bx * r.width, y: r.top + by * r.height, w: bw * r.width, h: bh * r.height };
+}
+function open(o) {
+  S.active = o; S.leftAt = 0; S.openedAt = performance.now(); S.shown = [];
+  S.storyShown = false; S.story = null; S.lastChain = null;
+  log("open", { object: o.name });
+  setCharging(null);
+  document.querySelector(`.outline[data-id="${o.id}"]`)?.classList.add("open");
+  $("hole").setAttribute("points", o.poly.map(p => p.join(",")).join(" "));
+  $("shade").classList.add("on");
+  const b = stageRect(o), lab = $("label");
+  lab.innerHTML = `${esc(o.name)}<small class="mono">tracing…</small>`;
+  lab.style.left = Math.max(16, Math.min(innerWidth - 260, b.x)) + "px";
+  lab.style.top = Math.max(10, b.y - 40) + "px";
+  lab.classList.add("on");
+  // the scan panel goes on the side away from the object
+  const sw = document.body.classList.contains("small") ? 200 : 300, left = b.x + b.w / 2 > innerWidth / 2;
+  const panel = { x: left ? 16 : innerWidth - sw - 16, y: 0, w: sw + 8, h: innerHeight };
+  Object.assign($("scan").style, { left: panel.x + "px" });
+  S.placed = [{ x: b.x - PAD, y: b.y - PAD, w: b.w + 2 * PAD, h: b.h + 2 * PAD }, panel, { x: 0, y: 0, w: innerWidth, h: 40 }];
+  showScan(o);
+  getScan(o);
+  const sl = $("scanline");
+  Object.assign(sl.style, { left: b.x + "px", top: b.y + "px", width: b.w + "px" }); sl.style.setProperty("--dy", b.h + "px");
+  sl.classList.remove("run"); void sl.offsetWidth; sl.classList.add("run");
+  S.queue = []; S.queued = new Set();
+  getLineage(o).then(L => L && S.active === o && addCards(o));
+  getShapes(o).then(m => S.active === o && addShapeCards(o, m));
+  addCards(o);
+  S.timers.push(setInterval(popNext, POP_MS));
+}
+function close(silent) {
+  const o = S.active; if (!o) return;
+  if (!silent) log("close", { object: o.name, ms: Math.round(performance.now() - S.openedAt), cards: S.shown.length, shown: S.shown });
+  S.timers.forEach(clearInterval); S.timers = [];
+  document.querySelectorAll(".outline.open").forEach(e => e.classList.remove("open"));
+  $("shade").classList.remove("on"); $("label").classList.remove("on"); $("story").classList.remove("on");
+  $("scan").classList.remove("on"); clearInterval(S.scanTimer); $("scanline").classList.remove("run");
+  clearInterval(S.typing);
+  const old = [...document.querySelectorAll(".card"), ...document.querySelectorAll("#links path")];
+  old.forEach(e => e.classList.remove("on"));
+  setTimeout(() => old.forEach(e => e.remove()), 500);
+  S.active = null; S.leftAt = 0;
+}
+addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+
+// Cards queue up and pop in one at a time: the modern version first, then back through time, then cousins.
+function addCards(o) {
+  const L = S.lineage[o.name.toLowerCase()];
+  if (!L || S.queued.has("lineage")) return;
+  S.queued.add("lineage");
+  $("label").innerHTML = esc(o.name) + `<small class="mono">${L.lineage.length} ancestors · ${L.cousins.length} cousins</small>`;
+  const lin = L.lineage.filter(it => it.images && it.images.length).reverse();
+  lin.forEach((it, i) => S.queue.push({ kind: "lineage", item: it, chain: i }));
+  L.cousins.filter(it => it.images && it.images.length).forEach(it => S.queue.push({ kind: "cousin", item: it }));
+  S.story = L.story;
+}
+function addShapeCards(o, matches) {
+  // interleave the shape matches after the first couple of history cards
+  matches.forEach((m, i) => S.queue.splice(Math.min(S.queue.length, 3 + i * 2), 0, { kind: "shape", item: m }));
+}
+function popNext() {
+  const o = S.active; if (!o) return;
+  const SHOW_STORY = false;                                          // the narrated paragraph is off for now
+  if (SHOW_STORY && S.story && !S.storyShown && performance.now() - S.openedAt > 1600) typeStory(S.story);
+  const next = S.queue.shift(); if (!next) return;
+  const b = stageRect(o), centre = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const anchor = next.kind === "lineage" && S.lastChain ? S.lastChain : centre;
+  const pos = place(anchor, centre); if (!pos) return;
+  const el = card(next); el.style.left = pos.x + "px"; el.style.top = pos.y + "px";
+  $("cards").appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("on")));
+  setTimeout(() => el.classList.add("on"), 60);                     // if rAF is paused (hidden tab)
+  const c = { x: pos.x + CARD_W / 2, y: pos.y + CARD_H / 2 };
+  const from = next.kind === "lineage" ? (S.lastChain || centre) : centre;
+  link(from, c, next.kind);
+  if (next.kind === "lineage") S.lastChain = c;
+  S.shown.push(next.kind + ":" + (next.item.name || next.item.id));
+}
+function place(anchor, centre) {
+  const W = innerWidth, H = innerHeight, step = 22;
+  let best = null, bestCost = Infinity;
+  for (let y = 44; y + CARD_H < H - storyH(); y += step) for (let x = 12; x + CARD_W < W - 12; x += step) {
+    const r = { x: x - PAD / 2, y: y - PAD / 2, w: CARD_W + PAD, h: CARD_H + PAD };
+    if (S.placed.some(p => r.x < p.x + p.w && r.x + r.w > p.x && r.y < p.y + p.h && r.y + r.h > p.y)) continue;
+    const cx = x + CARD_W / 2, cy = y + CARD_H / 2;
+    const cost = Math.hypot(cx - anchor.x, cy - anchor.y) + 0.35 * Math.hypot(cx - centre.x, cy - centre.y) + Math.random() * 30;
+    if (cost < bestCost) { bestCost = cost; best = { x, y }; }
+  }
+  if (best) S.placed.push({ x: best.x - PAD / 2, y: best.y - PAD / 2, w: CARD_W + PAD, h: CARD_H + PAD });
+  return best;
+}
+function storyH() { return 16; }
+function link(a, b, kind) {
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 - 30;
+  p.setAttribute("d", `M${a.x},${a.y} Q${mx},${my} ${b.x},${b.y}`);
+  if (kind !== "lineage") p.classList.add("cousin");
+  $("links").prepend(p);
+  setTimeout(() => p.classList.add("on"), 30);
+}
+function card({ kind, item }) {
+  const el = document.createElement("div"); el.className = "card";
+  if (kind === "shape") {
+    const m = item, src = `/api/photo/${m.id}.jpg`;
+    // show the matching region of the photo, not the whole photo
+    const zoom = 1 / Math.max(m.box[2], 0.05), px = m.box[0] / Math.max(1e-6, 1 - m.box[2]), py = m.box[1] / Math.max(1e-6, 1 - m.box[3]);
+    el.innerHTML = `<div class="img" style="background-image:url('${src}');background-size:${zoom * 100}% auto;background-position:${px * 100}% ${py * 100}%"></div>
+      <div class="credit">${esc(m.by || "")} · ${m.library === "arena" ? "Are.na" : "Unsplash"}</div>
+      <div class="txt"><div class="kind">same shape</div><div class="name">${esc(m.desc || "a photo")}</div></div>`;
+  } else {
+    const im = item.images[0];
+    el.innerHTML = `<a href="${esc(im.link || im.src)}" target="_blank" rel="noopener"><div class="img" style="background-image:url('${esc(im.src)}')"></div>
+      <div class="credit">${esc(im.credit || "")}</div>
+      <div class="txt">${kind === "lineage" ? `<div class="year">${esc(item.year || "")}</div>` : `<div class="kind">also</div>`}
+      <div class="name">${esc(item.name)}</div><div class="sub">${esc(kind === "lineage" ? item.place || "" : item.why || "")}</div></div></a>`;
+  }
+  el.addEventListener("click", () => log("card_click", { object: S.active?.name, kind, item: item.name || item.id }));
+  return el;
+}
+function showScan(o) {
+  const el = $("scan"), sc = S.scans[o.id], pal = palette(o);
+  el.classList.add("on");
+  const list = (a, cls = "") => (Array.isArray(a) ? a : a ? [a] : []).filter(Boolean).map(x => `<li class="${cls}">${esc(x)}</li>`).join("");
+  const sec = (h, body) => body ? `<div class="sec"><div class="h">${h}</div>${body}</div>` : "";
+  const swatches = pal.length ? `<div class="swatches">${pal.map(p => `<div title="rgb(${p.rgb})" style="flex:${p.share};background:rgb(${p.rgb})"></div>`).join("")}</div>` : "";
+  let html = `<div class="sec"><div class="h">scan</div><div class="title">${esc(sc?.name || o.name)}</div></div>`;
+  if (!sc) {
+    html += sec("palette", swatches) + `<div class="sec"><div class="wait">looking closely…</div></div>`;
+  } else {
+    html += sec("", `<div class="summary">${esc(sc.summary || "")}</div>`)
+      + sec("palette", swatches + (sc.palette?.length ? `<div class="names">${sc.palette.map(esc).join(" · ")}</div>` : ""))
+      + sec("form", `<ul>${list(sc.form)}</ul>`)
+      + sec("surface", `<ul>${list(sc.surface)}</ul>`)
+      + (sc.decoration?.length ? sec("decoration", `<ul>${list(sc.decoration)}</ul>`) : "")
+      + sec("material", `<ul>${list(sc.material)}${list(sc.made)}</ul>`)
+      + sec("resembles", `<ul>${list(sc.resembles || sc.style)}</ul>`)
+      + sec("worth noticing", `<ul>${list(sc.interesting)}</ul>`)
+      + sec("clear · uncertain", `<ul>${list(sc.clear, "ok")}${list(sc.uncertain, "q")}</ul>`)
+      + `<div class="sec"><div class="note">read by ${esc(sc.model || "a local model")} from the photo</div></div>`;
+  }
+  el.innerHTML = html;
+  // sections appear one after another, like a reading being taken
+  const secs = [...el.querySelectorAll(".sec")]; let i = 0;
+  clearInterval(S.scanTimer);
+  S.scanTimer = setInterval(() => { if (i < secs.length) secs[i++].classList.add("on"); else clearInterval(S.scanTimer); }, 230);
+  if (sc) log("scan_shown", { object: o.name });
+}
+function typeStory(text) {
+  S.storyShown = true;
+  const el = $("story"); el.innerHTML = ""; el.classList.add("on");
+  const span = document.createElement("span"); el.appendChild(span);
+  const note = document.createElement("span"); note.className = "ai"; note.textContent = "written by a local language model · may be inaccurate";
+  let i = 0; clearInterval(S.typing);
+  S.typing = setInterval(() => { i += 2; span.textContent = text.slice(0, i); if (i >= text.length) { clearInterval(S.typing); el.appendChild(note); } }, 28);
+}
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+// ---------- start, own photos, log ----------
+$("go").onclick = () => openRoom(DEFAULT_ROOM.src, DEFAULT_ROOM.id, DEFAULT_ROOM.credit, DEFAULT_ROOM.objects)
+  .catch(e => status("could not open the room: " + e.message));
+$("pick").onclick = () => $("file").click();
+$("file").onchange = e => e.target.files[0] && ownPhoto(e.target.files[0]);
+function ownPhoto(f) {
+  close(true);
+  S.objects = []; S.shapes = {}; $("outlines").innerHTML = "";
+  const url = URL.createObjectURL(f);
+  $("start").style.display = "grid";
+  openRoom(url, "own:" + f.name, "", null).catch(e => status("could not open the photo: " + e.message));
+}
+let dragDepth = 0;
+addEventListener("dragenter", e => { e.preventDefault(); dragDepth++; $("dropzone").classList.add("on"); });
+addEventListener("dragleave", () => { if (--dragDepth <= 0) { dragDepth = 0; $("dropzone").classList.remove("on"); } });
+addEventListener("dragover", e => e.preventDefault());
+addEventListener("drop", e => {
+  e.preventDefault(); dragDepth = 0; $("dropzone").classList.remove("on");
+  const f = [...e.dataTransfer.files].find(f => f.type.startsWith("image/")); if (f) ownPhoto(f);
+});
+$("dl").onclick = () => {
+  close();
+  LOG.ended = new Date().toISOString();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(LOG, null, 1)], { type: "application/json" }));
+  a.download = `room_${(S.roomId || "room").replace(/\W+/g, "_")}_${Date.now()}.json`; a.click();
+};
+</script>
+</body>
+</html>

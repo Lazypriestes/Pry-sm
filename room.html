@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object Trace</title>
+<style>
+:root { --bg: #fff; --ink: #000; --dim: #777; --bar: #e4e4e4; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 11px/1.35 Menlo, Monaco, "Courier New", monospace; overflow: hidden; }
+
+#start { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: grid; place-items: center; cursor: pointer; }
+#start p { margin: 0; font-size: 12px; }
+
+/* objects */
+#scene { position: fixed; inset: 0; }
+.obj { position: absolute; user-select: none; -webkit-user-drag: none; transition: opacity .2s; z-index: 1; }
+.obj.open { z-index: 40; }
+body.focus .obj:not(.open) { opacity: .12; }
+
+/* windows */
+#wins { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+.win { position: absolute; background: #fff; border: 1px solid #000; pointer-events: auto; }
+.win .bar { display: flex; height: 15px; line-height: 15px; padding: 0 3px 0 5px; background: var(--bar); border-bottom: 1px solid #000;
+            white-space: nowrap; overflow: hidden; font-size: 10px; }
+.win .bar span { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.win .bar b { font-weight: normal; padding: 0 3px; cursor: pointer; }
+.win .pic { display: block; background: #eee center/cover no-repeat; position: relative; }
+.win .pic .inset { position: absolute; left: 4px; bottom: 4px; width: 34%; aspect-ratio: 1; background: #fff center/cover no-repeat; border: 1px solid #000; }
+.win .foot { padding: 2px 5px; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-top: 1px solid #000; }
+.win .txt { padding: 4px 6px; white-space: pre-wrap; }
+.win .sw { display: flex; height: 24px; }
+.win .sw div { flex: 1; }
+.win a { color: inherit; text-decoration: none; }
+
+#hud { position: fixed; left: 8px; top: 6px; z-index: 60; color: var(--dim); pointer-events: none; white-space: pre; }
+#dl { position: fixed; right: 8px; top: 5px; z-index: 60; font: inherit; background: none; border: 0; color: var(--dim); cursor: pointer; text-decoration: underline; padding: 0; }
+</style>
+</head>
+<body>
+<div id="start"><p>Move the cursor over an object and hold it there. (click to start)</p></div>
+<div id="scene"></div>
+<div id="wins"></div>
+<div id="hud"></div>
+<button id="dl">download log</button>
+
+<script>
+const DWELL_MS = 400;          // resting this long on an object starts it
+const LEAVE_MS = 600;          // off it this long closes everything
+const MAX_WINS = 50;           // oldest windows close beyond this
+// test switch: room.html?only=lens shows nothing but the Google (Cloud Vision) results
+const ONLY_LENS = new URLSearchParams(location.search).get("only") === "lens";
+const FIRST_GAP = 500, MIN_GAP = 100;   // windows come faster and faster the longer you stay
+
+const $ = id => document.getElementById(id);
+const S = { objects: [], content: {}, active: null, candidate: null, candSince: 0, leftAt: 0, z: 10, wins: [] };
+const LOG = { started: new Date().toISOString(), ua: navigator.userAgent, events: [] };
+const t0 = performance.now();
+const log = (type, extra = {}) => LOG.events.push({ t: Math.round(performance.now() - t0), type, ...extra });
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const slug = s => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 32);
+const rnd = (a, b) => a + Math.random() * (b - a);
+const hex = c => "#" + c.map(n => n.toString(16).padStart(2, "0")).join("");
+
+// ---------- load + scatter ----------
+async function load() {
+  const [o, c] = await Promise.all([fetch("rooms/objects.json").then(r => r.json()), fetch("rooms/objects_content.json").then(r => r.json()).catch(() => ({}))]);
+  S.objects = o.objects; S.content = c;
+  // Google Lens-style search is the one live part of this page (only when server.mjs has a GOOGLE_VISION_KEY)
+  S.lens = await fetch("api/status").then(r => r.json()).then(j => !!j.lens).catch(() => false);
+  await Promise.all(S.objects.map(o => new Promise(ok => {
+    const im = new Image(); im.className = "obj"; im.alt = o.name; im.onload = im.onerror = ok; im.src = o.src; o.el = im; $("scene").appendChild(im);
+  })));
+  LOG.objects = S.objects.map(o => o.id);
+}
+function arrange() {
+  const W = innerWidth, H = innerHeight, n = S.objects.length;
+  const cols = Math.ceil(Math.sqrt(n * W / H)), rows = Math.ceil(n / cols), cw = W / cols, ch = (H - 40) / rows;
+  const cells = [...Array(cols * rows).keys()].sort(() => Math.random() - 0.5).slice(0, n);
+  S.objects.forEach((o, i) => {
+    const im = o.el, col = cells[i] % cols, row = Math.floor(cells[i] / cols);
+    const k = Math.min(cw * 0.6 / im.naturalWidth, ch * 0.68 / im.naturalHeight) * rnd(0.85, 1.15);
+    const w = im.naturalWidth * k, h = im.naturalHeight * k;
+    const x = col * cw + (cw - w) * rnd(0.2, 0.8), y = 26 + row * ch + (ch - h) * rnd(0.2, 0.8);
+    Object.assign(im.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
+    o.rect = { x, y, w, h };
+    const m = document.createElement("canvas"); m.width = Math.max(1, Math.round(w / 2)); m.height = Math.max(1, Math.round(h / 2));
+    const g = m.getContext("2d", { willReadFrequently: true }); g.drawImage(im, 0, 0, m.width, m.height);
+    try { o.alpha = g.getImageData(0, 0, m.width, m.height); } catch (e) { o.alpha = null; }
+  });
+  LOG.layout = S.objects.map(o => ({ id: o.id, x: Math.round(o.rect.x), y: Math.round(o.rect.y), w: Math.round(o.rect.w), h: Math.round(o.rect.h) }));
+}
+addEventListener("resize", () => { close(true); if (S.objects.length) arrange(); });
+
+function palette(o) {
+  const c = document.createElement("canvas"); c.width = c.height = 80;
+  const g = c.getContext("2d", { willReadFrequently: true }), k = 80 / Math.max(o.el.naturalWidth, o.el.naturalHeight);
+  g.drawImage(o.el, 0, 0, o.el.naturalWidth * k, o.el.naturalHeight * k);
+  const d = g.getImageData(0, 0, 80, 80).data, px = [];
+  for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 250) px.push([d[i], d[i + 1], d[i + 2]]);
+  if (px.length < 20) return [];
+  let cs = Array.from({ length: 6 }, (_, i) => px[Math.floor((i + .5) * px.length / 6)].slice());
+  const lab = new Array(px.length).fill(0);
+  for (let it = 0; it < 8; it++) {
+    px.forEach((p, i) => { let b = 0, bd = 1e9; cs.forEach((c, j) => { const dd = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2 + (p[2] - c[2]) ** 2; if (dd < bd) { bd = dd; b = j; } }); lab[i] = b; });
+    cs = cs.map((c, j) => { const m = px.filter((_, i) => lab[i] === j); return m.length ? [0, 1, 2].map(k => Math.round(m.reduce((a, p) => a + p[k], 0) / m.length)) : c; });
+  }
+  return cs.map((c, j) => ({ c, share: lab.filter(l => l === j).length / px.length })).filter(x => x.share > 0.03).sort((a, b) => b.share - a.share);
+}
+
+// ---------- what an object shows: one mixed stream of windows ----------
+// history (oldest -> now), parts matched by shape, colours, cousins, whole outline, surface, mood, and notes from the scan
+function stream(o) {
+  const C = S.content[o.id] || {}, sc = C.scan || {};
+  const lib = (m, kind, label) => ({ kind, m, label });
+  const pools = [
+    (C.lineage || []).flatMap(it => (it.images || []).map((im, i) => ({ kind: "history", it, im, i }))),
+    (C.parts || []).map(m => lib(m, "part", "part")),
+    (C.colours || []).map(m => lib(m, "colour", "colour")),
+    (C.cousins || []).flatMap(it => (it.images || []).map((im, i) => ({ kind: "cousin", it, im, i }))),
+    (C.shapes || []).map(m => lib(m, "shape", "outline")),
+    (C.surface || []).map(m => lib(m, "surface", "surface")),
+    (C.mood || []).map(m => lib(m, "mood", "feels like")),
+  ];
+  const notes = [sc.summary, ...(sc.form || []), ...(sc.surface || []), ...(sc.decoration || []), sc.material, sc.made,
+                 ...[].concat(sc.resembles || sc.style || []), ...(sc.interesting || [])].filter(Boolean);
+  const out = [{ kind: "note", text: `${sc.name || o.name}\n${sc.summary || ""}`.trim() }, { kind: "palette", names: sc.palette || [] }];
+  const pics = [];
+  while (pools.some(p => p.length)) for (const p of pools) if (p.length) pics.push(p.shift());
+  let ni = 1;
+  pics.forEach((p, i) => { out.push(p); if (i % 4 === 3 && ni < notes.length) out.push({ kind: "note", text: notes[ni++] }); });
+  while (ni < notes.length) out.push({ kind: "note", text: notes[ni++] });
+  return out;
+}
+
+// ---------- windows ----------
+function spot(o, w, h, n) {
+  // scattered around the object, spreading wider as more open; mostly keep clear of the object itself
+  const r = o.rect, cx = r.x + r.w / 2, cy = r.y + r.h / 2, spread = 100 + n * 16;
+  for (let t = 0; t < 12; t++) {
+    const a = rnd(0, Math.PI * 2), d = rnd(0.4, 1) * (Math.max(r.w, r.h) / 2 + spread);
+    const x = Math.max(4, Math.min(innerWidth - w - 4, cx + Math.cos(a) * d - w / 2));
+    const y = Math.max(22, Math.min(innerHeight - h - 4, cy + Math.sin(a) * d * 0.8 - h / 2));
+    const overObj = x < r.x + r.w * 0.8 && x + w > r.x + r.w * 0.2 && y < r.y + r.h * 0.8 && y + h > r.y + r.h * 0.2;
+    if (!overObj || t === 11) return { x, y };
+  }
+}
+function libPic(m, ph) {
+  const zoom = 1 / Math.max(m.box[2], 0.05);
+  const pos = `${m.box[0] / Math.max(1e-6, 1 - m.box[2]) * 100}% ${m.box[1] / Math.max(1e-6, 1 - m.box[3]) * 100}%`;
+  return `<div class="pic" style="height:${ph}px;background-image:url('/api/photo/${esc(m.id)}.jpg');background-size:${m.box[2] >= 1 ? "cover" : zoom * 100 + "% auto"};background-position:${m.box[2] >= 1 ? "center" : pos}">` +
+         (m.part ? `<div class="inset" style="background-image:url('${esc(m.part)}')"></div>` : "") + `</div>`;
+}
+function makeWin(o, item, n) {
+  const el = document.createElement("div"); el.className = "win";
+  let w, title, body;
+  if (item.kind === "note") {
+    w = rnd(170, 250); title = `${slug(o.name)}.txt`; body = `<div class="txt">${esc(item.text)}</div>`;
+  } else if (item.kind === "web") {
+    w = rnd(130, 210); title = item.title;
+    body = `<a href="${esc(item.link || item.url)}" target="_blank" rel="noopener"><div class="pic" style="height:${Math.round(w * rnd(0.62, 0.9))}px;background-image:url('${esc(item.url)}')">${item.inset ? `<div class="inset" style="background-image:url('${esc(item.inset)}')"></div>` : ""}</div><div class="foot">${esc(item.foot)}</div></a>`;
+  } else if (item.kind === "palette") {
+    const p = palette(o); w = 220; title = `${slug(o.name)}_colours`;
+    body = `<div class="sw">${p.map(x => `<div style="flex:${x.share};background:rgb(${x.c})"></div>`).join("")}</div>
+            <div class="foot">${esc(item.names.length ? item.names.join(", ") : p.map(x => hex(x.c)).join(" "))}</div>`;
+  } else {
+    w = Math.random() < 0.25 ? rnd(220, 290) : rnd(130, 200);
+    const ph = Math.round(w * rnd(0.62, 0.9));
+    if (item.it) {                                               // history / cousin, from Wikimedia
+      const it = item.it, hist = item.kind === "history";
+      title = `${hist ? slug(it.year) + "_" : ""}${slug(it.name)}${item.i ? "_" + (item.i + 1) : ""}.jpg`;
+      body = `<a href="${esc(item.im.link || item.im.src)}" target="_blank" rel="noopener"><div class="pic" style="height:${ph}px;background-image:url('${esc(item.im.src)}')"></div>
+        <div class="foot">${esc(hist ? `${it.year || ""}  ${it.name}${it.place ? ", " + it.place : ""}` : `also: ${it.name}`)}</div></a>`;
+    } else {                                                     // library photo (Are.na / Unsplash)
+      const m = item.m;
+      title = `${item.label.replace(" ", "_")}_${m.id.replace(/^arena_/, "")}.jpg`;
+      body = libPic(m, ph) + `<div class="foot">${esc(item.label)}${m.desc ? ": " + esc(m.desc) : ""}</div>`;
+    }
+  }
+  const h = el.offsetHeight || 0;
+  Object.assign(el.style, { width: w + "px", zIndex: ++S.z, visibility: "hidden" });
+  el.innerHTML = `<div class="bar"><span>${esc(title)}</span><b>×</b></div>${body}`;
+  el.querySelector(".bar b").addEventListener("click", e => { e.stopPropagation(); shut(el); });
+  el.addEventListener("mousedown", () => { el.style.zIndex = ++S.z; log("win_click", { object: o.id, title }); });
+  return { el, title, w, kind: item.kind };
+}
+function shut(el) { el.remove(); }
+
+// ---------- hover ----------
+function objectAt(x, y) {
+  for (const o of [...S.objects].reverse()) {
+    const r = o.rect; if (!r || x < r.x || y < r.y || x > r.x + r.w || y > r.y + r.h) continue;
+    if (!o.alpha) return o;
+    const ax = Math.min(o.alpha.width - 1, Math.floor((x - r.x) / 2)), ay = Math.min(o.alpha.height - 1, Math.floor((y - r.y) / 2));
+    if (o.alpha.data[(ay * o.alpha.width + ax) * 4 + 3] > 40) return o;
+  }
+  return null;
+}
+function overWin(x, y) { return S.wins.some(w => { const r = w.el.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; }); }
+
+let mouse = { x: -1, y: -1 };
+addEventListener("mousemove", e => { mouse = { x: e.clientX, y: e.clientY }; tick(); });
+setInterval(tick, 60);
+function tick() {
+  if (!S.objects.length || $("start").style.display !== "none") return;
+  const { x, y } = mouse, now = performance.now();
+  const o = objectAt(x, y);
+  if (S.active) {
+    if (o === S.active || overWin(x, y)) S.leftAt = 0;
+    else if (!S.leftAt) S.leftAt = now;
+    else if (now - S.leftAt > LEAVE_MS) close();
+  }
+  if (o !== S.candidate) { S.candidate = o; S.candSince = now; if (o && o !== S.active) log("enter", { object: o.id }); }
+  else if (o && o !== S.active && now - S.candSince > DWELL_MS && !overWin(x, y)) { if (S.active) close(); open(o); }
+  $("hud").textContent = S.active ? `${S.active.name}  ${S.count}/${S.count + S.queue.length}` : "";
+}
+
+// ---------- open / close ----------
+function open(o) {
+  Object.assign(S, { active: o, leftAt: 0, openedAt: performance.now(), queue: ONLY_LENS ? [] : stream(o), count: 0, shown: [] });
+  log("open", { object: o.id, available: S.queue.length });
+  if (S.lens) lensFor(o);
+  else if (ONLY_LENS) S.queue.push({ kind: "note", text: "google lens is off (no GOOGLE_VISION_KEY)" });
+  o.el.classList.add("open"); document.body.classList.add("focus");
+  next();
+}
+// The object as a PNG on a plain square (what is sent to Google).
+function objectImage(o, size, bg) {
+  const im = o.el, k = size / Math.max(im.naturalWidth, im.naturalHeight) * 0.92;
+  const c = document.createElement("canvas"); c.width = c.height = size;
+  const g = c.getContext("2d");
+  if (bg) { g.fillStyle = bg; g.fillRect(0, 0, size, size); }
+  g.drawImage(im, (size - im.naturalWidth * k) / 2, (size - im.naturalHeight * k) / 2, im.naturalWidth * k, im.naturalHeight * k);
+  return c;
+}
+// What Google sees: the whole object, plus two of its parts (cut out by the bake, rooms/parts/), each sent
+// on its own. A part is read by Google as something else entirely (a fan blade -> propeller, a spout -> a beak).
+const LENS_PARTS = 2;
+const lensCache = {};
+const toDataURL = async url => { const b = await (await fetch(url)).blob();
+  return await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(b); }); };
+function lensAsk(key, image) {
+  return lensCache[key] || (lensCache[key] = fetch("api/lens", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image }) }).then(r => r.json()).catch(e => ({ error: String(e) })));
+}
+function lensParts(o) {
+  // top and detail if there are both (most different from each other), otherwise the first two
+  const paths = [...new Set(((S.content[o.id] || {}).parts || []).map(p => p.part))];
+  const pick = ["_0.jpg", "_3.jpg"].map(e => paths.find(p => p.endsWith(e))).filter(Boolean);
+  return (pick.length >= LENS_PARTS ? pick : [...new Set([...pick, ...paths])]).slice(0, LENS_PARTS);
+}
+const loads = url => new Promise(ok => { const im = new Image(); const t = setTimeout(() => ok(false), 5000);
+  im.onload = () => { clearTimeout(t); ok(im.naturalWidth > 40); }; im.onerror = () => { clearTimeout(t); ok(false); }; im.src = url; });
+async function lensFor(o) {
+  const asks = [{ label: "whole", key: o.id, image: () => objectImage(o, 640, "#fff").toDataURL("image/jpeg", 0.9) },
+                ...lensParts(o).map((path, i) => ({ label: `part ${i + 1}`, key: path, part: path, image: () => toDataURL(path) }))];
+  const n = ONLY_LENS ? (asks.length > 1 ? 12 : 20) : 6;
+  await Promise.all(asks.map(async a => {
+    const j = await lensAsk(a.key, await a.image());
+    if (S.active !== o) return;
+    if (j.error) { log("lens_error", { object: o.id, from: a.label, error: j.error }); return; }
+    log("lens", { object: o.id, from: a.label, guess: j.guess, cached: !!j.cached });
+    const words = [...(j.guess || []), ...(j.entities || []).slice(0, 6).map(e => e.name)];
+    const tag = a.part ? `${a.label}: ` : "";
+    S.queue.unshift({ kind: "note", text: `google lens, ${a.label}\n` + (words.join("\n") || "nothing recognised") });
+    const web = [...(j.similar || []).slice(0, n).map((u, i) => ({ kind: "web", url: u, inset: a.part, title: `${slug(a.label)}_similar_${i + 1}.jpg`, foot: `${tag}looks like ${j.guess?.[0] || ""}`.trim() })),
+                 ...(j.pages || []).filter(p => p.image).slice(0, ONLY_LENS ? 6 : 3).map((p, i) => ({ kind: "web", url: p.image, link: p.url, inset: a.part, title: `${slug(a.label)}_page_${i + 1}.htm`, foot: tag + (p.title || p.url) }))];
+    // many sites refuse to show their images elsewhere: keep only the ones that actually load
+    const okWeb = (await Promise.all(web.map(async x => (await loads(x.url)) ? x : null))).filter(Boolean);
+    if (S.active !== o) return;
+    okWeb.forEach((x, i) => S.queue.splice(Math.min(S.queue.length, 1 + i * 2 + Math.floor(Math.random() * 2)), 0, x));
+    if (!S.timer) next();                                           // the queue had run dry: start it again
+  }));
+}
+function next() {
+  const o = S.active; if (!o) return;
+  const item = S.queue.shift();
+  if (item) {
+    const w = makeWin(o, item, S.count++);
+    $("wins").appendChild(w.el);
+    const p = spot(o, w.w, w.el.offsetHeight, S.count);
+    Object.assign(w.el.style, { left: p.x + "px", top: p.y + "px", visibility: "visible" });
+    S.wins.push(w); S.shown.push(w.title);
+    if (S.wins.length > MAX_WINS) shut(S.wins.shift().el);
+  }
+  // when the queue runs dry the timer stops; late results (Google) restart it
+  S.timer = S.queue.length ? setTimeout(next, Math.max(MIN_GAP, FIRST_GAP * Math.pow(0.9, S.count))) : null;
+}
+function close(silent) {
+  const o = S.active; if (!o) return;
+  if (!silent) log("close", { object: o.id, ms: Math.round(performance.now() - S.openedAt), windows: S.count, shown: S.shown });
+  clearTimeout(S.timer); S.timer = null;
+  o.el.classList.remove("open"); document.body.classList.remove("focus");
+  S.wins.forEach(w => shut(w.el));
+  S.wins = []; S.active = null; S.leftAt = 0;
+}
+addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+
+// ---------- start, log ----------
+const ready = load().then(arrange);
+$("start").onclick = async () => { await ready; $("start").style.display = "none"; log("start"); };
+$("dl").onclick = () => {
+  close();
+  LOG.ended = new Date().toISOString();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(LOG, null, 1)], { type: "application/json" }));
+  a.download = `objtrace_${Date.now()}.json`; a.click();
+};
+</script>
+</body>
+</html>

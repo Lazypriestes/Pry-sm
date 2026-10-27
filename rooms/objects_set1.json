@@ -1,0 +1,94 @@
+{
+ "objects": [
+  {
+   "id": "ceiling_fan",
+   "name": "ceiling fan",
+   "src": "images/objects/ceiling_fan.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:01_Rotating_Ceiling_fan_at_640th_of_a_second.JPG",
+    "title": "File:01 Rotating Ceiling fan at 640th of a second.JPG",
+    "artist": "Veera.sj",
+    "license": "CC0"
+   }
+  },
+  {
+   "id": "table_lamp",
+   "name": "table lamp",
+   "src": "images/objects/table_lamp.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Lamp_with_a_lampshade_illuminated_by_sunlight.jpg",
+    "title": "File:Lamp with a lampshade illuminated by sunlight.jpg",
+    "artist": "LoMit",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "id": "rotary_telephone",
+   "name": "rotary telephone",
+   "src": "images/objects/rotary_telephone.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Telephone_modele_U43-MGR_Lyon-IMG_9923.jpg",
+    "title": "File:Telephone modele U43-MGR Lyon-IMG 9923.jpg",
+    "artist": "Rama",
+    "license": "CC BY-SA 2.0 fr"
+   }
+  },
+  {
+   "id": "kettle",
+   "name": "kettle",
+   "src": "images/objects/kettle.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Alessi_Tea_Kettle.jpg",
+    "title": "File:Alessi Tea Kettle.jpg",
+    "artist": "Didriks",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "id": "bentwood_chair",
+   "name": "bentwood chair",
+   "src": "images/objects/bentwood_chair.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Bentwood_Side_Chair_MET_235591.jpg",
+    "title": "File:Bentwood Side Chair MET 235591.jpg",
+    "artist": "Creator:Henry I. Seymour",
+    "license": "CC0"
+   }
+  },
+  {
+   "id": "fire_extinguisher",
+   "name": "fire extinguisher",
+   "src": "images/objects/fire_extinguisher.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Fire_extinguishers_trolley_unit.jpg",
+    "title": "File:Fire extinguishers trolley unit.jpg",
+    "artist": "Purbaya",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "id": "vase_23",
+   "name": "Arts & Crafts Movement glazed stoneware vase",
+   "desc": "c. 1900-1930 \u00b7 Likely British (possibly Staffordshire) \u00b7 glazed stoneware",
+   "src": "images/cut/vase_23.png",
+   "source": {
+    "link": "",
+    "title": "vase_23",
+    "artist": "",
+    "license": ""
+   }
+  },
+  {
+   "id": "vase_06",
+   "name": "Art Nouveau glazed porcelain vase",
+   "desc": "c. 1900-1930 \u00b7 Iran (Persia) \u00b7 glazed porcelain",
+   "src": "images/cut/vase_06.png",
+   "source": {
+    "link": "",
+    "title": "vase_06",
+    "artist": "",
+    "license": ""
+   }
+  }
+ ]
+}

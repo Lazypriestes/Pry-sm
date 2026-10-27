@@ -1,0 +1,92 @@
+{
+ "objects": [
+  {
+   "id": "typewriter",
+   "name": "typewriter",
+   "src": "images/objects/typewriter.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:SilverReedtypewriter.jpg",
+    "title": "File:SilverReedtypewriter.jpg",
+    "artist": "Kotoviski photograph by Henryk Kotowski",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "id": "bicycle_bell",
+   "name": "bicycle bell",
+   "src": "images/objects/bicycle_bell.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Bicycle_bell_by_Rose_Bikes.jpg",
+    "title": "File:Bicycle bell by Rose Bikes.jpg",
+    "artist": "Singlespeedfahrer",
+    "license": "CC0"
+   }
+  },
+  {
+   "id": "chandelier",
+   "name": "chandelier",
+   "src": "images/objects/chandelier.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:KroonluchterEsnogaAmsterdam.jpg",
+    "title": "File:KroonluchterEsnogaAmsterdam.jpg",
+    "artist": "Massimo Catarinella",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "id": "gramophone",
+   "name": "gramophone",
+   "src": "images/objects/gramophone.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Phonographs_-_Gramophon.jpg",
+    "title": "File:Phonographs - Gramophon.jpg",
+    "artist": "Takkk",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "id": "desk_fan",
+   "name": "desk fan",
+   "src": "images/objects/desk_fan.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Mini_ventilateur_usb.jpg",
+    "title": "File:Mini ventilateur usb.jpg",
+    "artist": "Exilexi",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "id": "door_knocker",
+   "name": "door knocker",
+   "src": "images/objects/door_knocker.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Door_knocker_in_Palermo.jpg",
+    "title": "File:Door knocker in Palermo.jpg",
+    "artist": "Bernard Gagnon",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "id": "cast_iron_teapot",
+   "name": "cast iron teapot",
+   "src": "images/objects/cast_iron_teapot.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Teapot_(AM_1994.2-3).jpg",
+    "title": "File:Teapot (AM 1994.2-3).jpg",
+    "artist": "",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "id": "brass_candlestick",
+   "name": "brass candlestick",
+   "src": "images/objects/brass_candlestick.png",
+   "source": {
+    "link": "https://commons.wikimedia.org/wiki/File:Harry_Mann_Waddell,_Brass_Candlestick,_c._1937,_NGA_26686.jpg",
+    "title": "File:Harry Mann Waddell, Brass Candlestick, c. 1937, NGA 26686.jpg",
+    "artist": "Harry Mann Waddell",
+    "license": "CC0"
+   }
+  }
+ ]
+}
